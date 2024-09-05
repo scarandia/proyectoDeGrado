@@ -1,0 +1,22 @@
+{
+  "name": "microservicio",
+  "version": "1.0.0",
+  "description": "Desarrollo de un microservicio de distribucion por Sebastian Arandia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scarandia/proyectoDeGrado.git"
+  },
+  "author": "Sebastian Arandia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scarandia/proyectoDeGrado/issues"
+  },
+  "homepage": "https://github.com/scarandia/proyectoDeGrado#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
