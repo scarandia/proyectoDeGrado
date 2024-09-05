@@ -1,14 +1,17 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3000;
+//const pedidoRoutes = require('./routes/pedidoRoutes');
 
-app.use(express.json()); // Para parsear JSON
+// Middleware para manejar JSON
+app.use(express.json());
 
-// Rutas para pedidos y entregas
+/* Registrar las rutas de pedidos
+app.use('/api', pedidoRoutes);
+*/
+
+// Ruta base para verificar que el servidor está corriendo
 app.get('/', (req, res) => {
   res.send('Microservicio de distribución funcionando!');
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
-});
+module.exports = app;
