@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
-const pedidoRoutes = require('./routes/pedidoRoutes'); // Asegúrate de que esta ruta sea correcta
+const pedidoRoutes = require('./routes/pedidoRoutes');
 
 // Middleware para manejar JSON
 app.use(express.json());
 
 // Registrar las rutas de pedidos
-app.use('/api/pedidos', pedidoRoutes);
+app.use('/api', pedidoRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {
