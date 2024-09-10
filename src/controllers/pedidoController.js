@@ -1,19 +1,21 @@
-// Función para crear un nuevo pedido
-exports.crearPedido = (req, res) => {
-    const nuevoPedido = req.body; // Datos del pedido desde el cuerpo de la solicitud
-    // Aquí va la lógica para guardar el pedido en la base de datos
-    res.status(201).send({ message: 'Pedido creado', pedido: nuevoPedido });
+// /controllers/pedidoController.js
+const Pedido = require('../models/pedidoModel');
+
+exports.crearPedido = async (req, res) => {
+  try {
+    const nuevoPedido = new Pedido(req.body);
+    await nuevoPedido.save();
+    res.status(201).json(nuevoPedido);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-// Función para obtener un pedido por su ID
-exports.obtenerPedido = (req, res) => {
-    const pedidoId = req.params.id; // ID del pedido desde la URL
-    // Aquí va la lógica para buscar el pedido en la base de datos
-    res.send({ message: `Pedido ${pedidoId} encontrado`, estado: 'En ruta' });
+exports.obtenerPedidos = async (req, res) => {
+  try {
+    const pedidos = await Pedido.find();
+    res.status(200).json(pedidos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
-
-exports.editarPedido = (req, res) => {
-    const edicionPedido = req.params.id; // ID del pedido desde la URL
-    // Aquí va la lógica para buscar el pedido en la base de datos
-    res.send({ message: `El pedido ${pedidoId} fue editado`})
-}

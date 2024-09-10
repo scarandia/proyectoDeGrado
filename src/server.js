@@ -1,6 +1,12 @@
 const app = require('./app');
-const port = process.env.PORT || 3000;
+const connectDB = require('./config/database');
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
+const PORT = process.env.PORT || 5000;
+
+// Conectar a MongoDB
+connectDB();
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

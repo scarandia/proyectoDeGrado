@@ -2,7 +2,7 @@
   "name": "microservicio",
   "version": "1.0.0",
   "description": "Desarrollo de un microservicio de distribucion",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/scarandia/proyectoDeGrado#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongoose": "^8.6.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"
