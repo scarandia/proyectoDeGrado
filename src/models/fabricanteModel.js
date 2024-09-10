@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const ClienteSchema = new mongoose.Schema({
-    idCliente: {
+const FabricanteSchema = new mongoose.Schema({
+    idFabricante: {
         type: String,
         required: true,
         unique: true
     },
-    nombreCliente: {
+    nombre: {
         type: String,
         required: true
     },
@@ -36,20 +36,20 @@ const ClienteSchema = new mongoose.Schema({
         email: {
             type: String,
             required: false
-        }
-    },
-    historialPedidos: [{
-        idPedido: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Pedido'
         },
-        fechaPedido: Date,
-        estadoPedido: String
+        sitio_web: {
+            type: String,
+            required: false
+        },
+    },
+    productos: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Producto'
     }],
-    notas: {
-        type: String,
-        required: false
+    activo: {
+        type: Boolean,
+        default: true
     }
 });
 
-module.exports = mongoose.model('Cliente', ClienteSchema);
+module.exports = mongoose.model('Fabricante', FabricanteSchema);

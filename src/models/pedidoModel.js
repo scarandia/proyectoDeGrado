@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const PedidoSchema = new mongoose.Schema({
   idPedido: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   fecha_creado: {
     type: Date,
@@ -19,9 +20,22 @@ const PedidoSchema = new mongoose.Schema({
     precio: Number
   }],
   direccion_entrega: {
-    calle: String,
-    ciudad: String,
-    codigo_postal: String
+    calle: {
+      type: String,
+      required: true
+    },
+    ciudad: {
+      type: String,
+      required: true
+    },
+    codigo_postal: {
+      type: String,
+      required: true
+    },
+    pais: {
+      type: String,
+      required: true
+    },
   },
   estado: {
     type: String,
