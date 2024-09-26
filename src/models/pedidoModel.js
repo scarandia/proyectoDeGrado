@@ -6,19 +6,32 @@ const PedidoSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+   //Hacer una lista de clientes guardados 
+   cliente: {
+    type: String,
+    required: true
+  },
+  productos: [{
+    producto: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Producto'
+    },
+    cantidad: Number,
+    precioUnitario: Number
+  }],
   fecha_creado: {
     type: Date,
     required: true
   },
   fecha_entrega: {
     type: Date,
+    default: 'pendiente',
     required: true
   },
-  productos: [{
-    nombre: String,
-    cantidad: Number,
-    precio: Number
-  }],
+  distribuidorAsignado: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Distribuidor'
+},
   direccion_entrega: {
     calle: {
       type: String,
@@ -26,23 +39,18 @@ const PedidoSchema = new mongoose.Schema({
     },
     ciudad: {
       type: String,
-      required: true
+      required: false
     },
     codigo_postal: {
       type: String,
-      required: true
+      required: false
     },
     pais: {
       type: String,
-      required: true
+      required: false
     },
   },
   estado: {
-    type: String,
-    required: true
-  },
-  //Hacer una lista de clientes guardados 
-  cliente: {
     type: String,
     required: true
   },

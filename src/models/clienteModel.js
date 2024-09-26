@@ -17,21 +17,21 @@ const ClienteSchema = new mongoose.Schema({
         },
         ciudad: {
             type: String,
-            required: true
+            required: false
         },
         codigo_postal: {
             type: String,
-            required: true
+            required: false
         },
         pais: {
             type: String,
-            required: true
+            required: false
         }
     },
     contacto: {
         telefono: {
             type: String,
-            required: false
+            required: true
         },
         email: {
             type: String,
@@ -46,6 +46,10 @@ const ClienteSchema = new mongoose.Schema({
         fechaPedido: Date,
         estadoPedido: String
     }],
+    deuda: {
+        type: double,
+        required: true
+    },
     notas: {
         type: String,
         required: false
