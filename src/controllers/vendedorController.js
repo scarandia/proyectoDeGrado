@@ -1,7 +1,6 @@
-// Importamos el modelo de Vendedor
 const Vendedor = require('../models/vendedorModel');
 
-// Crear un nuevo vendedor
+// Crear vendedor
 const createVendedor = async (req, res) => {
     try {
         const nuevoVendedor = new Vendedor(req.body);
@@ -22,7 +21,7 @@ const getVendedores = async (req, res) => {
     }
 };
 
-// Obtener un vendedor por ID
+// Buscar por ID
 const getVendedorById = async (req, res) => {
     try {
         const vendedor = await Vendedor.findById(req.params.id);

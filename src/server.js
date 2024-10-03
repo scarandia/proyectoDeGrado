@@ -1,7 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/database');
-const Cliente = require('./models/clienteModel');
+
+const clienteRoutes = require('./routes/clienteRoutes');
+const distribuidorRoutes = require('./routes/distribuidorRoutes');
+const fabricanteRoutes = require('./routes/fabricanteRoutes');
+const pedidoRoutes = require('./routes/pedidoRoutes');
+const productoRoutes = require('./routes/productoRoutes');
+const rutaRoutes = require('./routes/rutaRoutes');
+const vendedorRoutes = require('./routes/vendedorRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -9,26 +17,18 @@ const PORT = process.env.PORT || 5000;
 //parsear JSON
 app.use(express.json());
 
-//Conectar a MongoDB
+//Conecta a MongoDB -> usa database.js
 connectDB();
 
-//Insertar un cliente
-app.post('/api/clientes', async (req, res) => {
-    try {
-        //Crea cliente con datos recibidos
-        const nuevoCliente = new Cliente(req.body);
-        await nuevoCliente.save(); //Guarda cliente en bd
-        
-        //log
-        const clientes = await Cliente.find();
-        console.log('Clientes actuales:', clientes);
-
-        res.status(201).send(nuevoCliente);
-    } catch (error) {
-        res.status(400).send(error);
-        res.status(400).send({ message: 'Error al crear cliente', error });
-    }
-});
+//Usar Controladores
+app.use('/api/clientes', clienteRoutes);
+app.use('/api/distribuidores', distribuidorRoutes);
+app.use('/api/fabricantes', fabricanteRoutes);
+app.use('/api/pedidos', pedidoRoutes);
+app.use('/api/productos', productoRoutes);
+app.use('/api/rutas', rutaRoutes);
+app.use('/api/vendedores', vendedorRoutes);
+   
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

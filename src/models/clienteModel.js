@@ -54,6 +54,6 @@ const ClienteSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-});
+}, { collection: 'clientes' });
 
 module.exports = mongoose.model('Cliente', ClienteSchema);

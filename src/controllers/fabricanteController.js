@@ -1,14 +1,15 @@
-// Importamos el modelo de Fabricante
 const Fabricante = require('../models/fabricanteModel');
 
-// Crear un nuevo fabricante
+// Crear fabricante
 const createFabricante = async (req, res) => {
     try {
+        console.log('Datos recibidos:', req.body);
         const nuevoFabricante = new Fabricante(req.body);
         await nuevoFabricante.save();
         res.status(201).json(nuevoFabricante);
     } catch (error) {
-        res.status(500).json({ error: 'Error al crear el fabricante.' });
+        console.error('Error al crear fabricante:', error.message);
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -22,7 +23,7 @@ const getFabricantes = async (req, res) => {
     }
 };
 
-// Obtener un fabricante por ID
+//Buscar por ID
 const getFabricanteById = async (req, res) => {
     try {
         const fabricante = await Fabricante.findById(req.params.id);
@@ -35,7 +36,7 @@ const getFabricanteById = async (req, res) => {
     }
 };
 
-// Actualizar un fabricante
+// Actualizar fabricante
 const updateFabricante = async (req, res) => {
     try {
         const fabricanteActualizado = await Fabricante.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +49,7 @@ const updateFabricante = async (req, res) => {
     }
 };
 
-// Eliminar un fabricante
+//Eliminar fabricante
 const deleteFabricante = async (req, res) => {
     try {
         const fabricanteEliminado = await Fabricante.findByIdAndDelete(req.params.id);
@@ -61,7 +62,7 @@ const deleteFabricante = async (req, res) => {
     }
 };
 
-// Exportamos las funciones del controlador
+//Export funciones
 module.exports = {
     createFabricante,
     getFabricantes,

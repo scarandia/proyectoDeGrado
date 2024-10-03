@@ -23,6 +23,6 @@ const RutaSchema = new mongoose.Schema({
         required: true
     },
     tiempoEstimado: String
-});
+}, { collection: 'rutas' });
 
 module.exports = mongoose.model('Ruta', RutaSchema);

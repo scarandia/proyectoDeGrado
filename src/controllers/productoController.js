@@ -1,6 +1,6 @@
 const Producto = require('../models/productoModel');
 
-// Crear un nuevo producto
+// Crear producto
 const createProducto = async (req, res) => {
     try {
         const nuevoProducto = new Producto(req.body);
@@ -21,7 +21,7 @@ const getProductos = async (req, res) => {
     }
 };
 
-// Obtener un producto por ID
+// Buscar por ID
 const getProductoById = async (req, res) => {
     try {
         const producto = await Producto.findById(req.params.id);

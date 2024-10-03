@@ -50,6 +50,5 @@ const FabricanteSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
-});
-
+}, { collection: 'fabricantes' });
 module.exports = mongoose.model('Fabricante', FabricanteSchema);

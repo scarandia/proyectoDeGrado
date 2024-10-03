@@ -29,6 +29,6 @@ const DistribuidorSchema = new mongoose.Schema({
         }
     },
     notas: String
-});
+}, { collection: 'distribuidores' });
 
 module.exports = mongoose.model('Distribuidor', DistribuidorSchema);

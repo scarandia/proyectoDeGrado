@@ -8,7 +8,7 @@ const PedidoSchema = new mongoose.Schema({
   },
    //Hacer una lista de clientes guardados 
    cliente: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
   productos: [{
@@ -62,6 +62,6 @@ const PedidoSchema = new mongoose.Schema({
     type: String,
     required: false
   }
-});
+}, { collection: 'pedidos' });
 
 module.exports = mongoose.model('Pedido', PedidoSchema);

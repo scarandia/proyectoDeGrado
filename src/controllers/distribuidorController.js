@@ -1,7 +1,6 @@
-// Importamos el modelo de Distribuidor
 const Distribuidor = require('../models/distribuidorModel');
 
-// Crear un nuevo distribuidor
+// Crear distribuidor
 const createDistribuidor = async (req, res) => {
     try {
         const nuevoDistribuidor = new Distribuidor(req.body);
@@ -12,7 +11,7 @@ const createDistribuidor = async (req, res) => {
     }
 };
 
-// Obtener todos los distribuidores
+//Obtener todos los distribuidores
 const getDistribuidores = async (req, res) => {
     try {
         const distribuidores = await Distribuidor.find();
@@ -22,7 +21,7 @@ const getDistribuidores = async (req, res) => {
     }
 };
 
-// Obtener un distribuidor por ID
+//Buscar un distribuidor por ID
 const getDistribuidorById = async (req, res) => {
     try {
         const distribuidor = await Distribuidor.findById(req.params.id);
@@ -35,7 +34,7 @@ const getDistribuidorById = async (req, res) => {
     }
 };
 
-// Actualizar un distribuidor
+//Actualizar un distribuidor
 const updateDistribuidor = async (req, res) => {
     try {
         const distribuidorActualizado = await Distribuidor.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +47,7 @@ const updateDistribuidor = async (req, res) => {
     }
 };
 
-// Eliminar un distribuidor
+//Eliminar distribuidor
 const deleteDistribuidor = async (req, res) => {
     try {
         const distribuidorEliminado = await Distribuidor.findByIdAndDelete(req.params.id);

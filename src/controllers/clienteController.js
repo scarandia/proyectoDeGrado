@@ -1,7 +1,6 @@
-// Importamos el modelo de Cliente
 const Cliente = require('../models/clienteModel');
 
-// Crear un nuevo cliente
+// Crear cliente
 const createCliente = async (req, res) => {
     try {
         const nuevoCliente = new Cliente(req.body);
@@ -22,7 +21,7 @@ const getClientes = async (req, res) => {
     }
 };
 
-// Obtener un cliente por ID
+//Buscar por ID
 const getClienteById = async (req, res) => {
     try {
         const cliente = await Cliente.findById(req.params.id);
@@ -35,7 +34,7 @@ const getClienteById = async (req, res) => {
     }
 };
 
-// Actualizar un cliente
+//Actualizar un cliente
 const updateCliente = async (req, res) => {
     try {
         const clienteActualizado = await Cliente.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +47,7 @@ const updateCliente = async (req, res) => {
     }
 };
 
-// Eliminar un cliente
+// Eliminar cliente
 const deleteCliente = async (req, res) => {
     try {
         const clienteEliminado = await Cliente.findByIdAndDelete(req.params.id);

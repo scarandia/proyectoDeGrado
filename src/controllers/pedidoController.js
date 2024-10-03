@@ -1,7 +1,6 @@
-// Importamos el modelo de Pedido
 const Pedido = require('../models/pedidoModel');
 
-// Crear un nuevo pedido
+// Crear pedido
 const createPedido = async (req, res) => {
     try {
         const nuevoPedido = new Pedido(req.body);

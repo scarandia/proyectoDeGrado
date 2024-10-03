@@ -44,6 +44,6 @@ const ProductoSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
-});
+}, { collection: 'productos' });
 
 module.exports = mongoose.model('Producto', ProductoSchema);
