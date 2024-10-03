@@ -47,7 +47,7 @@ const ClienteSchema = new mongoose.Schema({
         estadoPedido: String
     }],
     deuda: {
-        type: double,
+        type: Number,
         required: true
     },
     notas: {

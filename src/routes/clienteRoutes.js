@@ -1,59 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const Cliente = require('../models/clienteModel');
+const {
+    createCliente,
+    getClientes,
+    getClienteById,
+    updateCliente,
+    deleteCliente
+} = require('../controllers/clienteController');
 
-// Crear un cliente
-router.post('/clientes', async (req, res) => {
-    try {
-        const nuevoCliente = new Cliente(req.body);
-        await nuevoCliente.save();
-        res.status(201).json(nuevoCliente);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// Ruta para crear un nuevo cliente
+router.post('/', createCliente);
 
-// Obtener todos los clientes
-router.get('/clientes', async (req, res) => {
-    try {
-        const clientes = await Cliente.find();
-        res.json(clientes);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+// Ruta para obtener todos los clientes
+router.get('/', getClientes);
 
-// Obtener un cliente por ID
-router.get('/clientes/:id', async (req, res) => {
-    try {
-        const cliente = await Cliente.findById(req.params.id);
-        if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
-        res.json(cliente);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+// Ruta para obtener un cliente por ID
+router.get('/:id', getClienteById);
 
-// Actualizar un cliente
-router.put('/clientes/:id', async (req, res) => {
-    try {
-        const cliente = await Cliente.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
-        res.json(cliente);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
+// Ruta para actualizar un cliente por ID
+router.put('/:id', updateCliente);
 
-// Eliminar un cliente
-router.delete('/clientes/:id', async (req, res) => {
-    try {
-        const cliente = await Cliente.findByIdAndDelete(req.params.id);
-        if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
-        res.json({ message: 'Cliente eliminado' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+// Ruta para eliminar un cliente por ID
+router.delete('/:id', deleteCliente);
 
 module.exports = router;
