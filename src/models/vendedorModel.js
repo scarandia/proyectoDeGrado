@@ -30,7 +30,7 @@ const VendedorSchema = new mongoose.Schema({
     tiendas: [{
       nombreTienda: {
         type: String,
-        required: true
+        required: false
       },
       direccion: {
         calle: String,

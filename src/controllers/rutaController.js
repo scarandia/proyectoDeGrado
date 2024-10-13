@@ -3,15 +3,19 @@ const Ruta = require('../models/rutaModel');
 // Crear una nueva ruta
 const createRuta = async (req, res) => {
     try {
+        console.log('Solicitud recibida para crear ruta:', req.body); // Log para ver si la solicitud llega
+
         const nuevaRuta = new Ruta(req.body);
         await nuevaRuta.save();
+
+        console.log('Ruta creada exitosamente:', nuevaRuta); // Log para ver si la ruta se crea correctamente
         res.status(201).json(nuevaRuta);
     } catch (error) {
-        res.status(500).json({ error: 'Error al crear la ruta.' });
-    }
-};
-
-// Obtener todas las rutas
+        console.error('Error al crear la ruta:', error.message); // Log para ver el error
+        res.status(500).json({ error: error.message });
+    };
+}
+// Obtener todas las rutas 
 const getRutas = async (req, res) => {
     try {
         const rutas = await Ruta.find().populate('vendedoresAsignados').populate('pedidosAsignados');

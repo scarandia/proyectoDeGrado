@@ -1,26 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const {
-    createPedido,
-    getPedidos,
-    getPedidoById,
-    updatePedido,
-    deletePedido
-} = require('../controllers/pedidoController');
+    createRuta,
+    getRutas,
+    getRutaById,
+    updateRuta,
+    deleteRuta
+} = require('../controllers/rutaController');
 
-// Ruta para crear un nuevo pedido
-router.post('/', createPedido);
+// Ruta para crear un nuevo Ruta
+router.post('/', createRuta);
 
-// Ruta para obtener todos los pedidos
-router.get('/', getPedidos);
+// Ruta para obtener todos los Rutas
+router.get('/', getRutas);
 
-// Ruta para obtener un pedido por ID
-router.get('/:id', getPedidoById);
+// Ruta para obtener un Ruta por ID
+router.get('/:id', getRutaById);
 
-// Ruta para actualizar un pedido por ID
-router.put('/:id', updatePedido);
+// Ruta para actualizar un Ruta por ID
+router.put('/:id', updateRuta);
 
-// Ruta para eliminar un pedido por ID
-router.delete('/:id', deletePedido);
+// Ruta para eliminar un Ruta por ID
+router.delete('/:id', deleteRuta);
 
 module.exports = router;
