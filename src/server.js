@@ -10,6 +10,8 @@ const productoRoutes = require('./routes/productoRoutes');
 const rutaRoutes = require('./routes/rutaRoutes');
 const vendedorRoutes = require('./routes/vendedorRoutes');
 
+const respuestaLogger = require('./middleware/respuestaLogger')
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +21,9 @@ app.use(express.json());
 
 //Conecta a MongoDB -> usa database.js
 connectDB();
+
+// Usar el middleware de loggeo
+app.use(respuestaLogger); 
 
 //Usar Controladores
 app.use('/api/clientes', clienteRoutes);

@@ -3,7 +3,7 @@ const Ruta = require('../models/rutaModel');
 // Crear una nueva ruta
 const createRuta = async (req, res) => {
     try {
-        console.log('Solicitud recibida para crear ruta:', req.body); // Log para ver si la solicitud llega
+       // console.log('Solicitud recibida para crear ruta:', req.body); // Log para ver si la solicitud llega
 
         const nuevaRuta = new Ruta(req.body);
         await nuevaRuta.save();
