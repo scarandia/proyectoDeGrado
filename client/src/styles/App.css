@@ -1,0 +1,18 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #f0f0f0;
+  font-family: 'Arial', sans-serif;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ecf0f1;
+  overflow-y: auto;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.content-shift {
+  margin-left: 250px;
+}

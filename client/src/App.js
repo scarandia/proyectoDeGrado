@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react';
+import Sidebar from './componentes/Sidebar';
+import Content from './componentes/Content';
+import Dashboard from './componentes/Dashboard';
+import './styles/App.css';
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
-    <>
-      <h1>HELLOOOO</h1>
-    </>
-  )
+    <div className="app-layout">
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <Content isSidebarOpen={isSidebarOpen} />
+      <Dashboard />
+    </div>
+  );
 }
 
-export default App
+export default App;
