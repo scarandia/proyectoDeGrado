@@ -2,10 +2,10 @@
   "name": "microservicio",
   "version": "1.0.0",
   "description": "Desarrollo de un microservicio de distribucion",
-  "main": "src/server.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
