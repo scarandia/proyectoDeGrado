@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/database');
 
@@ -5,6 +6,7 @@ const clienteRoutes = require('./routes/clienteRoutes');
 const fabricanteRoutes = require('./routes/fabricanteRoutes');
 const pedidoRoutes = require('./routes/pedidoRoutes');
 const productoRoutes = require('./routes/productoRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -19,6 +21,7 @@ app.use('/api', clienteRoutes);
 app.use('/api', fabricanteRoutes);
 app.use('/api', pedidoRoutes);
 app.use('/api', productoRoutes);
+app.use('/api/auth', authRoutes);
 
 // Ruta base
 app.get('/', (req, res) => {

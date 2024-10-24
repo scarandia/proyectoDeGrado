@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
-import Sidebar from './componentes/Sidebar';
-import Content from './componentes/Content';
-import Dashboard from './componentes/Dashboard';
 import './styles/App.css';
+import Login from './componentes/Login';
+import Inicio from './componentes/Inicio';
+import Default from './componentes/Default';
+import { Routes, Route } from "react-router-dom"
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <div className="app-layout">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <Content isSidebarOpen={isSidebarOpen} />
-      <Dashboard />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Inicio />} />
+        <Route path="*" element={<Default />} />
+      </Routes>
+    </>
   );
 }
 
