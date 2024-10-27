@@ -1,6 +1,6 @@
 const Fabricante = require('../models/fabricanteModel');
 
-// Crear fabricante
+// Crear
 const createFabricante = async (req, res) => {
     try {
         console.log('Datos recibidos:', req.body);
@@ -13,7 +13,7 @@ const createFabricante = async (req, res) => {
     }
 };
 
-// Obtener todos los fabricantes
+// Obtener todos
 const getFabricantes = async (req, res) => {
     try {
         const fabricantes = await Fabricante.find();
@@ -36,7 +36,7 @@ const getFabricanteById = async (req, res) => {
     }
 };
 
-// Actualizar fabricante
+// Actualizar
 const updateFabricante = async (req, res) => {
     try {
         const fabricanteActualizado = await Fabricante.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -49,7 +49,7 @@ const updateFabricante = async (req, res) => {
     }
 };
 
-//Eliminar fabricante
+//Eliminar
 const deleteFabricante = async (req, res) => {
     try {
         const fabricanteEliminado = await Fabricante.findByIdAndDelete(req.params.id);
@@ -62,7 +62,6 @@ const deleteFabricante = async (req, res) => {
     }
 };
 
-//Export funciones
 module.exports = {
     createFabricante,
     getFabricantes,

@@ -6,7 +6,6 @@ const PedidoSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-   //Hacer una lista de clientes guardados 
    cliente: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
@@ -17,7 +16,7 @@ const PedidoSchema = new mongoose.Schema({
         ref: 'Producto'
     },
     cantidad: Number,
-    precioUnitario: Number
+    //precioUnitario: Number //deberia jalarse el precio del prod
   }],
   fecha_creado: {
     type: Date,
@@ -25,7 +24,6 @@ const PedidoSchema = new mongoose.Schema({
   },
   fecha_entrega: {
     type: Date,
-    default: 'pendiente',
     required: true
   },
   distribuidorAsignado: {
@@ -42,7 +40,7 @@ const PedidoSchema = new mongoose.Schema({
       required: false
     },
     codigo_postal: {
-      type: String,
+      type: Number,
       required: false
     },
     pais: {
@@ -52,11 +50,12 @@ const PedidoSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
+    enum: ['Pendiente', 'Entregado', 'Cancelado'],
     required: true
   },
   precio_total: {
     type: Number,
-    required: true
+    required: true //Formulaaa (precio unit*pedidos)
   },
   notas: {
     type: String,

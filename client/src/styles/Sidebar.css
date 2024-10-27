@@ -1,15 +1,12 @@
-/* Sidebar */
 .sidebar {
-  height: 100vh;
-  width: 250px;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #2c3e50;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-  overflow-x: hidden;
-  transition: transform 0.3s ease-in-out;
-  z-index: 1000;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  transition: transform 0.3s ease;
 }
 
 .sidebar.closed {
@@ -20,48 +17,16 @@
   transform: translateX(0);
 }
 
-/* Botón */
 .toggle-button {
-  position: relative;
-  top: 20px;
-  left: calc(250px);
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  z-index: 1001;
-  transition: transform 0.3s ease-in-out;
-}
-
-.toggle-button.closed {
-  transform: translateX(-250px);
+  margin: 10px; 
+  padding: 10px; 
+  background-color: #007bff; 
+  color: white; 
+  border: none; 
+  border-radius: 5px;
+  cursor: pointer; 
 }
 
 .toggle-button:hover {
   background-color: #0056b3;
-}
-
-/* Links */
-.sidebar ul {
-  margin-top: 50px;
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  padding: 15px;
-}
-
-.sidebar ul li a {
-  text-decoration: none;
-  font-size: 18px;
-  display: block;
-  color: white;
-  font-size: x-large;
-  transition: background-color 0.3s ease;
-}
-
-.sidebar ul li a:hover {
-  background-color: #3a5068;
 }

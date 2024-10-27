@@ -3,11 +3,11 @@ body{
     height: 100vh;
     width: 100%;
     text-align: center;
+    font-family: 'Segoe UI', bold;
 }
 
 h4{
     /*login text*/
-    font-family: 'Segoe UI', bold;
     font-size: 35px;
     margin-top: 4rem;
     margin-bottom: 2rem;
@@ -31,7 +31,6 @@ form{
 .text_input{
     margin-top: 1.2rem;
     margin-bottom: 1.2rem;
-    font-family: 'Montserrat regular';
     font-size: 20px;
     border: none;
     width: 80%;
@@ -39,17 +38,19 @@ form{
 }
 
 .btn{
-    margin-top: 28px;
+    margin-top: 158px;
     width: 165px;
     height: 60px;
     border-radius: 30px;
     background: #B58DED;
     border: none;
-    font-family: 'Montserrat';
     font-size: 20px;
     color: #FFFFFF;
-    box-shadow: 0 4px 8px 0 rgba(181, 141, 237, 0.7), 0 6px 20px 0 rgba(181, 141, 237, 0.9);
     cursor: pointer;
+}
+
+.btn:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
 }
 
 .login{
@@ -57,14 +58,13 @@ form{
     background: #FFFFFF;
     width: 434px;
     height: 700px;
-    margin-top: 10%;
+    margin-top: 40px;
     border-radius: 22px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .link{
     color: #0E4579;
-    font-family: 'Montserrat light';
     font-size: 18px;
     cursor: pointer;
     display: block;

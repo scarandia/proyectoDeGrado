@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
 function Sidebar({ isOpen, toggleSidebar }) {
@@ -6,10 +7,10 @@ function Sidebar({ isOpen, toggleSidebar }) {
     <div>
       <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
         <ul>
-          <li><a href="/home">Dashboard</a></li>
-          <li><a href="/page1">Pagina 1</a></li>
-          <li><a href="/page2">Pagina 2</a></li>
-          <li><a href="/page3">Pagina 3</a></li>
+          <li><Link to="/home">Dashboard</Link></li>
+          <li><Link to="/page1">Pagina 1</Link></li>
+          <li><Link to="/page2">Pagina 2</Link></li>
+          <li><Link to="/page3">Pagina 3</Link></li>
         </ul>
       </div>
 

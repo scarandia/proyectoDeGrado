@@ -1,6 +1,6 @@
 const Cliente = require('../models/clienteModel');
 
-// Crear cliente
+// Crear
 const createCliente = async (req, res) => {
     try {
         const nuevoCliente = new Cliente(req.body);
@@ -11,7 +11,7 @@ const createCliente = async (req, res) => {
     }
 };
 
-// Obtener todos los clientes
+//obtener todos
 const getClientes = async (req, res) => {
     try {
         const clientes = await Cliente.find();
@@ -34,7 +34,7 @@ const getClienteById = async (req, res) => {
     }
 };
 
-//Actualizar un cliente
+//Actualizar
 const updateCliente = async (req, res) => {
     try {
         const clienteActualizado = await Cliente.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -47,7 +47,7 @@ const updateCliente = async (req, res) => {
     }
 };
 
-// Eliminar cliente
+// Eliminar
 const deleteCliente = async (req, res) => {
     try {
         const clienteEliminado = await Cliente.findByIdAndDelete(req.params.id);
@@ -60,7 +60,6 @@ const deleteCliente = async (req, res) => {
     }
 };
 
-// Exportamos las funciones del controlador
 module.exports = {
     createCliente,
     getClientes,

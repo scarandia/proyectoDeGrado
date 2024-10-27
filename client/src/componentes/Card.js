@@ -12,19 +12,21 @@ const Card = ({ title, value }) => {
 const styles = {
   card: {
     border: '1px solid #ddd',
-    borderRadius: '8px',
     padding: '1.5rem',
     textAlign: 'center',
     width: '200px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor:'white',
+    borderRadius: '22px',
+    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+    margin: '20px'
+  
   },
   title: {
     fontSize: '1.2rem',
     marginBottom: '1rem',
   },
   value: {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
+    fontSize: '1.5rem'
   }
 };
 

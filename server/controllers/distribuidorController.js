@@ -1,6 +1,6 @@
 const Distribuidor = require('../models/distribuidorModel');
 
-// Crear distribuidor
+// Crear
 const createDistribuidor = async (req, res) => {
     try {
         const nuevoDistribuidor = new Distribuidor(req.body);
@@ -11,7 +11,7 @@ const createDistribuidor = async (req, res) => {
     }
 };
 
-//Obtener todos los distribuidores
+//Obtener todos
 const getDistribuidores = async (req, res) => {
     try {
         const distribuidores = await Distribuidor.find();
@@ -21,7 +21,7 @@ const getDistribuidores = async (req, res) => {
     }
 };
 
-//Buscar un distribuidor por ID
+//Buscar por ID
 const getDistribuidorById = async (req, res) => {
     try {
         const distribuidor = await Distribuidor.findById(req.params.id);
@@ -34,7 +34,7 @@ const getDistribuidorById = async (req, res) => {
     }
 };
 
-//Actualizar un distribuidor
+//Actualizar
 const updateDistribuidor = async (req, res) => {
     try {
         const distribuidorActualizado = await Distribuidor.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -47,7 +47,7 @@ const updateDistribuidor = async (req, res) => {
     }
 };
 
-//Eliminar distribuidor
+//Eliminar
 const deleteDistribuidor = async (req, res) => {
     try {
         const distribuidorEliminado = await Distribuidor.findByIdAndDelete(req.params.id);
@@ -60,7 +60,6 @@ const deleteDistribuidor = async (req, res) => {
     }
 };
 
-// Exportamos las funciones del controlador
 module.exports = {
     createDistribuidor,
     getDistribuidores,

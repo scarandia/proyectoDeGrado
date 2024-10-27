@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import "../styles/login.css";
 
 class Signin extends Component {
@@ -22,19 +23,20 @@ class Signin extends Component {
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="password"
+                            placeholder="Password"
                             className="text_input"
 
                         />
                     </div>
-                    <input
-                        type="submit"
-                        value="LOGIN"
-                        className="btn"
-
-                    />
+                    <Link to='/home'>
+                        <input
+                            type="submit"
+                            value="LOG IN"
+                            className="btn"
+                        />
+                    </Link>
                 </form>
-                <a className="link" href="/signup">Sign Up</a>
+                <p style={{ color: "grey" }}>Bebas Corp 2024</p>
             </div>
         )
     }
