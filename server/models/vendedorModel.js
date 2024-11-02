@@ -21,25 +21,10 @@ const VendedorSchema = new mongoose.Schema({
       unique: true
     }
   },
-  //Manejar ruta AQUI? MANEJARLA DE OTRA MANERA?
-  ruta: [{
-    dia: {
-      type: String, // Ejemplo: "Lunes", "Martes", etc.
-      required: true
-    },
-    tiendas: [{
-      nombreTienda: {
-        type: String,
-        required: false
-      },
-      direccion: {
-        calle: String,
-        ciudad: String,
-        codigo_postal: String,
-        pais: String
-      }
-    }]
-  }],
+  ruta: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Ruta'
+  },
   pedidos: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Pedido'

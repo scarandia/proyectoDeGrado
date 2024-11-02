@@ -55,12 +55,30 @@ const PedidoSchema = new mongoose.Schema({
   },
   precio_total: {
     type: Number,
-    required: true //Formulaaa (precio unit*pedidos)
+    required: true
   },
   notas: {
     type: String,
     required: false
   }
 }, { collection: 'pedidos' });
+
+// Middleware para calcular el precio total
+PedidoSchema.pre('save', async function (next) {
+  try {
+    //popular productos -> acceder precios
+    await this.populate('productos.producto').execPopulate();
+
+    //calcula precio total
+    this.precio_total = this.productos.reduce((total, item) => {
+      const precioUnitario = item.producto.precio; 
+      return total + (precioUnitario * item.cantidad);
+    }, 0);
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = mongoose.model('Pedido', PedidoSchema);

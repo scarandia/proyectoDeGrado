@@ -2,9 +2,11 @@ import Card from './Card';
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 
-export default function Inicio() {
-    const [isOpen, setIsOpen] = useState(false); // Estado para la sidebar
 
+export default function Inicio() {
+    
+    const [isOpen, setIsOpen] = useState(false); // Estado para la sidebar
+    
     const toggleSidebar = () => {
         setIsOpen(!isOpen); // Alterna el estado
     };
@@ -15,9 +17,7 @@ export default function Inicio() {
             justifyContent: 'center',
             alignItems: 'center',
             height: '60vh',
-            padding: '10px',
-            marginLeft: isOpen ? '250px' : '0', // Desplaza el contenido cuando la sidebar está abierta
-            transition: 'margin-left 0.3s ease' // Animación suave para el desplazamiento
+            padding: '10'
         }
     };
 

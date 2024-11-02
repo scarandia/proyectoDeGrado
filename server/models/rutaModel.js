@@ -14,15 +14,23 @@ const RutaSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendedor'
     }],
+    distribuidoresAsignados: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Distribuidor'
+    }],
     pedidosAsignados: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pedido'
     }],
     diaAsignado: {
-        type: String, // Lunes, Martes, etc.
+        type: String,
+        enum: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
         required: true
     },
-    tiempoEstimado: String
+    tiempoEstimado: {
+        type: Number,
+        default: 0
+    }
 }, { collection: 'rutas' });
 
 module.exports = mongoose.model('Ruta', RutaSchema);
