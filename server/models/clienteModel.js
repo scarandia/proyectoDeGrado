@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ClienteSchema = new mongoose.Schema({
     idCliente: {
         type: String,
-        required: true,
+        required: false,
         unique: true
     },
     nombreCliente: {
@@ -48,7 +48,7 @@ const ClienteSchema = new mongoose.Schema({
     }],
     deuda: {
         type: Number,
-        required: true
+        required: false
     },
     notas: {
         type: String,
