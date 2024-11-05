@@ -3,19 +3,56 @@ import axios from 'axios';
 
 function NewClientPage() {
     const [client, setClient] = useState({
-        nombre: '',
-        apellidos: '',
-        telefono: '',
-        email: '',
-        calle: '',
-        ciudad: '',
-        codigoPostal: '',
-        pais: ''
+        nombreCliente: '',
+        apellidoCliente: '',
+        nombreNegocio: '',
+        tipoNegocio: '',
+        otroTipoNegocio: '', //campo especifica el tipo si es -> Otro
+        contacto: {
+            telefono: '',
+            email: ''
+        },
+        direccion: {
+            calle: '',
+            ciudad: '',
+            codigo_postal: '',
+            pais: ''
+        },
+        notas: ''
     });
+
+    const [isOtro, setIsOtro] = useState(false); //Si es "otro" en tipo de negocio
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setClient({ ...client, [name]: value });
+
+        if (name === 'tipoNegocio') {
+            setIsOtro(value === 'Otro');
+            setClient(prev => ({
+                ...prev,
+                tipoNegocio: value,
+                otroTipoNegocio: '' // Resetear otroTipoNegocio si cambia
+            }));
+
+        } else if (name === 'telefono' || name === 'email') {
+            setClient(prev => ({
+                ...prev,
+                contacto: {
+                    ...prev.contacto,
+                    [name]: value
+                }
+            }));
+        } else if (['calle', 'ciudad', 'codigo_postal', 'pais'].includes(name)) {
+            setClient(prev => ({
+                ...prev,
+                direccion: {
+                    ...prev.direccion,
+                    [name]: value
+                }
+            }));
+        } else {
+            setClient({ ...client, [name]: value });
+        }
     };
 
     const createClient = async () => {
@@ -34,23 +71,62 @@ function NewClientPage() {
                 <tr>
                     <td>
                         <input
-                            name="nombre"
+                            name="nombreCliente"
                             placeholder="Nombre(s)"
-                            value={client.nombre}
+                            value={client.nombreCliente}
                             onChange={handleChange}
                             required
                         />
                     </td>
                     <td>
                         <input
-                            name="apellidos"
+                            name="apellidoCliente"
                             placeholder="Apellidos"
-                            value={client.apellidos}
+                            value={client.apellidoCliente}
                             onChange={handleChange}
                             required
                         />
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <input
+                            name="nombreNegocio"
+                            placeholder="Nombre del Negocio"
+                            value={client.nombreNegocio}
+                            onChange={handleChange}
+                        />
+                    </td>
+                    <td>
+                        <select
+                            name="tipoNegocio"
+                            value={client.tipoNegocio}
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Selecciona tipo de negocio</option>
+                            <option value="Tienda de Barrio">Tienda de Barrio</option>
+                            <option value="Minorista">Minorista</option>
+                            <option value="Mayorista">Mayorista</option>
+                            <option value="Supermercado">Supermercado</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </td>
+                </tr>
+                {/*Campo si selecciona "Otro"*/}
+                {isOtro && (
+                    <tr>
+                        <td>
+                            <input
+                                name="otroTipoNegocio"
+                                placeholder="Especifique el tipo de negocio"
+                                value={client.otroTipoNegocio}
+                                onChange={handleChange}
+                                required
+                            />
+                        </td>
+                    </tr>
+                )}
 
                 <h2>Contacto</h2>
                 <tr>
@@ -110,6 +186,18 @@ function NewClientPage() {
                             placeholder="País"
                             value={client.pais}
                             onChange={handleChange}
+                        />
+                    </td>
+                </tr>
+                <h2>Notas</h2>
+                <tr>
+                    <td>
+                        <input
+                            name="notas"
+                            placeholder="Notas"
+                            value={client.notas}
+                            onChange={handleChange}
+                            required
                         />
                     </td>
                 </tr>

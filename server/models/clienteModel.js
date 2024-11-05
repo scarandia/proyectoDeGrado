@@ -10,6 +10,21 @@ const ClienteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    apellidoCliente: {
+        type: String,
+        required: true
+    },
+    nombreNegocio: {
+        type: String, 
+        required: true
+    },
+    tipoNegocio: {
+        type: String,
+        enum: ['Tienda de Barrio', 'Minorista', 'Mayorista', 'Supermercado', 'Otro'],
+        required: true,
+    },
+    otroTipoNegocio: { type: String, required: false }, //EN caso de que el tipo sea "Otro"
+
     direccion: {
         calle: {
             type: String,
