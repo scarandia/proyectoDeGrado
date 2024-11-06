@@ -7,24 +7,71 @@
   background-color: #333;
   color: #fff;
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 20px;
 }
 
 .sidebar.closed {
-  transform: translateX(-100%);
+  transform: translateX(-80%);
 }
 
 .sidebar.open {
   transform: translateX(0);
 }
 
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+  text-align: center; /* Alignment left by default */
+  transition: text-align 0.6s ease; /* Smooth transition for text alignment */
+}
+
+.sidebar ul li a {
+  color: #00BFFF;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: normal;
+  display: inline-block;
+  width: 100%;
+  transition: color 0.6s ease, font-weight 0.6s ease, border-bottom-width 0.6s ease; /* Transitions for color, font-weight, and border-bottom-width */
+  border-bottom: 2px solid transparent; /* Initial transparent border */
+}
+
+.sidebar ul li.active {
+  text-align: center; /* Center the active tab */
+}
+
+.sidebar ul li.active a {
+  font-weight:bolder;
+  text-decoration: none;
+  border-bottom-color: #B58DED; /* Color of the bottom border */
+  border-bottom-width: 3px; /* Define border width */
+  padding-bottom: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  width: max-content;
+}
+
 .toggle-button {
-  margin: 10px; 
-  padding: 10px; 
-  background-color: #007bff; 
-  color: white; 
-  border: none; 
+  margin: 10px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
   border-radius: 5px;
-  cursor: pointer; 
+  cursor: pointer;
+  align-self: flex-start;
+  position: absolute;
+  left: 220px;
+  top: 60px;
+  z-index: 1000;
+  transition: background-color 0.3s ease; /* Transition for background color */
 }
 
 .toggle-button:hover {

@@ -36,7 +36,7 @@ class Signin extends Component {
                         />
                     </Link>
                 </form>
-                <p style={{ color: "grey" }}>Bebas Corp 2024</p>
+                <p style={{ color: "grey" }}>Sebas Corp 2024</p>
             </div>
         )
     }

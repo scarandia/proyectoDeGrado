@@ -17,6 +17,7 @@ const createCliente = async (req, res) => {
             idCliente: nuevoIdCliente,
             nombreCliente: req.body.nombreCliente,
             apellidoCliente: req.body.apellidoCliente,
+            CI: req.body.CI,
             nombreNegocio: req.body.nombreNegocio,
             tipoNegocio: req.body.tipoNegocio,
             direccion: req.body.direccion,
