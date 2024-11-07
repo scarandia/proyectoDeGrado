@@ -1,3 +1,5 @@
+/* Sidebar.css */
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -24,12 +26,27 @@
 .sidebar ul {
   list-style-type: none;
   padding: 0;
+  margin-top:30px;
 }
 
 .sidebar ul li {
-  margin: 20px 0;
-  text-align: center; /* Alignment left by default */
-  transition: text-align 0.6s ease; /* Smooth transition for text alignment */
+  margin: 30px 0;
+  transition: font-size 0.3s ease; /* Smooth transition for text size */
+}
+
+.sidebar ul li .menu-item {
+  text-align: left;
+  font-size: 24px; /* Larger font size */
+  cursor: pointer;
+  display: block;
+  color: #00BFFF;
+  text-decoration: none;
+}
+
+.sidebar ul li .menu-link.active {
+  border-bottom: 2px solid #B58DED; /* Bottom border for active link */
+  padding-bottom: 5px;
+  display: inline;
 }
 
 .sidebar ul li a {
@@ -37,27 +54,49 @@
   text-decoration: none;
   font-size: 20px;
   font-weight: normal;
-  display: inline-block;
-  width: 100%;
-  transition: color 0.6s ease, font-weight 0.6s ease, border-bottom-width 0.6s ease; /* Transitions for color, font-weight, and border-bottom-width */
+  display: inline;
+  transition: color 0.6s ease, font-weight 0.6s ease, border-bottom-width 0.6s ease;
   border-bottom: 2px solid transparent; /* Initial transparent border */
-}
-
-.sidebar ul li.active {
-  text-align: center; /* Center the active tab */
+  padding-bottom: 5px;
 }
 
 .sidebar ul li.active a {
-  font-weight:bolder;
+  font-weight: bolder;
   text-decoration: none;
   border-bottom-color: #B58DED; /* Color of the bottom border */
-  border-bottom-width: 3px; /* Define border width */
-  padding-bottom: 5px;
+  border-bottom-width: 2px; /* Define border width */
   margin-left: auto;
   margin-right: auto;
   width: max-content;
 }
 
+.sidebar ul li div {
+  cursor: pointer;
+}
+
+.sub-menu {
+  text-align: center; /* Center the sub-menu items */
+  list-style-type: none;
+  padding: 0;
+}
+
+.sub-menu li {
+  margin: 10px 0;
+}
+
+.sub-menu li a {
+  color: #00BFFF;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.sub-menu li a.active {
+  border-bottom: 2px solid #B58DED; /* Bottom border for active link in sub-menu */
+  padding-bottom: 5px;
+  display: inline;
+}
+
+.toggle
 .toggle-button {
   margin: 10px;
   padding: 10px;
