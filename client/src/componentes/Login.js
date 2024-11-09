@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import "../styles/login.css";
 
 class Signin extends Component {
+    state = {
+        email: '',
+        password: ''
+    };
+
+    handleChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        const { email, password } = this.state;
+        try {
+            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            localStorage.setItem('token', response.data.token); // Almacenar el token
+            this.props.navigate('/home'); // Navegar a la página principal
+        } catch (error) {
+            console.error('Error al iniciar sesión:', error);
+        }
+    };
+
     render() {
         return (
             <div className="login">
                 <h4>Login</h4>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div className="text_area">
                         <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Enter your Username"
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your Email"
                             className="text_input"
-
+                            onChange={this.handleChange}
                         />
                     </div>
                     <div className="text_area">
@@ -25,21 +47,22 @@ class Signin extends Component {
                             name="password"
                             placeholder="Password"
                             className="text_input"
-
+                            onChange={this.handleChange}
                         />
                     </div>
-                    <Link to='/home'>
-                        <input
-                            type="submit"
-                            value="LOG IN"
-                            className="btn"
-                        />
-                    </Link>
+                    <input
+                        type="submit"
+                        value="LOG IN"
+                        className="btn"
+                    />
                 </form>
                 <p style={{ color: "grey" }}>Sebas Corp 2024</p>
             </div>
-        )
+        );
     }
 }
 
-export default Signin;
+export default function SigninWithNavigate() {
+    const navigate = useNavigate();
+    return <Signin navigate={navigate} />;
+}
