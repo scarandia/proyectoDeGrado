@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
-const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
+const { register, login } = require('../controllers/usuarioController');
+//const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
 
 //registrar usuario
-router.post('/register', authController.register);
+router.post('/register', register);
 
 //login
-router.post('/login', authController.login);
+router.post('/login', login);
 
 // Crear usuario por administrador, protegido por autenticación y autorización
-router.post('/create-user', authenticate, isAdmin, authController.createUser);
+//router.post('/create-user', authenticate, isAdmin, usuarioController.createUser);
 
 module.exports = router;
