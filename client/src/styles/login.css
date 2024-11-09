@@ -28,15 +28,7 @@ form{
     box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);;
 }
 
-.text_input{
-    margin-top: 1.2rem;
-    margin-bottom: 1.2rem;
-    font-size: 20px;
-    border: none;
-    width: 80%;
-    outline: none;
-}
-
+/*
 .btn{
     margin-top: 158px;
     width: 165px;
@@ -48,6 +40,7 @@ form{
     color: #FFFFFF;
     cursor: pointer;
 }
+*/
 
 .btn:hover{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
