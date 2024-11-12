@@ -1,0 +1,14 @@
+.main-content {
+    margin-left: 250px; /* Igual al ancho de la barra lateral */
+    width: calc(100% - 250px); /* Ajustar el ancho para que no se superponga */
+    background: linear-gradient(135deg, #1B8AF1, #B58DED);
+  }
+  
+  .gradient-background {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  

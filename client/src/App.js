@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import './styles/App.css';
 import './styles/Create.css';
 import Sidebar from './componentes/Sidebar';
-import Login from './componentes/Login';
-import Inicio from './componentes/Inicio';
-import Default from './componentes/Default';
+import Login from './vistas/Login';
+import Default from './vistas/Default';
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import NewClient from './componentes/NewClient';
-import ClientList from './componentes/ClientList';
+import NewClient from './vistas/NewClient';
+import ClientList from './vistas/ClientList';
 
-import NewOrder from './componentes/NewOrder';
-import OrderList from './componentes/OrderList';
+import NewOrder from './vistas/NewOrder';
+import OrderList from './vistas/OrderList';
 
-import NewProduct from './componentes/NewProduct';
-import ProductList from './componentes/ProductList';
+import NewProduct from './vistas/NewProduct';
+import ProductList from './vistas/ProductList';
 
-import NewVendor from './componentes/NewVendor';
-import VendorList from './componentes/VendorList';
-import CreateUser from './componentes/CreateUser';
+import NewVendor from './vistas/NewVendor';
+import VendorList from './vistas/VendorList';
+import CreateUser from './vistas/CreateUser';
+import Dashboard from './vistas/Dashboard';
 
 function App() {
   const location = useLocation();
@@ -39,7 +39,7 @@ function App() {
       {showSidebar && <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Inicio />} />
+        <Route path="/home" element={<Dashboard />} />
 
         <Route path="/clients" element={<ClientList />} />
         <Route path="/createClient" element={<NewClient />} />

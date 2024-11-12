@@ -15,6 +15,7 @@
 
 .sidebar.closed {
   transform: translateX(-80%);
+  z-index: -1;
 }
 
 .sidebar.open {

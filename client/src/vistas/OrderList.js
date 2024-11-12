@@ -1,5 +1,5 @@
 import React from 'react';
-import BackgroundCard from './BackgroundCard';
+import BackgroundCard from '../componentes/BackgroundCard';
 
 const orders = [
 
@@ -7,10 +7,12 @@ const orders = [
 
 const OrderList = () => {
   return (
-    <BackgroundCard>
-      <div>
-      </div>
-    </BackgroundCard>
+    <div className="background d-flex align-items-center justify-content-center min-vh-100">
+      <BackgroundCard>
+        <div>
+        </div>
+      </BackgroundCard>
+    </div>
   );
 };
 
