@@ -6,8 +6,8 @@ import '../styles/login.css';  // Para los estilos de fondo
 
 class Signin extends Component {
     state = {
-        email: '',
-        password: ''
+        email: 'admin2@example.com',
+        password: 'contraseña123'
     };
 
     handleChange = (e) => {
@@ -17,10 +17,22 @@ class Signin extends Component {
     handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = this.state;
-        try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            localStorage.setItem('token', response.data.token); // Almacena el token
-            this.props.navigate('/home'); // Va al panel de control
+        try {            
+            const response = await axios.post('http://localhost:5000/api/usuarios/login', { email, password });
+
+            console.log("response");
+            console.log(response.status);
+
+            if (response.status==200){
+                console.log(response.data);
+                localStorage.setItem('user', JSON.stringify(response.data));
+                //localStorage.setItem('user', response.data); // Almacena el usuario  
+                localStorage.setItem('token', response.data.token); // Almacena el token  
+                this.props.navigate('/home'); // Va al panel de control
+            }
+            
+            //localStorage.setItem('token', response.data.token); // Almacena el token
+            //this.props.navigate('/home'); // Va al panel de control
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
         }

@@ -13,12 +13,13 @@ const BackgroundCard = ({ children }) => {
 
 const styles = {
   card: {
-    position: 'fixed',
-    top: '50px',
-    left: '300px',
-    right: '50px',
-    bottom: '50px',
-    zIndex: '-1',
+    
+    //position: 'fixed',
+    //top: '50px',
+    //left: '300px',
+    //right: '50px',
+    //bottom: '50px',
+    //zIndex: '-1',
     overflowY: 'auto',
     borderRadius: '22px',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',

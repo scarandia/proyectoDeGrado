@@ -8,7 +8,6 @@ body {
 }
 
 .main-content {
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;

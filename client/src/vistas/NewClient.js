@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles/Create.css';
+//import '../styles/Create.css';
 import BackgroundCard from '../componentes/BackgroundCard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -68,8 +68,17 @@ function NewClientPage() {
     };
 
     return (
-        <BackgroundCard>
-            <div className="main-content centered-form container">
+        <div style={{textAlign: "left"}}>
+            Test
+
+        </div>
+       
+    );
+}
+
+export default NewClientPage;
+ {/* <BackgroundCard>
+            <div className="">
                 <h2>Información Personal</h2>
                 <div className="form-group">
                     <label htmlFor="nombreCliente">Nombre(s)</label>
@@ -239,8 +248,4 @@ function NewClientPage() {
 
                 <button className="btn btn-primary" onClick={createClient}>Submit</button>
             </div>
-        </BackgroundCard>
-    );
-}
-
-export default NewClientPage;
+        </BackgroundCard> */}

@@ -11,9 +11,6 @@ body {
     text-align: center;
 }
 
-<<<<<<< HEAD
-.card {
-=======
 h4{
     /*login text*/
     font-size: 35px;
@@ -60,7 +57,6 @@ form{
     width: 434px;
     height: 700px;
     margin-top: 40px;
->>>>>>> 745ef84fd89811f5fdf9c94920ac9af49dbfc6db
     border-radius: 22px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background: #FFFFFF;
