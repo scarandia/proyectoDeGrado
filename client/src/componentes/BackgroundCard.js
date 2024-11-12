@@ -1,9 +1,12 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const BackgroundCard = ({ children }) => {
   return (
-    <div style={styles.card}>
-      {children}
+    <div className="card bg-light" style={styles.card}>
+      <div className="card-body">
+        {children}
+      </div>
     </div>
   );
 };
@@ -15,14 +18,10 @@ const styles = {
     left: '300px',
     right: '50px',
     bottom: '50px',
-    border: '1px solid #ddd',
-    backgroundColor: 'white',
+    zIndex: '-1',
+    overflowY: 'auto',
     borderRadius: '22px',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-    zIndex: '-1', 
-    padding: '1.5rem',
-    margin: '20px',
-    overflowY: 'auto',
   }
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './styles/App.css';
+import './styles/Create.css';
 import Sidebar from './componentes/Sidebar';
 import Login from './componentes/Login';
 import Inicio from './componentes/Inicio';

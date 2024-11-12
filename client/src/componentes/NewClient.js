@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../styles/Create.css';
 
 function NewClientPage() {
     const [client, setClient] = useState({
@@ -65,7 +66,7 @@ function NewClientPage() {
     };
 
     return (
-        <div>
+        <div className="main-content">
             <h2>Información Personal</h2>
             <table>
                 <tbody>
