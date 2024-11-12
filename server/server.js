@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/database');
 
+const usuarioRoutes = require('./routes/usuarioRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const distribuidorRoutes = require('./routes/distribuidorRoutes');
 const fabricanteRoutes = require('./routes/fabricanteRoutes');
@@ -30,6 +31,7 @@ connectDB();
 app.use(respuestaLogger);
 
 //Usar Controladores
+app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/distribuidores', distribuidorRoutes);
 app.use('/api/fabricantes', fabricanteRoutes);

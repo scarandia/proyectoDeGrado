@@ -11,7 +11,56 @@ body {
     text-align: center;
 }
 
+<<<<<<< HEAD
 .card {
+=======
+h4{
+    /*login text*/
+    font-size: 35px;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+}
+
+form{
+    display: inline-block;
+    align-items: center;
+    height: 270px;
+    width: 350px;
+    margin-bottom: 170px;
+}
+.text_area{
+    align-content: center;
+    border-radius: 22px;
+    margin-bottom: 35px;
+    width: 100%;
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);;
+}
+
+/*
+.btn{
+    margin-top: 158px;
+    width: 165px;
+    height: 60px;
+    border-radius: 30px;
+    background: #B58DED;
+    border: none;
+    font-size: 20px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+*/
+
+.btn:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+}
+
+.login{
+    display: inline-block;
+    background: #FFFFFF;
+    width: 434px;
+    height: 700px;
+    margin-top: 40px;
+>>>>>>> 745ef84fd89811f5fdf9c94920ac9af49dbfc6db
     border-radius: 22px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background: #FFFFFF;
