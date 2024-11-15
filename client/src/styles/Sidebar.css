@@ -120,3 +120,24 @@
 .bold {
   font-weight: bolder;
 }
+
+.sidebar-bottom {
+  margin-top: auto; /* Empuja el elemento hacia la parte inferior */
+  padding-top: 100px; /* Espacio adicional para separarlo */
+}
+
+.sidebar-bottom li {
+  margin: 10px 20px; /* Ajusta el margen */
+}
+
+.sidebar-bottom a {
+  color: #FF4500; /* Color distintivo para el enlace */
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.sidebar-bottom a:hover {
+  color: #FF6347; /* Color de hover */
+}

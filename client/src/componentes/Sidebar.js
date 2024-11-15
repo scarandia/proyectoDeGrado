@@ -11,7 +11,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
     const user = localStorage.getItem('user');
     const values = JSON.parse(user);
 
-    console.log("user2");
+    //console.log("user2");
     //console.log(values?.user?.email);
     setRoleUser(values?.user?.role);
     //console.log(user?.user?.email);
@@ -53,7 +53,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 Clientes
               </Link>
             </div>
-            {roleUser=="admin" && activeMenu === 'clients' && (
+            {activeMenu === 'clients' && (
               <ul className="sub-menu">
                 <li className={isActive('/createClient') ? 'active' : ''}>
                   <Link to="/createClient" className={isActive('/createClient') ? 'active' : ''} onClick={() => handleSubClick('clients')}>
@@ -110,7 +110,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 Vendedores
               </Link>
             </div>
-            { roleUser == "admin" && activeMenu === 'vendors' && (
+            {roleUser === "admin" && activeMenu === 'vendors' && (
               <ul className="sub-menu">
                 <li className={isActive('/createVendor') ? 'active' : ''}>
                   <Link to="/createVendor" className={isActive('/createVendor') ? 'active' : ''} onClick={() => handleSubClick('vendors')}>
@@ -121,20 +121,25 @@ function Sidebar({ isOpen, toggleSidebar }) {
             )}
           </li>
           {
-            roleUser == "admin" ? 
-            <li>
-              <div
-                className={`menu-item ${activeMenu === 'vendors' ? 'active' : ''} ${boldMenu === 'vendors' ? 'bold' : ''}`}
-                onClick={() => toggleSubMenu('vendors')}
-              >
-                <Link to="/vendors" className={`menu-link ${isActive('/vendors') ? 'active' : ''}`} onClick={() => handleMainClick('vendors')}>
+            roleUser === "admin" ?
+              <li>
+                <div
+                  className={`menu-item ${activeMenu === 'vendors' ? 'active' : ''} ${boldMenu === 'vendors' ? 'bold' : ''}`}
+                  onClick={() => toggleSubMenu('vendors')}
+                >
+                </div>
+              </li>
+              : null
+          }
+          {roleUser === 'admin' && (
+            <div className="sidebar-bottom">
+              <li className={isActive('/config') ? 'active' : ''}>
+                <Link to="/config" className={isActive('/config') ? 'active' : ''}>
                   Configuración
                 </Link>
-              </div>              
-            </li>
-            : null
-          }
-          
+              </li>
+            </div>
+          )}
         </ul>
         <button
           className="toggle-button"

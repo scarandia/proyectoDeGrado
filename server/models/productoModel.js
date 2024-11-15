@@ -31,10 +31,6 @@ const ProductoSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref: 'Fabricante',
             required: false
-        },
-        contacto: {
-            type: String,
-            required: false
         }
     },
     imagenURL: {

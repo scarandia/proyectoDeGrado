@@ -26,10 +26,6 @@ const PedidoSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  distribuidorAsignado: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Distribuidor'
-},
   direccion_entrega: {
     calle: {
       type: String,
@@ -50,7 +46,7 @@ const PedidoSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    enum: ['Pendiente', 'Entregado', 'Cancelado'],
+    enum: ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'],
     required: true
   },
   precio_total: {

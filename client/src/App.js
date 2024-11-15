@@ -4,7 +4,8 @@ import './styles/Create.css';
 import Sidebar from './componentes/Sidebar';
 import Login from './vistas/Login';
 import Default from './vistas/Default';
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import ProtectedRoute from './componentes/ProtectedRoute'; // Asegúrate de importar el componente ProtectedRoute
 
 import NewClient from './vistas/NewClient';
 import ClientList from './vistas/ClientList';
@@ -19,6 +20,7 @@ import NewVendor from './vistas/NewVendor';
 import VendorList from './vistas/VendorList';
 import CreateUser from './vistas/CreateUser';
 import Dashboard from './vistas/Dashboard';
+import Config from './vistas/Config';
 
 function App() {
   const location = useLocation();
@@ -28,8 +30,8 @@ function App() {
     setIsOpen(!isOpen);
   };
 
-  // No renderizar la barra de navegación en la página de login
-  const showSidebar = location.pathname !== '/';
+  // No renderizar la barra de navegación en la página de login y 404
+  const showSidebar = location.pathname !== '/' && location.pathname !== '/404';
 
   console.log('Location:', location.pathname);
   console.log('Show Sidebar:', showSidebar);
@@ -39,23 +41,65 @@ function App() {
       {showSidebar && <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />}
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/home" element={<Dashboard />} />
+        <Route path="/home" element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/clients" element={
+          <ProtectedRoute>
+            <ClientList />
+          </ProtectedRoute>
+        } />
+        <Route path="/createClient" element={
+          <ProtectedRoute>
+            <NewClient />
+          </ProtectedRoute>
+        } />
+        <Route path="/orders" element={
+          <ProtectedRoute>
+            <OrderList />
+          </ProtectedRoute>
+        } />
+        <Route path="/createOrder" element={
+          <ProtectedRoute>
+            <NewOrder />
+          </ProtectedRoute>
+        } />
+        <Route path="/products" element={
+          <ProtectedRoute>
+            <ProductList />
+          </ProtectedRoute>
+        } />
+        <Route path="/createProduct" element={
+          <ProtectedRoute>
+            <NewProduct />
+          </ProtectedRoute>
+        } />
+        <Route path="/vendors" element={
+          <ProtectedRoute>
+            <VendorList />
+          </ProtectedRoute>
+        } />
+        <Route path="/createVendor" element={
+          <ProtectedRoute requiredRole="admin">
+            <NewVendor />
+          </ProtectedRoute>
+        } />
+        <Route path="/createUser" element={
+          <ProtectedRoute requiredRole="admin">
+            <CreateUser />
+          </ProtectedRoute>
+        } />
+        <Route path="/config" element={
+          <ProtectedRoute requiredRole="admin">
+            <Config />
+          </ProtectedRoute>
+        } />
+        <Route path="/404" element={<Default />} />
 
-        <Route path="/clients" element={<ClientList />} />
-        <Route path="/createClient" element={<NewClient />} />
-
-        <Route path="/orders" element={<OrderList />} />
-        <Route path="/createOrder" element={<NewOrder />} />
-
-        <Route path="/products" element={<ProductList />} />
-        <Route path="/createProduct" element={<NewProduct />} />
-
-        <Route path="/vendors" element={<VendorList />} />
-        <Route path="/createVendor" element={<NewVendor />} />
-        
-        <Route path="/createUser" element={<CreateUser />} />
-
-        <Route path="*" element={<Default />} />
+        {/*redirigir a /404 si no existe la ruta*/}
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </>
   );

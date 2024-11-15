@@ -47,7 +47,7 @@ const NotFound = () => {
         <h1 style={styles.heading}>404</h1>
         <p style={styles.paragraph}>Oops! La página que buscas no existe.</p>
         <Link
-          to="/"
+          to="/home"
           style={styles.homeButton}
           onMouseEnter={(e) => e.target.style.backgroundColor = styles.homeButtonHover.backgroundColor}
           onMouseLeave={(e) => e.target.style.backgroundColor = styles.homeButton.backgroundColor}

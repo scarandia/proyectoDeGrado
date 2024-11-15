@@ -6,8 +6,9 @@ import '../styles/login.css';  // Para los estilos de fondo
 
 class Signin extends Component {
     state = {
-        email: 'admin2@example.com',
-        password: 'contraseña123'
+        email: '',
+        password: '',
+        errorMessage: '' // Estado para el mensaje de error
     };
 
     handleChange = (e) => {
@@ -20,21 +21,14 @@ class Signin extends Component {
         try {            
             const response = await axios.post('http://localhost:5000/api/usuarios/login', { email, password });
 
-            console.log("response");
-            console.log(response.status);
-
-            if (response.status==200){
-                console.log(response.data);
+            if (response.status === 200) {
                 localStorage.setItem('user', JSON.stringify(response.data));
-                //localStorage.setItem('user', response.data); // Almacena el usuario  
-                localStorage.setItem('token', response.data.token); // Almacena el token  
+                localStorage.setItem('token', response.data.token);
                 this.props.navigate('/home'); // Va al panel de control
             }
-            
-            //localStorage.setItem('token', response.data.token); // Almacena el token
-            //this.props.navigate('/home'); // Va al panel de control
         } catch (error) {
-            console.error('Error al iniciar sesión:', error);
+            // Establecer el mensaje de error si ocurre un fallo
+            this.setState({ errorMessage: 'Email o contraseña incorrectos. Por favor, inténtalo de nuevo.' });
         }
     };
 
@@ -42,7 +36,12 @@ class Signin extends Component {
         return (
             <div className="d-flex align-items-center justify-content-center min-vh-100 gradient-background">
                 <div className="card p-4 shadow-lg" style={{ width: '434px', height: '700px', borderRadius: '22px' }}>
-                    <h4 className="mb-4 text-center">Login</h4>
+                    <h4 className="mb-4 text-center">Iniciar Sesión</h4>
+                    {this.state.errorMessage && (
+                        <div className="alert alert-danger" role="alert">
+                            {this.state.errorMessage}
+                        </div>
+                    )}
                     <form onSubmit={this.handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">Email</label>
@@ -50,19 +49,19 @@ class Signin extends Component {
                                 type="email"
                                 id="email"
                                 name="email"
-                                placeholder="Enter your Email"
+                                placeholder="Ingrese su Email"
                                 className="form-control text_input"
                                 onChange={this.handleChange}
                                 required
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="password" className="form-label">Password</label>
+                            <label htmlFor="password" className="form-label">Contraseña</label>
                             <input
                                 type="password"
                                 id="password"
                                 name="password"
-                                placeholder="Password"
+                                placeholder="Ingrese su Contraseña"
                                 className="form-control text_input"
                                 onChange={this.handleChange}
                                 required
@@ -71,8 +70,8 @@ class Signin extends Component {
                         <button type="submit" className="btn btn-primary w-100 mt-4">
                             LOG IN
                         </button>
+                        <p className="text-center text-muted mt-3">Made with &lt;3</p>
                     </form>
-                    <p className="text-center text-muted mt-3">Sebas Corp 2024</p>
                 </div>
             </div>
         );
