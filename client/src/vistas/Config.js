@@ -2,7 +2,9 @@ import React from 'react'
 
 function Config() {
   return (
-    <div>Config</div>
+    <div>
+      <h1>Config</h1>
+    </div>
   )
 }
 

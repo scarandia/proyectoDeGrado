@@ -10,7 +10,7 @@ const ProductList = () => {
     <div className="background d-flex align-items-center justify-content-center min-vh-100">
       <BackgroundCard>
         <div>
-
+          <h1>PRODUCT LIST</h1>
         </div>
       </BackgroundCard>
     </div>

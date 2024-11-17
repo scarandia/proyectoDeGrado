@@ -1,11 +1,11 @@
 import React from 'react'
 
-function NewVendorPage() {
+const NewVendor = () => {
     return (
-        <div>
-            <h1>NewVendorPage</h1>
-        </div>
-    )
-}
-
-export default NewVendorPage
+      <div>
+        <h1>Crear Vendedor</h1>
+      </div>
+    );
+  };
+  
+  export default NewVendor;

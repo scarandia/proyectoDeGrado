@@ -13,16 +13,28 @@ const BackgroundCard = ({ children }) => {
 
 const styles = {
   card: {
-    
-    //position: 'fixed',
-    //top: '50px',
-    //left: '300px',
-    //right: '50px',
-    //bottom: '50px',
-    //zIndex: '-1',
-    overflowY: 'auto',
+    position: 'absolute',
+    top: '60px',  // Deja 100px de margen en la parte superior
+    left: '300px', // La sidebar tiene 250px de ancho, por lo tanto, dejamos 250px a la izquierda
+    right: '60px', // Deja 100px de margen en el lado derecho
+    bottom: '60px', // Deja 100px de margen en la parte inferior
     borderRadius: '22px',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+    overflowY: 'auto',
+    zIndex: '-1', // Asegura que el BackgroundCard quede por debajo de otros componentes
+  }
+};
+
+// Media queries para dispositivos móviles (ajustar tamaño en pantallas pequeñas)
+const mediaStyles = {
+  '@media (max-width: 768px)': {
+    card: {
+      top: '20px',
+      left: '20px',
+      right: '20px',
+      bottom: '20px',
+      width: 'auto', // Ajuste del tamaño de la tarjeta para móviles
+    }
   }
 };
 
