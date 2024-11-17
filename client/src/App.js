@@ -23,6 +23,9 @@ import Dashboard from './vistas/Dashboard';
 import Config from './vistas/Config';
 
 function App() {
+  console.log(localStorage.getItem('user'));
+
+
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 

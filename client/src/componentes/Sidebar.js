@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/Sidebar.css';
+import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   useEffect(() => {
@@ -107,8 +109,13 @@ function Sidebar({ isOpen, toggleSidebar }) {
         </ul>
       </div>
 
-      <button className="toggle-button" onClick={toggleSidebar} style={{ display: isOpen ? 'none' : 'block' }}>Abrir</button>
-      <button className="toggle-button" onClick={toggleSidebar} style={{ display: isOpen ? 'block' : 'none' }}>Cerrar</button>
+      {/*Boton*/}
+      <button
+        className={`toggle-button ${isOpen ? 'open' : 'closed'}`}
+        onClick={toggleSidebar}
+      >
+        <FontAwesomeIcon icon={isOpen ? faAngleLeft : faAngleRight} />
+      </button>
     </div>
   );
 }
