@@ -86,19 +86,19 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/createVendor" element={
-          <ProtectedRoute requiredRole="admin">
+         // <ProtectedRoute requiredRole="admin">
             <NewVendor />
-          </ProtectedRoute>
+         // </ProtectedRoute>
         } />
         <Route path="/createUser" element={
-          <ProtectedRoute requiredRole="admin">
+         // <ProtectedRoute requiredRole="admin">
             <CreateUser />
-          </ProtectedRoute>
+         // </ProtectedRoute>
         } />
         <Route path="/config" element={
-          <ProtectedRoute requiredRole="admin">
+         // <ProtectedRoute requiredRole="admin">
             <Config />
-          </ProtectedRoute>
+         // </ProtectedRoute>
         } />
         <Route path="/404" element={<Default />} />
 

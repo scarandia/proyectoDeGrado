@@ -9,6 +9,7 @@ const register = async (req, res) => {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email ya está registrado' });
+            res.status(500).json({ error: 'Error al crear usuario.', detalle: error.message });
         }
 
         // Crear nuevo usuario
@@ -18,7 +19,7 @@ const register = async (req, res) => {
         res.status(201).json({ message: 'Usuario registrado con éxito' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error });
+        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
     }
 };
 
@@ -29,7 +30,7 @@ const login = async (req, res) => {
         // Buscar el usuario por email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado' });
+            return res.status(400).json({ message: 'Usuario no encontrado', detalle: validationError.message  });
         }
 
         // Comparar la contraseña
@@ -52,7 +53,7 @@ const login = async (req, res) => {
         res.status(200).json({ message: 'Login exitoso', token, user: { id: user._id, email: user.email, role: user.role } });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error });
+        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
     }
 };
 
@@ -69,7 +70,7 @@ const createUser = async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', error });
+        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
     }
 };
 

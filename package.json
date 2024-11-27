@@ -21,7 +21,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "axios": "^1.7.7",
+    "axios": "^1.7.8",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
@@ -30,6 +30,7 @@
     "express-validator": "^7.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.6.1",
+    "react-bootstrap": "^2.10.6",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {

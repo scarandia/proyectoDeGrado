@@ -1,31 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import BackgroundCard from '../componentes/BackgroundCard';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const clients = [
-  
-];
+import '../styles/Lists.css'; // Suponiendo que creas un archivo CSS para los estilos
 
 const ClientList = () => {
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Jala lista de clientes desde API
+    const fetchClients = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/clientes');
+        setClients(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Error al cargar los clientes');
+        setLoading(false);
+      }
+    };
+
+    fetchClients();
+  }, []);
+
+  if (loading) return <p>Cargando clientes...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
-    <div className="background d-flex align-items-center justify-content-center min-vh-100">
     <BackgroundCard>
-    <div className="container">
-        <div className="row">
-          {clients.map((client, index) => (
-            <div key={index} className="col-12 col-md-6 col-lg-4 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <h5 className="card-title">{client.name}</h5>
-                  <p className="card-text">{client.details}</p>
-                </div>
+      <div>
+        <h1>Lista de Clientes</h1>
+        {clients.length === 0 ? (
+          <p>No hay clientes disponibles</p>
+        ) : (
+          <div className="information-list">
+            {clients.map((client) => (
+              <div className="information-card" key={client._id}>
+                <h3>{client.nombreCliente} {client.apellidoCliente}</h3>
+                <p><strong>Tipo de Negocio:</strong> {client.tipoNegocio}</p>
+                <p><strong>Nombre de Negocio:</strong> {client.nombreNegocio}</p>
+                <p><strong>Contacto:</strong> {client.contacto.telefono} </p>
+                <p><strong>Correo: </strong>{client.contacto.email}</p>
+                <p><strong>Dirección:</strong> {client.direccion.calle}, {client.direccion.ciudad || ''}, {client.direccion.codigo_postal || ''}, {client.direccion.pais || ''}</p>
+                <p><strong>Deuda:</strong> {client.deuda}</p>
+                <p><strong>Historial de Pedidos:</strong> {client.historialPedidos.length > 0 ? client.historialPedidos.join(', ') : 'Ninguno'}</p>
+                <p><strong>Notas:</strong> {client.notas}</p>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </BackgroundCard>
-    </div>
   );
 };
 

@@ -51,7 +51,7 @@ const PedidoSchema = new mongoose.Schema({
   },
   precio_total: {
     type: Number,
-    required: true
+    required: false
   },
   notas: {
     type: String,
@@ -62,18 +62,18 @@ const PedidoSchema = new mongoose.Schema({
 // Middleware para calcular el precio total
 PedidoSchema.pre('save', async function (next) {
   try {
-    //popular productos -> acceder precios
-    await this.populate('productos.producto').execPopulate();
+    // Realiza el populate de los productos
+    await this.populate('productos.producto'); // Cambiado de execPopulate()
 
-    //calcula precio total
+    // Calcula el precio total
     this.precio_total = this.productos.reduce((total, item) => {
-      const precioUnitario = item.producto.precio; 
+      const precioUnitario = item.producto.precio; // Verifica que "producto" tenga "precio"
       return total + (precioUnitario * item.cantidad);
     }, 0);
 
-    next();
+    next(); // Continúa al guardar
   } catch (error) {
-    next(error);
+    next(error); // Pasa el error al manejador
   }
 });
 

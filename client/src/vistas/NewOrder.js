@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BackgroundCard from '../componentes/BackgroundCard';
 
 const NewOrderPage = () => {
@@ -18,6 +18,21 @@ const NewOrderPage = () => {
         precio_total: 0,
         notas: '',
     });
+
+    const [clientes, setClientes] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Llamada a la API para obtener los clientes que coincidan con el término de búsqueda
+    useEffect(() => {
+        if (searchTerm.length > 2) {
+            fetch(`http://localhost:5000/api/clientes/buscar?nombre=${searchTerm}`)
+                .then((res) => res.json())
+                .then((data) => setClientes(data))
+                .catch((error) => console.error("Error al obtener clientes:", error));
+        } else {
+            setClientes([]); // Si no hay búsqueda, vaciar resultados
+        }
+    }, [searchTerm]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,6 +61,15 @@ const NewOrderPage = () => {
             ...pedido,
             productos: [...pedido.productos, { producto: '', cantidad: 1 }],
         });
+    };
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const handleClienteSelect = (clienteId) => {
+        setPedido({ ...pedido, cliente: clienteId });
+        setClientes([]); // Limpiar la lista de clientes después de seleccionar
     };
 
     return (
@@ -77,11 +101,24 @@ const NewOrderPage = () => {
                                     className="form-control"
                                     id="cliente"
                                     name="cliente"
-                                    placeholder="ID del cliente"
-                                    value={pedido.cliente}
-                                    onChange={handleChange}
-                                    required
+                                    placeholder="Buscar cliente por nombre"
+                                    value={searchTerm}
+                                    onChange={handleSearchChange}
                                 />
+                                <div className="list-group mt-2">
+                                    {clientes.length > 0 && searchTerm && (
+                                        clientes.map((cliente) => (
+                                            <button
+                                                key={cliente._id}
+                                                type="button"
+                                                className="list-group-item list-group-item-action"
+                                                onClick={() => handleClienteSelect(cliente._id)}
+                                            >
+                                                {cliente.nombreCliente}
+                                            </button>
+                                        ))
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
