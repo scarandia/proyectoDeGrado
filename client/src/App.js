@@ -18,6 +18,7 @@ import ProductList from './vistas/ProductList';
 
 import NewVendor from './vistas/NewVendor';
 import VendorList from './vistas/VendorList';
+
 import CreateUser from './vistas/CreateUser';
 import Dashboard from './vistas/Dashboard';
 import Config from './vistas/Config';

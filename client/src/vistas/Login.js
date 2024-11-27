@@ -36,7 +36,7 @@ class Signin extends Component {
         return (
             <div className="d-flex align-items-center justify-content-center min-vh-100 gradient-background">
                 <div className="card p-4 shadow-lg" style={{ width: '434px', height: '700px', borderRadius: '22px' }}>
-                    <h4 className="mb-4 text-center">Iniciar Sesión</h4>
+                    <h4 className="mb-4 text-center">Bienvenido!</h4>
                     {this.state.errorMessage && (
                         <div className="alert alert-danger" role="alert">
                             {this.state.errorMessage}
@@ -68,7 +68,7 @@ class Signin extends Component {
                             />
                         </div>
                         <button type="submit" className="btn btn-primary w-100 mt-4">
-                            LOG IN
+                            Iniciar Sesión
                         </button>
                         <p className="text-center text-muted mt-3">Made with &lt;3</p>
                     </form>

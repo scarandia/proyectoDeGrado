@@ -1,233 +1,255 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import BackgroundCard from '../componentes/BackgroundCard';
 
-function NewOrderPage() {
-    const [order, setOrder] = useState({
+const NewOrderPage = () => {
+    const [pedido, setPedido] = useState({
         idPedido: '',
         cliente: '',
-        productos: [{
-            producto: '',
-            cantidad: 1
-        }],
-        fecha_creado: new Date().toISOString().split('T')[0],
+        productos: [{ producto: '', cantidad: 1 }],
+        fecha_creado: '',
         fecha_entrega: '',
-        distribuidorAsignado: '',
         direccion_entrega: {
             calle: '',
             ciudad: '',
             codigo_postal: '',
-            pais: ''
+            pais: '',
         },
         estado: 'Pendiente',
-        notas: ''
+        precio_total: 0,
+        notas: '',
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name.startsWith('producto') || name.startsWith('cantidad')) {
-            const index = parseInt(name.split('-')[1], 10);
-            const key = name.split('-')[0];
-
-            setOrder(prev => ({
-                ...prev,
-                productos: prev.productos.map((producto, i) => (
-                    i === index ? { ...producto, [key]: value } : producto
-                ))
-            }));
-        } else if (['calle', 'ciudad', 'codigo_postal', 'pais'].includes(name)) {
-            setOrder(prev => ({
-                ...prev,
-                direccion_entrega: {
-                    ...prev.direccion_entrega,
-                    [name]: value
-                }
-            }));
-        } else {
-            setOrder({ ...order, [name]: value });
-        }
+        setPedido({ ...pedido, [name]: value });
     };
 
-    const addProduct = () => {
-        setOrder(prev => ({
-            ...prev,
-            productos: [...prev.productos, { producto: '', cantidad: 1 }]
-        }));
+    const handleDireccionChange = (e) => {
+        const { name, value } = e.target;
+        setPedido({
+            ...pedido,
+            direccion_entrega: {
+                ...pedido.direccion_entrega,
+                [name]: value,
+            },
+        });
     };
 
-    const createOrder = async () => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/pedidos', order);
-            console.log('Pedido creado:', response.data);
-        } catch (error) {
-            console.error('Error al crear el pedido:', error);
-        }
+    const handleProductoChange = (index, field, value) => {
+        const newProductos = [...pedido.productos];
+        newProductos[index][field] = value;
+        setPedido({ ...pedido, productos: newProductos });
+    };
+
+    const addProducto = () => {
+        setPedido({
+            ...pedido,
+            productos: [...pedido.productos, { producto: '', cantidad: 1 }],
+        });
     };
 
     return (
-        <div>
-            <h2>Información del Pedido</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input
-                                name="idPedido"
-                                placeholder="ID del Pedido"
-                                value={order.idPedido}
-                                onChange={handleChange}
-                                required
-                            />
-                        </td>
-                        <td>
-                            <input
-                                name="cliente"
-                                placeholder="ID del Cliente"
-                                value={order.cliente}
-                                onChange={handleChange}
-                                required
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input
-                                name="fecha_creado"
-                                placeholder="Fecha Creado"
-                                type="date"
-                                value={order.fecha_creado}
-                                onChange={handleChange}
-                                required
-                            />
-                        </td>
-                        <td>
-                            <input
-                                name="fecha_entrega"
-                                placeholder="Fecha Entrega"
-                                type="date"
-                                value={order.fecha_entrega}
-                                onChange={handleChange}
-                                required
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input
-                                name="distribuidorAsignado"
-                                placeholder="ID del Distribuidor"
-                                value={order.distribuidorAsignado}
-                                onChange={handleChange}
-                            />
-                        </td>
-                        <td>
-                            <select
-                                name="estado"
-                                value={order.estado}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Entregado">Entregado</option>
-                                <option value="Cancelado">Cancelado</option>
-                            </select>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2>Productos</h2>
-            {order.productos.map((producto, index) => (
-                <table key={index}>
-                    <tbody>
-                        <tr>
-                            <td>
+        <BackgroundCard>
+            <div className="container">
+                <form>
+                    {/* ID y Cliente */}
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="idPedido">ID del Pedido</label>
                                 <input
-                                    name={`producto-${index}`}
-                                    placeholder="ID del Producto"
-                                    value={producto.producto}
+                                    type="text"
+                                    className="form-control"
+                                    id="idPedido"
+                                    name="idPedido"
+                                    placeholder="ID del pedido"
+                                    value={pedido.idPedido}
                                     onChange={handleChange}
                                     required
                                 />
-                            </td>
-                            <td>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="cliente">Cliente</label>
                                 <input
-                                    name={`cantidad-${index}`}
-                                    placeholder="Cantidad"
-                                    type="number"
-                                    value={producto.cantidad}
+                                    type="text"
+                                    className="form-control"
+                                    id="cliente"
+                                    name="cliente"
+                                    placeholder="ID del cliente"
+                                    value={pedido.cliente}
                                     onChange={handleChange}
                                     required
                                 />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            ))}
-            <button onClick={addProduct}>Añadir Producto</button>
+                            </div>
+                        </div>
+                    </div>
 
-            <h2>Dirección de Entrega</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input
-                                name="calle"
-                                placeholder="Calle"
-                                value={order.direccion_entrega.calle}
-                                onChange={handleChange}
-                                required
-                            />
-                        </td>
-                        <td>
-                            <input
-                                name="ciudad"
-                                placeholder="Ciudad"
-                                value={order.direccion_entrega.ciudad}
-                                onChange={handleChange}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input
-                                name="codigo_postal"
-                                placeholder="Codigo Postal"
-                                value={order.direccion_entrega.codigo_postal}
-                                onChange={handleChange}
-                            />
-                        </td>
-                        <td>
-                            <input
-                                name="pais"
-                                placeholder="País"
-                                value={order.direccion_entrega.pais}
-                                onChange={handleChange}
-                            />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    {/* Productos */}
+                    <div className="form-group">
+                        <label>Productos</label>
+                        {pedido.productos.map((producto, index) => (
+                            <div className="row mb-2" key={index}>
+                                <div className="col-md-8">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="ID del producto"
+                                        value={producto.producto}
+                                        onChange={(e) =>
+                                            handleProductoChange(index, 'producto', e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+                                <div className="col-md-4">
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        placeholder="Cantidad"
+                                        value={producto.cantidad}
+                                        onChange={(e) =>
+                                            handleProductoChange(index, 'cantidad', e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={addProducto}
+                        >
+                            Añadir Producto
+                        </button>
+                    </div>
 
-            <h2>Notas</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input
-                                name="notas"
-                                placeholder="Notas"
-                                value={order.notas}
-                                onChange={handleChange}
-                            />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                    {/* Fechas */}
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="fecha_creado">Fecha de Creación</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    id="fecha_creado"
+                                    name="fecha_creado"
+                                    value={pedido.fecha_creado}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="fecha_entrega">Fecha de Entrega</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    id="fecha_entrega"
+                                    name="fecha_entrega"
+                                    value={pedido.fecha_entrega}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-            <button onClick={createOrder}>Submit</button>
-        </div>
+                    {/* Dirección */}
+                    <div className="form-group">
+                        <label>Dirección de Entrega</label>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="calle"
+                                    placeholder="Calle"
+                                    value={pedido.direccion_entrega.calle}
+                                    onChange={handleDireccionChange}
+                                    required
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="ciudad"
+                                    placeholder="Ciudad"
+                                    value={pedido.direccion_entrega.ciudad}
+                                    onChange={handleDireccionChange}
+                                />
+                            </div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col-md-6">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="codigo_postal"
+                                    placeholder="Código Postal"
+                                    value={pedido.direccion_entrega.codigo_postal}
+                                    onChange={handleDireccionChange}
+                                />
+                            </div>
+                            <div className="col-md-6">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="pais"
+                                    placeholder="País"
+                                    value={pedido.direccion_entrega.pais}
+                                    onChange={handleDireccionChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Estado y Notas */}
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="estado">Estado</label>
+                                <select
+                                    className="form-control"
+                                    id="estado"
+                                    name="estado"
+                                    value={pedido.estado}
+                                    onChange={handleChange}
+                                    required
+                                >
+                                    <option>Pendiente</option>
+                                    <option>Enviado</option>
+                                    <option>Entregado</option>
+                                    <option>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="notas">Notas</label>
+                                <textarea
+                                    className="form-control"
+                                    id="notas"
+                                    name="notas"
+                                    placeholder="Notas adicionales"
+                                    value={pedido.notas}
+                                    onChange={handleChange}
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" className="btn btn-primary mt-3">
+                        Guardar Pedido
+                    </button>
+                </form>
+            </div>
+        </BackgroundCard>
     );
-}
+};
 
 export default NewOrderPage;

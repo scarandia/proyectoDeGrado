@@ -11,6 +11,9 @@ const ProductList = () => {
       <BackgroundCard>
         <div>
           <h1>PRODUCT LIST</h1>
+          <div>
+            
+          </div>
         </div>
       </BackgroundCard>
     </div>
