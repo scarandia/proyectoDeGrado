@@ -18,12 +18,14 @@ function Sidebar({ isOpen, toggleSidebar }) {
 
   const toggleSubMenu = (menu) => {
     setActiveMenu((prevState) => (prevState === menu ? null : menu));
+    setBoldMenu(menu);
   };
 
   const isActive = (path) => location.pathname === path;
 
   const handleMainClick = (menu) => {
     setBoldMenu(menu);
+    setActiveMenu(null); 
   };
 
   const handleSubClick = (parentMenu) => {
