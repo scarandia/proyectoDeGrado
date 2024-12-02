@@ -41,5 +41,5 @@ app.use('/api/rutas', rutaRoutes);
 app.use('/api/vendedores', vendedorRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

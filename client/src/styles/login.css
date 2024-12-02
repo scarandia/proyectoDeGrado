@@ -1,75 +1,47 @@
-/* login.css */
+/* Estilo general */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-}
-
-.gradient-background {
     background: linear-gradient(135deg, #1B8AF1, #B58DED);
     height: 100vh;
-    width: 100%;
-    text-align: center;
-}
-
-h4{
-    /*login text*/
-    font-size: 35px;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-}
-
-form{
-    display: inline-block;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    height: 270px;
-    width: 350px;
-    margin-bottom: 170px;
-}
-.text_area{
-    align-content: center;
-    border-radius: 22px;
-    margin-bottom: 35px;
-    width: 100%;
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2), 0 0 20px 0 rgba(0, 0, 0, 0.19);;
+    overflow: hidden; /* Elimina el scroll */
 }
 
-/*
-.btn{
-    margin-top: 158px;
-    width: 165px;
-    height: 60px;
-    border-radius: 30px;
-    background: #B58DED;
-    border: none;
-    font-size: 20px;
-    color: #FFFFFF;
-    cursor: pointer;
-}
-*/
-
-.btn:hover{
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+/* Tarjeta de inicio de sesión */
+.login-card {
+    padding: 40px; /* Espaciado interior de la tarjeta */
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: #fff;
+    width: 400px; /* Tarjeta más ancha */
+    height: 600px;
 }
 
-.login{
-    display: inline-block;
-    background: #FFFFFF;
-    width: 434px;
-    height: 700px;
-    margin-top: 40px;
-    border-radius: 22px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    background: #FFFFFF;
-}
-
+/* Título */
 h4 {
-    font-size: 35px;
+    font-size: 30px;
+    margin-bottom: 25px;
 }
 
-.text_input {
-    font-size: 20px;
+/* Campos del formulario */
+.form-control {
+    font-size: 16px;
+    padding: 12px;
+    border-radius: 8px;
 }
 
-.btn-primary:hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
+/* Botón */
+button {
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* Alertas */
+.alert {
+    font-size: 14px;
+    margin-bottom: 15px;
 }

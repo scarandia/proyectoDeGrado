@@ -1,13 +1,12 @@
 import React from 'react';
 import Card from '../componentes/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Sidebar from '../componentes/Sidebar';  // Asegúrate de importar el Sidebar
-import '../styles/Dashboard.css';  // Crear este archivo si es necesario
+import Sidebar from '../componentes/Sidebar';
+import '../styles/Dashboard.css';
 
 const Dashboard = ({ isOpen, toggleSidebar }) => {
   return (
     <div className="d-flex">
-      <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <div className="main-content container mt-4">
         <div className="row justify-content-around">
           <div className="col-12 col-md-6 col-lg-3 mb-4">

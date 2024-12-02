@@ -1,6 +1,6 @@
 .main-content {
-    margin-left: 250px; /* Igual al ancho de la barra lateral */
-    width: calc(100% - 250px); /* Ajustar el ancho para que no se superponga */
+    margin-left: 250px;
+    width: calc(100% - 250px);
     background: linear-gradient(135deg, #1B8AF1, #B58DED);
   }
   

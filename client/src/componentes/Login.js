@@ -21,7 +21,7 @@ function Login() {
         e.preventDefault();
         try {
             const values = { email, password };
-            const response = await axios.post('http://localhost:5000/api/usuarios/login', values);
+            const response = await axios.post('http://192.168.84.21:5000/api/usuarios/login', { email, password });
             console.log("resultado response", response);
             // Aquí puedes manejar el éxito, como redirigir al usuario
         } catch (error) {
@@ -37,7 +37,7 @@ function Login() {
                     <Row>
                         <Col>
                             <h4>Login</h4>
-                            {errorLogin && 
+                            {errorLogin &&
                                 <Alert variant="danger">
                                     Usuario y/o clave incorrecto
                                 </Alert>

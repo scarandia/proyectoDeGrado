@@ -1,306 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import BackgroundCard from '../componentes/BackgroundCard';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import BackgroundCard from '../componentes/BackgroundCard'; // Suponiendo que reuses este componente
+import '../styles/Lists.css'; // Reutilizamos los estilos existentes
 
-const NewOrderPage = () => {
-    const [pedido, setPedido] = useState({
-        idPedido: '',
-        cliente: '',
-        productos: [{ producto: '', cantidad: 1 }],
-        fecha_creado: '',
-        fecha_entrega: '',
-        direccion_entrega: {
-            calle: '',
-            ciudad: '',
-            codigo_postal: '',
-            pais: '',
-        },
-        estado: 'Pendiente',
-        precio_total: 0,
-        notas: '',
-    });
+const OrderList = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const [clientes, setClientes] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
-
-    // Llamada a la API para obtener los clientes que coincidan con el término de búsqueda
-    useEffect(() => {
-        if (searchTerm.length > 2) {
-            fetch(`http://localhost:5000/api/clientes/buscar?nombre=${searchTerm}`)
-                .then((res) => res.json())
-                .then((data) => setClientes(data))
-                .catch((error) => console.error("Error al obtener clientes:", error));
-        } else {
-            setClientes([]); // Si no hay búsqueda, vaciar resultados
-        }
-    }, [searchTerm]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPedido({ ...pedido, [name]: value });
+  useEffect(() => {
+    // Obtener lista de pedidos desde la API
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/pedidos');
+        setOrders(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError('Error al cargar los pedidos');
+        setLoading(false);
+      }
     };
 
-    const handleDireccionChange = (e) => {
-        const { name, value } = e.target;
-        setPedido({
-            ...pedido,
-            direccion_entrega: {
-                ...pedido.direccion_entrega,
-                [name]: value,
-            },
-        });
-    };
+    fetchOrders();
+  }, []);
 
-    const handleProductoChange = (index, field, value) => {
-        const newProductos = [...pedido.productos];
-        newProductos[index][field] = value;
-        setPedido({ ...pedido, productos: newProductos });
-    };
+  if (loading) return <p>Cargando pedidos...</p>;
+  if (error) return <p>{error}</p>;
 
-    const addProducto = () => {
-        setPedido({
-            ...pedido,
-            productos: [...pedido.productos, { producto: '', cantidad: 1 }],
-        });
-    };
-
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
-
-    const handleClienteSelect = (clienteId) => {
-        setPedido({ ...pedido, cliente: clienteId });
-        setClientes([]); // Limpiar la lista de clientes después de seleccionar
-    };
-
-    return (
-        <BackgroundCard>
-            <div className="container">
-                <form>
-                    {/* ID y Cliente */}
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="idPedido">ID del Pedido</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="idPedido"
-                                    name="idPedido"
-                                    placeholder="ID del pedido"
-                                    value={pedido.idPedido}
-                                    onChange={handleChange}
-                                    required
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="cliente">Cliente</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="cliente"
-                                    name="cliente"
-                                    placeholder="Buscar cliente por nombre"
-                                    value={searchTerm}
-                                    onChange={handleSearchChange}
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                                {/* Lista de clientes */}
-                                {clientes.length > 0 && searchTerm && (
-                                    <div className="list-group mt-2" style={{ maxHeight: '200px', overflowY: 'auto' }}>
-                                        {clientes.map((cliente) => (
-                                            <button
-                                                key={cliente._id}
-                                                type="button"
-                                                className="list-group-item list-group-item-action"
-                                                onClick={() => handleClienteSelect(cliente._id)}
-                                            >
-                                                {cliente.nombreCliente}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Productos */}
-                    <div className="form-group">
-                        <label>Productos</label>
-                        {pedido.productos.map((producto, index) => (
-                            <div className="row mb-2" key={index}>
-                                <div className="col-md-8">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="ID del producto"
-                                        value={producto.producto}
-                                        onChange={(e) =>
-                                            handleProductoChange(index, 'producto', e.target.value)
-                                        }
-                                        required
-                                        style={{ width: '100%' }} // Ajustar el tamaño del input
-                                    />
-                                </div>
-                                <div className="col-md-4">
-                                    <input
-                                        type="number"
-                                        className="form-control"
-                                        placeholder="Cantidad"
-                                        value={producto.cantidad}
-                                        onChange={(e) =>
-                                            handleProductoChange(index, 'cantidad', e.target.value)
-                                        }
-                                        required
-                                        style={{ width: '100%' }} // Ajustar el tamaño del input
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={addProducto}
-                        >
-                            Añadir Producto
-                        </button>
-                    </div>
-
-                    {/* Fechas */}
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="fecha_creado">Fecha de Creación</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    id="fecha_creado"
-                                    name="fecha_creado"
-                                    value={pedido.fecha_creado}
-                                    onChange={handleChange}
-                                    required
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="fecha_entrega">Fecha de Entrega</label>
-                                <input
-                                    type="date"
-                                    className="form-control"
-                                    id="fecha_entrega"
-                                    name="fecha_entrega"
-                                    value={pedido.fecha_entrega}
-                                    onChange={handleChange}
-                                    required
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Dirección */}
-                    <div className="form-group">
-                        <label>Dirección de Entrega</label>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="calle"
-                                    placeholder="Calle"
-                                    value={pedido.direccion_entrega.calle}
-                                    onChange={handleDireccionChange}
-                                    required
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="ciudad"
-                                    placeholder="Ciudad"
-                                    value={pedido.direccion_entrega.ciudad}
-                                    onChange={handleDireccionChange}
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-md-6">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="codigo_postal"
-                                    placeholder="Código Postal"
-                                    value={pedido.direccion_entrega.codigo_postal}
-                                    onChange={handleDireccionChange}
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    name="pais"
-                                    placeholder="País"
-                                    value={pedido.direccion_entrega.pais}
-                                    onChange={handleDireccionChange}
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Estado y Notas */}
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="estado">Estado</label>
-                                <select
-                                    className="form-control"
-                                    id="estado"
-                                    name="estado"
-                                    value={pedido.estado}
-                                    onChange={handleChange}
-                                    required
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                >
-                                    <option>Pendiente</option>
-                                    <option>Enviado</option>
-                                    <option>Entregado</option>
-                                    <option>Cancelado</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label htmlFor="notas">Notas</label>
-                                <textarea
-                                    className="form-control"
-                                    id="notas"
-                                    name="notas"
-                                    placeholder="Notas adicionales"
-                                    value={pedido.notas}
-                                    onChange={handleChange}
-                                    style={{ width: '100%' }} // Ajustar el tamaño del input
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Botón de Enviar */}
-                    <button type="submit" className="btn btn-primary">
-                        Crear Pedido
-                    </button>
-                </form>
-            </div>
-        </BackgroundCard>
-    );
+  return (
+    <BackgroundCard>
+      <div>
+        <h1>Lista de Pedidos</h1>
+        {orders.length === 0 ? (
+          <p>No hay pedidos disponibles</p>
+        ) : (
+          <div className="information-list">
+            {orders.map((order) => (
+              <div className="information-card" key={order.idPedido}>
+                <h3>ID Pedido: {order.idPedido}</h3>
+                <p><strong>Cliente:</strong> {order.cliente}</p>
+                <p><strong>Estado:</strong> {order.estado}</p>
+                <p><strong>Fecha Creación:</strong> {new Date(order.fecha_creado).toLocaleDateString()}</p>
+                <p><strong>Fecha Entrega:</strong> {new Date(order.fecha_entrega).toLocaleDateString()}</p>
+                <p><strong>Dirección Entrega:</strong> {`${order.direccion_entrega.calle}, ${order.direccion_entrega.ciudad || ''}, ${order.direccion_entrega.codigo_postal || ''}, ${order.direccion_entrega.pais || ''}`}</p>
+                <p><strong>Productos:</strong></p>
+                <ul>
+                  {order.productos.map((item, index) => (
+                    <li key={index}>
+                      {item.producto.nombreProducto} - {item.cantidad} unidades
+                    </li>
+                  ))}
+                </ul>
+                <p><strong>Precio Total:</strong> ${order.precio_total.toFixed(2)}</p>
+                <p><strong>Notas:</strong> {order.notas || 'Ninguna'}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </BackgroundCard>
+  );
 };
 
-export default NewOrderPage;
+export default OrderList;

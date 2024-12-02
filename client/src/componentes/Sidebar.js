@@ -37,7 +37,9 @@ function Sidebar({ isOpen, toggleSidebar }) {
         <ul>
           {/* Dashboard */}
           <li className={`${isActive('/home') ? 'active' : ''} ${boldMenu === 'dashboard' ? 'bold' : ''}`}>
-            <Link to="/home" onClick={() => handleMainClick('dashboard')}>Dashboard</Link>
+            <Link to="/home" onClick={() => handleMainClick('dashboard')}>
+              Dashboard
+            </Link>
           </li>
 
           {/* Clientes */}
@@ -97,15 +99,20 @@ function Sidebar({ isOpen, toggleSidebar }) {
               </ul>
             )}
           </li>
-          {roleUser === 'admin' && (
-            <div className="sidebar-bottom">
-              <li className={isActive('/config') ? 'active' : ''}>
-                <Link to="/config" className={isActive('/config') ? 'active' : ''}>
-                  Configuración
-                </Link>
-              </li>
+          <li>
+            <div className={`menu-item ${activeMenu === 'config' ? 'active' : ''} ${boldMenu === 'config' ? 'bold' : ''}`} onClick={() => toggleSubMenu('config')}>
+              <Link to="/config" className={`menu-link ${isActive('/config') ? 'active' : ''}`} onClick={() => handleMainClick('config')}>Configuración</Link>
             </div>
-          )}
+            {roleUser === "admin" && activeMenu === 'config' && (
+              <ul className="sub-menu">
+                <li className={isActive('/createUser') ? 'active' : ''}>
+                  <Link to="/createUser" onClick={() => { handleSubClick('config'); console.log('Navegando a Crear Usuario'); }}>
+                    Crear Usuario
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
         </ul>
       </div>
 

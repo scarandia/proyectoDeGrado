@@ -1,3 +1,4 @@
+/* Sidebar General Styles */
 .sidebar {
   position: fixed;
   top: 0;
@@ -39,17 +40,17 @@
   font-size: 24px;
   cursor: pointer;
   display: block;
-  color: #00BFFF;
+  color: #00bfff;
 }
 
 .sidebar ul li .menu-link.active {
-  border-bottom: 2px solid #B58DED;
+  border-bottom: 2px solid #b58ded;
   padding-bottom: 5px;
   display: inline;
 }
 
 .sidebar ul li a {
-  color: #00BFFF;
+  color: #00bfff;
   text-decoration: none;
   font-size: 20px;
   display: inline;
@@ -60,7 +61,7 @@
 
 .sidebar ul li.active a {
   font-weight: bolder;
-  border-bottom-color: #B58DED;
+  border-bottom-color: #b58ded;
   border-bottom-width: 2px;
   margin-left: auto;
   margin-right: auto;
@@ -78,21 +79,22 @@
 }
 
 .sub-menu li a {
-  color: #00BFFF;
+  color: #00bfff;
   text-decoration: none;
   font-size: 18px;
 }
 
 .sub-menu li a.active {
-  border-bottom: 2px solid #B58DED;
+  border-bottom: 2px solid #b58ded;
   padding-bottom: 5px;
   display: inline;
 }
 
+/* Toggle Button */
 .toggle-button {
   margin: 10px;
-  width: 50px; /* Ancho fijo */
-  height: 50px; /* Alto fijo */
+  width: 50px;
+  height: 50px;
   background-color: #007bff;
   color: white;
   border: none;
@@ -108,12 +110,13 @@
 }
 
 .toggle-button.open {
-  left: 220px;
+  left: 215px;
 }
+
 .toggle-button.closed {
-  left: 20px;
+  left: 15px; /* Ajustado para posicionarse junto a la sidebar */
 }
 
 .toggle-button:hover {
-  background-color: #B58DED;
+  background-color: #b58ded;
 }
