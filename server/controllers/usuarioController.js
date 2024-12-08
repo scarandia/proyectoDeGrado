@@ -9,7 +9,6 @@ const register = async (req, res) => {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'Email ya está registrado' });
-            res.status(500).json({ error: 'Error al crear usuario.', detalle: error.message });
         }
 
         // Crear nuevo usuario
@@ -19,7 +18,7 @@ const register = async (req, res) => {
         res.status(201).json({ message: 'Usuario registrado con éxito' });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
+        res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
     }
 };
 
@@ -30,7 +29,7 @@ const login = async (req, res) => {
         // Buscar el usuario por email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado', detalle: validationError.message  });
+            return res.status(400).json({ message: 'Usuario no encontrado', detalle: error.message });
         }
 
         // Comparar la contraseña
@@ -39,24 +38,18 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Contraseña incorrecta' });
         }
 
-        console.log("process.env.JWT_SECRET");
-        console.log(process.env.JWT_SECRET);
-
-        
         // Generar token JWT
         const token = jwt.sign({ id: user._id }, "contraseña", {
-            expiresIn: 86400, // 24 horas
+            expiresIn: "30m", // 30 minutos
         });
-        
         
         // Enviar respuesta de login exitoso con el token
         res.status(200).json({ message: 'Login exitoso', token, user: { id: user._id, email: user.email, role: user.role } });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
+        res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
     }
 };
-
 
 const createUser = async (req, res) => {
     try {
@@ -70,12 +63,34 @@ const createUser = async (req, res) => {
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', detalle: validationError.message  });
+        res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
+    }
+};
+
+// Función para eliminar un usuario
+const deleteUser = async (req, res) => {
+    try {
+        const { userId } = req.params;  // ID del usuario a eliminar
+
+        // Verificar si el usuario existe
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Eliminar usuario
+        await User.findByIdAndDelete(userId);
+
+        res.status(200).json({ message: 'Usuario eliminado con éxito' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
     }
 };
 
 module.exports = {
     register, 
     login, 
-    createUser
+    createUser,
+    deleteUser
 };

@@ -28,8 +28,7 @@ const ProductoSchema = new mongoose.Schema({
     },
     proveedor: {
         nombre: {
-            type:mongoose.Schema.Types.ObjectId,
-            ref: 'Fabricante',
+            type: String,
             required: false
         }
     },

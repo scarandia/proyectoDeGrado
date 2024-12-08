@@ -1,15 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { register, login } = require('../controllers/usuarioController');
+const { register, login, deleteUser } = require('../controllers/usuarioController');
 //const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
 
-//registrar usuario
+// Rutas para los endpoints
 router.post('/register', register);
-
-//login
 router.post('/login', login);
-
-// Crear usuario por administrador, protegido por autenticación y autorización
-//router.post('/create-user', authenticate, isAdmin, usuarioController.createUser);
+router.delete('/delete/:userId', deleteUser);  // Ruta para eliminar usuario
 
 module.exports = router;

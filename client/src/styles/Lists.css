@@ -1,10 +1,9 @@
-  /* Estilo para el contenedor genérico de listas */
   .information-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start; /* Asegura que las tarjetas se alineen a la izquierda */
-    width: 100%; /* Asegura que el contenedor ocupe el 100% del ancho */
+    justify-content: flex-start; /* tarjetas se alineen a la izquierda */
+    width: 100%;
   }
 
   /* Estilo para las tarjetas de información */
@@ -12,8 +11,8 @@
     background-color: #f8f8f8;
     border: 1px solid #ddd;
     padding: 15px;
-    width: 280px;  /* Ancho mínimo de las tarjetas */
-    max-width: 300px; /* Ancho máximo para las tarjetas */
+    width: 280px; 
+    max-width: 300px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex: 1 0 280px; /* Hacemos que cada tarjeta se ajuste dinámicamente */

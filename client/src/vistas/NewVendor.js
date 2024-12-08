@@ -1,166 +1,205 @@
-import React, { useState } from 'react';
-import BackgroundCard from '../componentes/BackgroundCard';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const NewVendorPage = () => {
-  const [vendedor, setVendedor] = useState({
+const VendedorList = () => {
+  const [vendedores, setVendedores] = useState([]);
+  const [formData, setFormData] = useState({
     idVendedor: '',
     nombre: '',
     apellido: '',
     ciVendedor: '',
-    contacto: {
-      telefono: '',
-      email: '',
-    },
-    activo: true,
+    telefono: '',
+    email: '',
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
+
+  // Obtener todos los vendedores
+  useEffect(() => {
+    fetchVendedores();
+  }, []);
+
+  const fetchVendedores = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/vendedores');
+      setVendedores(response.data);
+    } catch (error) {
+      console.error('Error al obtener los vendedores:', error);
+    }
+  };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (name.includes('contacto')) {
-      const contactoField = name.split('.')[1];
-      setVendedor({
-        ...vendedor,
-        contacto: { ...vendedor.contacto, [contactoField]: value },
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:5000/api/vendedores', {
+        idVendedor: formData.idVendedor,
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        ciVendedor: formData.ciVendedor,
+        contacto: {
+          telefono: formData.telefono,
+          email: formData.email,
+        },
       });
-    } else {
-      setVendedor({
-        ...vendedor,
-        [name]: type === 'checkbox' ? checked : value,
+      fetchVendedores();
+      setFormData({
+        idVendedor: '',
+        nombre: '',
+        apellido: '',
+        ciVendedor: '',
+        telefono: '',
+        email: '',
       });
+    } catch (error) {
+      console.error('Error al agregar el vendedor:', error);
+    }
+  };
+
+  const handleEdit = (vendedor) => {
+    setIsEditing(true);
+    setEditId(vendedor._id);
+    setFormData({
+      idVendedor: vendedor.idVendedor,
+      nombre: vendedor.nombre,
+      apellido: vendedor.apellido,
+      ciVendedor: vendedor.ciVendedor,
+      telefono: vendedor.contacto.telefono,
+      email: vendedor.contacto.email || '',
+    });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:5000/api/vendedores/${editId}`, {
+        idVendedor: formData.idVendedor,
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        ciVendedor: formData.ciVendedor,
+        contacto: {
+          telefono: formData.telefono,
+          email: formData.email,
+        },
+      });
+      fetchVendedores();
+      setIsEditing(false);
+      setEditId(null);
+      setFormData({
+        idVendedor: '',
+        nombre: '',
+        apellido: '',
+        ciVendedor: '',
+        telefono: '',
+        email: '',
+      });
+    } catch (error) {
+      console.error('Error al actualizar el vendedor:', error);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/vendedores/${id}`);
+      fetchVendedores();
+    } catch (error) {
+      console.error('Error al eliminar el vendedor:', error);
     }
   };
 
   return (
-    <BackgroundCard>
-      <form>
-        <h3 className="mb-4 text-center">Formulario de Vendedor</h3>
+    <div>
+      <h1>Gestión de Vendedores</h1>
 
-        {/* ID y Nombre */}
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="idVendedor">ID del Vendedor</label>
-              <input
-                type="text"
-                className="form-control"
-                id="idVendedor"
-                name="idVendedor"
-                placeholder="ID del vendedor"
-                value={vendedor.idVendedor}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="nombre">Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                id="nombre"
-                name="nombre"
-                placeholder="Nombre del vendedor"
-                value={vendedor.nombre}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Apellido y CI */}
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="apellido">Apellido</label>
-              <input
-                type="text"
-                className="form-control"
-                id="apellido"
-                name="apellido"
-                placeholder="Apellido del vendedor"
-                value={vendedor.apellido}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="ciVendedor">C.I. del Vendedor</label>
-              <input
-                type="text"
-                className="form-control"
-                id="ciVendedor"
-                name="ciVendedor"
-                placeholder="C.I. del vendedor"
-                value={vendedor.ciVendedor}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Teléfono y Email */}
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="contacto.telefono">Teléfono</label>
-              <input
-                type="text"
-                className="form-control"
-                id="contacto.telefono"
-                name="contacto.telefono"
-                placeholder="Teléfono de contacto"
-                value={vendedor.contacto.telefono}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="form-group">
-              <label htmlFor="contacto.email">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                id="contacto.email"
-                name="contacto.email"
-                placeholder="Email de contacto"
-                value={vendedor.contacto.email}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Estado Activo */}
-        <div className="row">
-          <div className="col-md-6 d-flex align-items-center">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                id="activo"
-                name="activo"
-                checked={vendedor.activo}
-                onChange={handleChange}
-              />
-              <label className="form-check-label" htmlFor="activo">
-                Activo
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <button type="submit" className="btn btn-primary mt-3 w-100">
-          Guardar Vendedor
-        </button>
+      <form onSubmit={isEditing ? handleUpdate : handleAdd}>
+        <input
+          type="text"
+          name="idVendedor"
+          placeholder="ID Vendedor"
+          value={formData.idVendedor}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          value={formData.nombre}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido"
+          value={formData.apellido}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="ciVendedor"
+          placeholder="CI Vendedor"
+          value={formData.ciVendedor}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="telefono"
+          placeholder="Teléfono"
+          value={formData.telefono}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo Electrónico"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        <button type="submit">{isEditing ? 'Actualizar' : 'Agregar'}</button>
+        {isEditing && <button onClick={() => setIsEditing(false)}>Cancelar</button>}
       </form>
-    </BackgroundCard>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>CI</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {vendedores.map((vendedor) => (
+            <tr key={vendedor._id}>
+              <td>{vendedor.idVendedor}</td>
+              <td>{vendedor.nombre}</td>
+              <td>{vendedor.apellido}</td>
+              <td>{vendedor.ciVendedor}</td>
+              <td>{vendedor.contacto.telefono}</td>
+              <td>{vendedor.contacto.email || 'N/A'}</td>
+              <td>
+                <button onClick={() => handleEdit(vendedor)}>Editar</button>
+                <button onClick={() => handleDelete(vendedor._id)}>Eliminar</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-export default NewVendorPage;
+export default VendedorList;

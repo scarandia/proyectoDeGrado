@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import "../styles/login.css";
+//import "../styles/login.css";
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 
 function Login() {

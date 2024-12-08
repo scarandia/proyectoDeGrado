@@ -24,8 +24,8 @@ class Signin extends Component {
         { email, password }
       );
       if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-        localStorage.setItem("token", response.data.token);
+        sessionStorage.setItem("user", JSON.stringify(response.data));
+        sessionStorage.setItem("token", response.data.token);
         this.props.navigate("/home");
       }
     } catch (error) {
@@ -46,7 +46,7 @@ class Signin extends Component {
             </div>
           )}
           <form onSubmit={this.handleSubmit}>
-            <div className="mb-3">
+            <div className="mb-3 mt-5">
               <label htmlFor="email" className="form-label">
                 Email
               </label>
@@ -77,6 +77,7 @@ class Signin extends Component {
             <button type="submit" className="btn btn-primary w-100 mt-3">
               Iniciar Sesión
             </button>
+            <p className="text-center text-muted mt-5">Made with &lt;3</p>
           </form>
         </div>
       </div>
