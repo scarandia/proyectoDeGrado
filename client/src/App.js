@@ -21,7 +21,7 @@ import VendorList from './vistas/VendorList';
 
 import CreateUser from './vistas/CreateUser';
 import Dashboard from './vistas/Dashboard';
-import Config from './vistas/Config';
+import Profile from './vistas/Profile';
 
 function App() {
   console.log(localStorage.getItem('user'));
@@ -95,9 +95,9 @@ function App() {
             <CreateUser />
          // </ProtectedRoute>
         } />
-        <Route path="/config" element={
+        <Route path="/profile" element={
          // <ProtectedRoute requiredRole="admin">
-            <Config />
+            <Profile />
          // </ProtectedRoute>
         } />
         <Route path="/404" element={<Default />} />

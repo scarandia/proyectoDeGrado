@@ -1,205 +1,172 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import BackgroundCard from '../componentes/BackgroundCard';
 
-const VendedorList = () => {
-  const [vendedores, setVendedores] = useState([]);
-  const [formData, setFormData] = useState({
+const NewSellerPage = () => {
+  const [vendedor, setVendedor] = useState({
     idVendedor: '',
     nombre: '',
     apellido: '',
     ciVendedor: '',
-    telefono: '',
-    email: '',
+    contacto: {
+      telefono: '',
+      email: '',
+    },
+    activo: true,
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
-
-  // Obtener todos los vendedores
-  useEffect(() => {
-    fetchVendedores();
-  }, []);
-
-  const fetchVendedores = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/vendedores');
-      setVendedores(response.data);
-    } catch (error) {
-      console.error('Error al obtener los vendedores:', error);
-    }
-  };
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const { name, value } = e.target;
+    setVendedor({ ...vendedor, [name]: value });
+  };
+
+  const handleContactoChange = (e) => {
+    const { name, value } = e.target;
+    setVendedor({
+      ...vendedor,
+      contacto: { ...vendedor.contacto, [name]: value },
     });
   };
 
-  const handleAdd = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/vendedores', {
-        idVendedor: formData.idVendedor,
-        nombre: formData.nombre,
-        apellido: formData.apellido,
-        ciVendedor: formData.ciVendedor,
-        contacto: {
-          telefono: formData.telefono,
-          email: formData.email,
+      const response = await fetch('http://localhost:5000/api/vendedores', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(vendedor),
       });
-      fetchVendedores();
-      setFormData({
-        idVendedor: '',
-        nombre: '',
-        apellido: '',
-        ciVendedor: '',
-        telefono: '',
-        email: '',
-      });
-    } catch (error) {
-      console.error('Error al agregar el vendedor:', error);
-    }
-  };
 
-  const handleEdit = (vendedor) => {
-    setIsEditing(true);
-    setEditId(vendedor._id);
-    setFormData({
-      idVendedor: vendedor.idVendedor,
-      nombre: vendedor.nombre,
-      apellido: vendedor.apellido,
-      ciVendedor: vendedor.ciVendedor,
-      telefono: vendedor.contacto.telefono,
-      email: vendedor.contacto.email || '',
-    });
-  };
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put(`http://localhost:5000/api/vendedores/${editId}`, {
-        idVendedor: formData.idVendedor,
-        nombre: formData.nombre,
-        apellido: formData.apellido,
-        ciVendedor: formData.ciVendedor,
-        contacto: {
-          telefono: formData.telefono,
-          email: formData.email,
-        },
-      });
-      fetchVendedores();
-      setIsEditing(false);
-      setEditId(null);
-      setFormData({
-        idVendedor: '',
-        nombre: '',
-        apellido: '',
-        ciVendedor: '',
-        telefono: '',
-        email: '',
-      });
+      if (response.ok) {
+        alert('Vendedor creado exitosamente');
+        setVendedor({
+          idVendedor: '',
+          nombre: '',
+          apellido: '',
+          ciVendedor: '',
+          contacto: {
+            telefono: '',
+            email: '',
+          },
+          activo: true,
+        });
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message || 'No se pudo crear el vendedor'}`);
+      }
     } catch (error) {
-      console.error('Error al actualizar el vendedor:', error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/vendedores/${id}`);
-      fetchVendedores();
-    } catch (error) {
-      console.error('Error al eliminar el vendedor:', error);
+      console.error('Error al crear vendedor:', error);
+      alert('Hubo un error al intentar guardar el vendedor.');
     }
   };
 
   return (
-    <div>
-      <h1>Gestión de Vendedores</h1>
+    <BackgroundCard>
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <h1>Crear Nuevo Vendedor</h1>
 
-      <form onSubmit={isEditing ? handleUpdate : handleAdd}>
-        <input
-          type="text"
-          name="idVendedor"
-          placeholder="ID Vendedor"
-          value={formData.idVendedor}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={formData.nombre}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="apellido"
-          placeholder="Apellido"
-          value={formData.apellido}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="ciVendedor"
-          placeholder="CI Vendedor"
-          value={formData.ciVendedor}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="telefono"
-          placeholder="Teléfono"
-          value={formData.telefono}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Correo Electrónico"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <button type="submit">{isEditing ? 'Actualizar' : 'Agregar'}</button>
-        {isEditing && <button onClick={() => setIsEditing(false)}>Cancelar</button>}
-      </form>
+          {/* ID Vendedor */}
+          <div className="form-group">
+            <label htmlFor="idVendedor">ID del Vendedor</label>
+            <input
+              type="text"
+              className="form-control"
+              id="idVendedor"
+              name="idVendedor"
+              placeholder="ID único del vendedor"
+              value={vendedor.idVendedor}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>CI</th>
-            <th>Teléfono</th>
-            <th>Email</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {vendedores.map((vendedor) => (
-            <tr key={vendedor._id}>
-              <td>{vendedor.idVendedor}</td>
-              <td>{vendedor.nombre}</td>
-              <td>{vendedor.apellido}</td>
-              <td>{vendedor.ciVendedor}</td>
-              <td>{vendedor.contacto.telefono}</td>
-              <td>{vendedor.contacto.email || 'N/A'}</td>
-              <td>
-                <button onClick={() => handleEdit(vendedor)}>Editar</button>
-                <button onClick={() => handleDelete(vendedor._id)}>Eliminar</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          {/* Nombre y Apellido */}
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="nombre">Nombre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Nombre del vendedor"
+                  value={vendedor.nombre}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="apellido">Apellido</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="apellido"
+                  name="apellido"
+                  placeholder="Apellido del vendedor"
+                  value={vendedor.apellido}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* CI Vendedor */}
+          <div className="form-group">
+            <label htmlFor="ciVendedor">CI del Vendedor</label>
+            <input
+              type="text"
+              className="form-control"
+              id="ciVendedor"
+              name="ciVendedor"
+              placeholder="Cédula de Identidad del vendedor"
+              value={vendedor.ciVendedor}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          {/* Contacto */}
+          <div className="form-group">
+            <label>Contacto</label>
+            <div className="row">
+              <div className="col-md-6">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="telefono"
+                  name="telefono"
+                  placeholder="Teléfono"
+                  value={vendedor.contacto.telefono}
+                  onChange={handleContactoChange}
+                  required
+                />
+              </div>
+              <div className="col-md-6">
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Email"
+                  value={vendedor.contacto.email}
+                  onChange={handleContactoChange}
+                />
+              </div>  
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary mt-3">
+            Guardar Vendedor
+          </button>
+        </form>
+      </div>
+    </BackgroundCard>
   );
 };
 
-export default VendedorList;
+export default NewSellerPage;
