@@ -42,7 +42,7 @@ const login = async (req, res) => {
         const token = jwt.sign({ id: user._id }, "contraseña", {
             expiresIn: "30m", // 30 minutos
         });
-
+        
         // Enviar respuesta de login exitoso con el token
         res.status(200).json({ message: 'Login exitoso', token, user: { id: user._id, email: user.email, role: user.role } });
     } catch (error) {
@@ -60,22 +60,9 @@ const createUser = async (req, res) => {
         await newUser.save();
 
         res.status(201).json({ message: 'Usuario creado con éxito por administrador' });
-
+        
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
-    }
-};
-
-const getUserProfile = async (req, res) => {
-    try {
-        const user = await User.findById(req.userId).select('-password'); 
-        if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado', error: 'userNotFound' });
-        }
-        res.status(200).json(user);
-    } catch (error) {
-        console.error('Error al obtener el perfil del usuario:', error);  // Log para depurar errores
         res.status(500).json({ message: 'Error en el servidor', detalle: error.message });
     }
 };
@@ -88,7 +75,7 @@ const deleteUser = async (req, res) => {
         // Verificar si el usuario existe
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado', error: 'userNotFound'  });
+            return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
         // Eliminar usuario
@@ -102,9 +89,8 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-    register,
-    login,
+    register, 
+    login, 
     createUser,
-    getUserProfile,
     deleteUser
 };

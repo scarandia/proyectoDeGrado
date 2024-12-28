@@ -1,4 +1,3 @@
-require('dotenv').config();  //variables de entorno desde .env
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/database');

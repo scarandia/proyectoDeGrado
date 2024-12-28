@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '../componentes/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Sidebar from '../componentes/Sidebar';
 import '../styles/Dashboard.css';
 
 const Dashboard = ({ isOpen, toggleSidebar }) => {

@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/usuarioModel');
+const User = require('../models/userModel');
 
 // Middleware de autenticación
 exports.authenticate = (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];  // Extraer token del formato "Bearer token"
-  console.log("Token recibido en el middleware:", token);  // Verifica el token recibido
+  const token = req.headers['authorization'];
 
   if (!token) {
     return res.status(401).json({ message: 'No token provided' });
@@ -12,11 +11,9 @@ exports.authenticate = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      console.log("Error al verificar el token:", err);  // Verifica el error de verificación
-      return res.status(401).json({ message: 'Failed to authenticate token' });    }
-
-    console.log("Token decodificado:", decoded);  // Inspecciona los datos decodificados
-    req.userId = decoded.id;  // Guardamos el ID del usuario
+      return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
+    req.userId = decoded.id;
     next();
   });
 };
