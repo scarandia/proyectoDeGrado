@@ -40,7 +40,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
           {/* Dashboard */}
           <li className={`${isActive('/home') ? 'active' : ''} ${boldMenu === 'dashboard' ? 'bold' : ''}`}>
             <Link to="/home" onClick={() => handleMainClick('dashboard')}>
-              Dashboard
+              Panel de Control
             </Link>
           </li>
 

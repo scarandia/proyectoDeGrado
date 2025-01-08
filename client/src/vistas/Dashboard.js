@@ -1,7 +1,6 @@
-import React from 'react';
-import Card from '../componentes/Card';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Dashboard.css';
+import React, { useState } from 'react';
+import { Box, CssBaseline, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Container, AppBar, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Dashboard = ({ }) => {
   return (
