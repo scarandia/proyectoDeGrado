@@ -114,7 +114,7 @@
 }
 
 .toggle-button.closed {
-  left: 15px; /* Ajustado para posicionarse junto a la sidebar */
+  left: 18px; /* Ajustado para posicionarse junto a la sidebar */
 }
 
 .toggle-button:hover {
