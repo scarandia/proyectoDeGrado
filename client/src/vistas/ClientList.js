@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Modal, Button } from 'react-bootstrap';
 import BackgroundCard from '../componentes/BackgroundCard';
-import '../styles/Lists.css'; // Suponiendo que creas un archivo CSS para los estilos
+import DetailView from './DetailView';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/Lists.css';
 
 const ClientList = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedClientId, setSelectedClientId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Jala lista de clientes desde API
     const fetchClients = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/clientes');
@@ -27,31 +33,86 @@ const ClientList = () => {
   if (loading) return <p>Cargando clientes...</p>;
   if (error) return <p>{error}</p>;
 
+  const handleRowClick = (clientId) => {
+    setSelectedClientId(clientId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedClientId(null);
+  };
+
+  const clientFields = [
+    { key: 'nombreCliente', label: 'Nombre' },
+    { key: 'apellidoCliente', label: 'Apellido' },
+    { key: 'tipoNegocio', label: 'Tipo de Negocio' },
+    { key: 'nombreNegocio', label: 'Nombre de Negocio' },
+    { key: 'contacto.telefono', label: 'Contacto' },
+    { key: 'contacto.email', label: 'Correo' },
+    { key: 'direccion.calle', label: 'Dirección' },
+    { key: 'deuda', label: 'Deuda' },
+    { key: 'historialPedidos', label: 'Historial de Pedidos' },
+    { key: 'notas', label: 'Notas' },
+  ];
+
   return (
-    <BackgroundCard>
-      <div>
-        <h1>Lista de Clientes</h1>
-        {clients.length === 0 ? (
-          <p>No hay clientes disponibles</p>
-        ) : (
-          <div className="information-list">
-            {clients.map((client) => (
-              <div className="information-card" key={client._id}>
-                <h3>{client.nombreCliente} {client.apellidoCliente}</h3>
-                <p><strong>Tipo de Negocio:</strong> {client.tipoNegocio}</p>
-                <p><strong>Nombre de Negocio:</strong> {client.nombreNegocio}</p>
-                <p><strong>Contacto:</strong> {client.contacto.telefono} </p>
-                <p><strong>Correo: </strong>{client.contacto.email}</p>
-                <p><strong>Dirección:</strong> {client.direccion.calle}, {client.direccion.ciudad || ''}, {client.direccion.codigo_postal || ''}, {client.direccion.pais || ''}</p>
-                <p><strong>Deuda:</strong> {client.deuda}</p>
-                <p><strong>Historial de Pedidos:</strong> {client.historialPedidos.length > 0 ? client.historialPedidos.join(', ') : 'Ninguno'}</p>
-                <p><strong>Notas:</strong> {client.notas}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </BackgroundCard>
+    <div className="client-list-container">
+      <BackgroundCard className="client-list-card">
+        <div>
+          <h1>Lista de Clientes</h1>
+          {clients.length === 0 ? (
+            <p>No hay clientes disponibles</p>
+          ) : (
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Tipo de Negocio</th>
+                  <th scope="col">Nombre de Negocio</th>
+                  <th scope="col">Contacto</th>
+                  <th scope="col">Correo</th>
+                  <th scope="col">Dirección</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients.map((client) => (
+                  <tr key={client._id} onClick={() => handleRowClick(client._id)} style={{ cursor: 'pointer' }}>
+                    <td>{client.nombreCliente} {client.apellidoCliente}</td>
+                    <td>{client.tipoNegocio}</td>
+                    <td>{client.nombreNegocio}</td>
+                    <td>{client.contacto.telefono}</td>
+                    <td>{client.contacto.email}</td>
+                    <td>{client.direccion.calle}, {client.direccion.ciudad || ''}, {client.direccion.codigo_postal || ''}, {client.direccion.pais || ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Detalle del Cliente</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedClientId && (
+              <DetailView
+                entityType="Cliente"
+                apiEndpoint="http://localhost:5000/api/clientes"
+                fields={clientFields}
+                id={selectedClientId}
+              />
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseModal}>
+              Cerrar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </BackgroundCard>
+    </div>
   );
 };
 

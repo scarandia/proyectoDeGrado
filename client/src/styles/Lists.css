@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start; /* tarjetas se alineen a la izquierda */
+    justify-content: flex-start; /* Align cards to the left */
     width: 100%;
   }
 
@@ -11,12 +11,10 @@
     background-color: #f8f8f8;
     border: 1px solid #ddd;
     padding: 15px;
-    width: 280px; 
-    max-width: 300px;
-    border-radius: 8px;
+    max-width: 350px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex: 1 0 280px; /* Hacemos que cada tarjeta se ajuste dinámicamente */
-    box-sizing: border-box; /* Asegura que el padding no se sume al ancho */
+    flex: 1 0 280px; /* Make each card adjust dynamically */
+    box-sizing: border-box; /* Ensures that padding does not add to the width */
   }
 
   /* Estilo para los encabezados dentro de las tarjetas */
@@ -36,7 +34,7 @@
     color: #000;
   }
 
-  /* Detalles dentro de las tarjetas */
+  /* Details inside the cards */
   .productos-detalle ul {
     list-style-type: none;
     padding: 0;
@@ -47,10 +45,10 @@
     color: #555;
   }
 
-  /* Ajuste para pantallas pequeñas */
+  /* Adjustment for small screens */
   @media (max-width: 768px) {
     .information-card {
-      width: 100%; /* En pantallas pequeñas, las tarjetas ocuparán todo el ancho */
-      max-width: none; /* Quitar el max-width para pantallas pequeñas */
+      width: 100%; /* On small screens, the cards will take up the full width */
+      max-width: none; /* Remove max-width for small screens */
     }
   }

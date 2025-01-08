@@ -5,10 +5,11 @@ import Sidebar from './componentes/Sidebar';
 import Login from './vistas/Login';
 import Default from './vistas/Default';
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import ProtectedRoute from './componentes/ProtectedRoute'; // Asegúrate de importar el componente ProtectedRoute
+import ProtectedRoute from './componentes/ProtectedRoute';
 
 import NewClient from './vistas/NewClient';
 import ClientList from './vistas/ClientList';
+import DetailView from './vistas/DetailView';
 
 import NewOrder from './vistas/NewOrder';
 import OrderList from './vistas/OrderList';
@@ -26,7 +27,6 @@ import Config from './vistas/Config';
 function App() {
   console.log(localStorage.getItem('user'));
 
-
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -34,11 +34,41 @@ function App() {
     setIsOpen(!isOpen);
   };
 
-  // No renderizar la barra de navegación en la página de login y 404
-  const showSidebar = location.pathname !== '/' && location.pathname !== '/404';
+  const clientFields = [
+    { key: 'nombreCliente', label: 'Nombre' },
+    { key: 'apellidoCliente', label: 'Apellido' },
+    { key: 'tipoNegocio', label: 'Tipo de Negocio' },
+    { key: 'nombreNegocio', label: 'Nombre de Negocio' },
+    { key: 'contacto.telefono', label: 'Contacto' },
+    { key: 'contacto.email', label: 'Correo' },
+    { key: 'direccion.calle', label: 'Dirección' },
+  ];
 
-  console.log('Location:', location.pathname);
-  console.log('Show Sidebar:', showSidebar);
+  const orderFields = [
+    { key: 'orderId', label: 'ID de Orden' },
+    { key: 'cliente', label: 'Cliente' },
+    { key: 'productos', label: 'Productos' },
+    { key: 'total', label: 'Total' },
+    { key: 'fecha', label: 'Fecha' },
+  ];
+
+  const productFields = [
+    { key: 'nombreProducto', label: 'Nombre del Producto' },
+    { key: 'categoria', label: 'Categoría' },
+    { key: 'precio', label: 'Precio' },
+    { key: 'stock', label: 'Stock' },
+    { key: 'descripcion', label: 'Descripción' },
+  ];
+
+  const vendorFields = [
+    { key: 'nombreVendedor', label: 'Nombre del Vendedor' },
+    { key: 'empresa', label: 'Empresa' },
+    { key: 'contacto.telefono', label: 'Contacto' },
+    { key: 'contacto.email', label: 'Correo' },
+    { key: 'direccion.calle', label: 'Dirección' },
+  ];
+
+  const showSidebar = location.pathname !== '/' && location.pathname !== '/404';
 
   return (
     <>
@@ -55,6 +85,11 @@ function App() {
             <ClientList />
           </ProtectedRoute>
         } />
+        <Route path="/client/:id" element={
+          <ProtectedRoute>
+            <DetailView entityType="Cliente" apiEndpoint="http://localhost:5000/api/clientes" fields={clientFields} />
+          </ProtectedRoute>
+        } />
         <Route path="/createClient" element={
           <ProtectedRoute>
             <NewClient />
@@ -63,6 +98,11 @@ function App() {
         <Route path="/orders" element={
           <ProtectedRoute>
             <OrderList />
+          </ProtectedRoute>
+        } />
+        <Route path="/order/:id" element={
+          <ProtectedRoute>
+            <DetailView entityType="Pedido" apiEndpoint="http://localhost:5000/api/orders" fields={orderFields} />
           </ProtectedRoute>
         } />
         <Route path="/createOrder" element={
@@ -75,6 +115,11 @@ function App() {
             <ProductList />
           </ProtectedRoute>
         } />
+        <Route path="/product/:id" element={
+          <ProtectedRoute>
+            <DetailView entityType="Producto" apiEndpoint="http://localhost:5000/api/products" fields={productFields} />
+          </ProtectedRoute>
+        } />
         <Route path="/createProduct" element={
           <ProtectedRoute>
             <NewProduct />
@@ -83,6 +128,11 @@ function App() {
         <Route path="/vendors" element={
           <ProtectedRoute>
             <VendorList />
+          </ProtectedRoute>
+        } />
+        <Route path="/vendor/:id" element={
+          <ProtectedRoute>
+            <DetailView entityType="Vendedor" apiEndpoint="http://localhost:5000/api/vendors" fields={vendorFields} />
           </ProtectedRoute>
         } />
         <Route path="/createVendor" element={

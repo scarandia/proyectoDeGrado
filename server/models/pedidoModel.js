@@ -63,7 +63,7 @@ const PedidoSchema = new mongoose.Schema({
 PedidoSchema.pre('save', async function (next) {
   try {
     // Realiza el populate de los productos
-    await this.populate('productos.producto'); // Cambiado de execPopulate()
+    await this.populate('productos.producto');
 
     // Calcula el precio total
     this.precio_total = this.productos.reduce((total, item) => {
