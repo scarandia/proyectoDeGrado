@@ -8,6 +8,7 @@ const distribuidorRoutes = require('./routes/distribuidorRoutes');
 const fabricanteRoutes = require('./routes/fabricanteRoutes');
 const pedidoRoutes = require('./routes/pedidoRoutes');
 const productoRoutes = require('./routes/productoRoutes');
+const categoriaRoutes = require('./routes/categoriaRoutes');
 const rutaRoutes = require('./routes/rutaRoutes');
 const vendedorRoutes = require('./routes/vendedorRoutes');
 const cors = require('cors');
@@ -37,6 +38,7 @@ app.use('/api/distribuidores', distribuidorRoutes);
 app.use('/api/fabricantes', fabricanteRoutes);
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/productos', productoRoutes);
+app.use('/api/categorias', categoriaRoutes); 
 app.use('/api/rutas', rutaRoutes);
 app.use('/api/vendedores', vendedorRoutes);
 

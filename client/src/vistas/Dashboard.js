@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, CssBaseline, Toolbar, Typography, Drawer, List, ListItem, ListItemText, Container, AppBar, IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import Card from '../componentes/Card';
 
 const Dashboard = ({ }) => {
   return (

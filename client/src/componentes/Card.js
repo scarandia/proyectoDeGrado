@@ -14,7 +14,9 @@ const Card = ({ title, value }) => {
 
 const styles = {
   card: {
-    width: '18rem',
+    width: '100%', // Aumentar el ancho de la tarjeta para ocupar todo el espacio disponible
+    maxWidth: '800px',
+    margin: '0 auto', 
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
   },
 };
