@@ -13,7 +13,7 @@ const rutaRoutes = require('./routes/rutaRoutes');
 const vendedorRoutes = require('./routes/vendedorRoutes');
 const cors = require('cors');
 
-const respuestaLogger = require('./middleware/respuestaLogger')
+const respuestaLogger = require('./middleware/respuestaLogger');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -22,23 +22,23 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-//parsear JSON
+// Parsear JSON
 app.use(express.json());
 
-//Conecta a MongoDB -> usa database.js
+// Conectar a MongoDB
 connectDB();
 
 // Usar el middleware de loggeo de info extra
 app.use(respuestaLogger);
 
-//Usar Controladores
+// Usar Controladores
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/distribuidores', distribuidorRoutes);
 app.use('/api/fabricantes', fabricanteRoutes);
 app.use('/api/pedidos', pedidoRoutes);
 app.use('/api/productos', productoRoutes);
-app.use('/api/categorias', categoriaRoutes); 
+app.use('/api/categorias', categoriaRoutes);
 app.use('/api/rutas', rutaRoutes);
 app.use('/api/vendedores', vendedorRoutes);
 

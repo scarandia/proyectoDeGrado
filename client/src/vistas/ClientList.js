@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import BackgroundCard from '../componentes/BackgroundCard';
 import DetailView from './DetailView';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,7 +12,7 @@ const ClientList = () => {
   const [error, setError] = useState(null);
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -43,47 +42,68 @@ const ClientList = () => {
     setSelectedClientId(null);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredClients = clients.filter((client) => {
+    return (
+      (client.nombreCliente && client.nombreCliente.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.CI && client.CI.includes(searchTerm))
+    );
+  });
+
   const clientFields = [
     { key: 'nombreCliente', label: 'Nombre' },
     { key: 'apellidoCliente', label: 'Apellido' },
-    { key: 'tipoNegocio', label: 'Tipo de Negocio' },
+    { key: 'CI', label: 'CI' },
     { key: 'nombreNegocio', label: 'Nombre de Negocio' },
-    { key: 'contacto.telefono', label: 'Contacto' },
-    { key: 'contacto.email', label: 'Correo' },
-    { key: 'direccion.calle', label: 'Dirección' },
+    { key: 'tipoNegocio', label: 'Tipo de Negocio' },
     { key: 'deuda', label: 'Deuda' },
-    { key: 'historialPedidos', label: 'Historial de Pedidos' },
     { key: 'notas', label: 'Notas' },
   ];
 
   return (
-    <div className="client-list-container">
+    <div className="client-list-container" style={{ width: '1500px', margin: '0 auto' }}>
       <BackgroundCard className="client-list-card">
         <div>
           <h1>Lista de Clientes</h1>
-          {clients.length === 0 ? (
+          <Form>
+            <Form.Group controlId="search">
+              <Form.Label>Buscar</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Buscar por nombre o CI"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </Form.Group>
+          </Form>
+          {filteredClients.length === 0 ? (
             <p>No hay clientes disponibles</p>
           ) : (
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">Nombre</th>
-                  <th scope="col">Tipo de Negocio</th>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">CI</th>
                   <th scope="col">Nombre de Negocio</th>
-                  <th scope="col">Contacto</th>
-                  <th scope="col">Correo</th>
-                  <th scope="col">Dirección</th>
+                  <th scope="col">Tipo de Negocio</th>
+                  <th scope="col">Deuda</th>
+                  <th scope="col">Notas</th>
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client) => (
+                {filteredClients.map((client) => (
                   <tr key={client._id} onClick={() => handleRowClick(client._id)} style={{ cursor: 'pointer' }}>
-                    <td>{client.nombreCliente} {client.apellidoCliente}</td>
-                    <td>{client.tipoNegocio}</td>
-                    <td>{client.nombreNegocio}</td>
-                    <td>{client.contacto.telefono}</td>
-                    <td>{client.contacto.email}</td>
-                    <td>{client.direccion.calle}, {client.direccion.ciudad || ''}, {client.direccion.codigo_postal || ''}, {client.direccion.pais || ''}</td>
+                    <td style={{ padding: '15px' }}>{client.nombreCliente}</td>
+                    <td style={{ padding: '15px' }}>{client.apellidoCliente}</td>
+                    <td style={{ padding: '15px' }}>{client.CI}</td>
+                    <td style={{ padding: '15px' }}>{client.nombreNegocio}</td>
+                    <td style={{ padding: '15px' }}>{client.tipoNegocio}</td>
+                    <td style={{ padding: '15px' }}>{client.deuda}</td>
+                    <td style={{ padding: '15px' }}>{client.notas}</td>
                   </tr>
                 ))}
               </tbody>

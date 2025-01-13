@@ -56,7 +56,7 @@ const updatePedido = async (req, res) => {
     try {
         const pedidoActualizado = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('productos.producto').populate('distribuidorAsignado');
         if (!pedidoActualizado) {
-            return res.status(404).json({ error: 'Pedido no encontrado.', detalle: validationError.message });
+            return res.status(404).json({ error: 'Pedido no encontrado.' });
         }
         res.status(200).json(pedidoActualizado);
     } catch (error) {
@@ -72,7 +72,7 @@ const deletePedido = async (req, res) => {
     try {
         const pedidoEliminado = await Pedido.findByIdAndDelete(req.params.id);
         if (!pedidoEliminado) {
-            return res.status(404).json({ error: 'Pedido no encontrado.', detalle: validationError.message  });
+            return res.status(404).json({ error: 'Pedido no encontrado.' });
         }
         res.status(200).json({ message: 'Pedido eliminado correctamente.' });
     } catch (error) {
