@@ -1,4 +1,4 @@
-# Sistema de gestión de inventario y mejora de la logística de equipo de ventas para pequeñas y medianas empresas
+# Sistema de gestión de inventario y mejora de la logística de equipo de ventas para pequeñas y medianas empresas de distribución
 Este proyecto es un sistema de inventario desarrollado en Node.js y Express con MongoDB. Su objetivo es gestionar el flujo de información entre distribuidores, clientes, pedidos, productos y fabricantes, con roles específicos como vendedor y administrador.
 
 ### Nota: Este proyecto está en desarrollo y tiene como finalidad ser un proyecto de grado
