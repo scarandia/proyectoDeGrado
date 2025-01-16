@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('../controllers/authController');
+const { register, login, deleteUser } = require('../controllers/usuarioController');
+//const { authenticate, isAdmin } = require('../middlewares/authMiddleware');
 
-//registrar usuario
-router.post('/register', authController.register);
-
-//login
-router.post('/login', authController.login);
+// Rutas para los endpoints
+router.post('/register', register);
+router.post('/login', login);
+router.delete('/delete/:userId', deleteUser);  // Ruta para eliminar usuario
 
 module.exports = router;

@@ -4,20 +4,34 @@ const Pedido = require('../models/pedidoModel');
 const createPedido = async (req, res) => {
     try {
         const nuevoPedido = new Pedido(req.body);
+
+        // Valida el esquema y datos
+        const validationError = nuevoPedido.validateSync();
+        if (validationError) {
+            return res.status(400).json({ error: 'Datos inválidos.', detalle: validationError.message });
+        }
+
+        // Guarda el pedido
         await nuevoPedido.save();
         res.status(201).json(nuevoPedido);
     } catch (error) {
-        res.status(500).json({ error: 'Error al crear el pedido.' });
+        res.status(500).json({ error: 'Error al crear el pedido.', detalle: error.message });
     }
 };
 
 // Obtener todos los pedidos
 const getPedidos = async (req, res) => {
     try {
-        const pedidos = await Pedido.find().populate('productos.producto').populate('distribuidorAsignado');
+        const pedidos = await Pedido.find()
+            .populate('productos.producto') // Asegúrate de que estos campos existan y sean válidos
+            .populate('cliente');
         res.status(200).json(pedidos);
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los pedidos.' });
+        console.error('Error al obtener pedidos:', error.message);
+        res.status(500).json({
+            error: 'Error al obtener los pedidos.',
+            detalle: error.message
+        });
     }
 };
 
@@ -30,7 +44,10 @@ const getPedidoById = async (req, res) => {
         }
         res.status(200).json(pedido);
     } catch (error) {
-        res.status(500).json({ error: 'Error al obtener el pedido.' });
+        res.status(500).json({
+            error: 'Error al obtener el pedido.',
+            detalle: error.message
+        });
     }
 };
 
@@ -43,7 +60,10 @@ const updatePedido = async (req, res) => {
         }
         res.status(200).json(pedidoActualizado);
     } catch (error) {
-        res.status(500).json({ error: 'Error al actualizar el pedido.' });
+        res.status(500).json({
+            error: 'Error al actualizar el pedido.',
+            detalle: error.message
+        });
     }
 };
 
@@ -56,7 +76,10 @@ const deletePedido = async (req, res) => {
         }
         res.status(200).json({ message: 'Pedido eliminado correctamente.' });
     } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar el pedido.' });
+        res.status(500).json({
+            error: 'Error al eliminar el pedido.',
+            detalle: error.message
+        });
     }
 };
 

@@ -15,8 +15,9 @@ const ProductoSchema = new mongoose.Schema({
         required: false
     },
     categoria: {
-        type: String,
-        required: false
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Categoria',
+        required: true
     },
     precio: {
         type: Number,
@@ -28,11 +29,6 @@ const ProductoSchema = new mongoose.Schema({
     },
     proveedor: {
         nombre: {
-            type:mongoose.Schema.Types.ObjectId,
-            ref: 'Fabricante',
-            required: false
-        },
-        contacto: {
             type: String,
             required: false
         }

@@ -1,6 +1,12 @@
 node_modules
 client/node_modules
 .cache/
+<<<<<<< HEAD
 dist/
 *.log
 node_modules
+=======
+client/node_modules/.cache/
+dist/
+*.log
+>>>>>>> develop

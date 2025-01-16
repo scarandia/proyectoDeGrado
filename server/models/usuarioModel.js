@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -12,8 +12,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  }, role: {
+    type: String, enum: ['admin', 'user'],
+    default: 'user'
   }
-});
+}, { collection: 'usuarios' });
+
 
 //Middleware que encripta el password antes de guardarla
 userSchema.pre('save', async function (next) {
@@ -32,6 +36,5 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
-
 //exportar modelo de usuario
 module.exports = mongoose.model('User', userSchema);

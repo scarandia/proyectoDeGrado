@@ -14,6 +14,11 @@ const ClienteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    CI: {
+        type: String,
+        required: true,
+        unique: true
+    },
     nombreNegocio: {
         type: String, 
         required: true

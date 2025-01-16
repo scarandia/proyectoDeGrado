@@ -1,33 +1,23 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Card = ({ title, value }) => {
   return (
-    <div style={styles.card}>
-      <h2 style={styles.title}>{title}</h2>
-      <p style={styles.value}>{value}</p>
+    <div className="card text-center mb-3" style={styles.card}>
+      <div className="card-body">
+        <h5 className="card-title">{title}</h5>
+        <p className="card-text">{value}</p>
+      </div>
     </div>
   );
 };
 
 const styles = {
   card: {
-    border: '1px solid #ddd',
-    padding: '1.5rem',
-    textAlign: 'center',
-    width: '200px',
-    backgroundColor:'white',
-    borderRadius: '22px',
+    width: '100%',
+    margin: '0 auto',
     boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-    margin: '20px'
-  
   },
-  title: {
-    fontSize: '1.2rem',
-    marginBottom: '1rem',
-  },
-  value: {
-    fontSize: '1.5rem'
-  }
 };
 
 export default Card;
