@@ -2,7 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start; /* Align cards to the left */
+    justify-content: flex-start;
+    /* Align cards to the left */
     width: 100%;
   }
 
@@ -13,8 +14,10 @@
     padding: 15px;
     max-width: 350px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    flex: 1 0 280px; /* Make each card adjust dynamically */
-    box-sizing: border-box; /* Ensures that padding does not add to the width */
+    flex: 1 0 280px;
+    /* Make each card adjust dynamically */
+    box-sizing: border-box;
+    /* Ensures that padding does not add to the width */
   }
 
   /* Estilo para los encabezados dentro de las tarjetas */
@@ -48,7 +51,24 @@
   /* Adjustment for small screens */
   @media (max-width: 768px) {
     .information-card {
-      width: 100%; /* On small screens, the cards will take up the full width */
-      max-width: none; /* Remove max-width for small screens */
+      width: 100%;
+      /* On small screens, the cards will take up the full width */
+      max-width: none;
+      /* Remove max-width for small screens */
     }
+  }
+
+  .circle {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .circle.green {
+    background-color: green;
+  }
+
+  .circle.red {
+    background-color: red;
   }

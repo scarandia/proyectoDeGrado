@@ -1,7 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const connectDB = require('./config/database');
+const cors = require('cors');
+const respuestaLogger = require('./middleware/respuestaLogger');
+require('dotenv').config();
 
+// Import routes
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const distribuidorRoutes = require('./routes/distribuidorRoutes');
@@ -11,9 +15,7 @@ const productoRoutes = require('./routes/productoRoutes');
 const categoriaRoutes = require('./routes/categoriaRoutes');
 const rutaRoutes = require('./routes/rutaRoutes');
 const vendedorRoutes = require('./routes/vendedorRoutes');
-const cors = require('cors');
 
-const respuestaLogger = require('./middleware/respuestaLogger');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -22,7 +24,7 @@ app.use(cors({
     origin: 'http://localhost:3000'
 }));
 
-// Parsear JSON
+// Middleware para manejar JSON
 app.use(express.json());
 
 // Conectar a MongoDB
@@ -31,7 +33,12 @@ connectDB();
 // Usar el middleware de loggeo de info extra
 app.use(respuestaLogger);
 
-// Usar Controladores
+// Ruta base
+app.get('/', (req, res) => {
+    res.send('Microservicio de distribución funcionando!');
+});
+
+// Registrar las rutas
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/distribuidores', distribuidorRoutes);
@@ -45,3 +52,5 @@ app.use('/api/vendedores', vendedorRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

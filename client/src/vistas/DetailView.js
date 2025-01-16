@@ -15,7 +15,8 @@ const DetailView = ({ entityType, apiEndpoint, fields, id }) => {
         setEntity(response.data);
         setLoading(false);
       } catch (err) {
-        setError(`Error al cargar el ${entityType}`);
+        console.error(`Error fetching ${entityType}:`, err); // Log the error to the console
+        setError(`Error al cargar el ${entityType}: ${err.message}`);
         setLoading(false);
       }
     };
