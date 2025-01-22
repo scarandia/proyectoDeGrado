@@ -65,7 +65,7 @@ const OrderList = () => {
   ];
 
   return (
-    <div className="order-list-container" style={{ width: '1500px', margin: '0 auto' }}>
+    <div className="order-list-container" style={{ width: '1900px', margin: '0 auto' }}>
       <BackgroundCard className="order-list-card">
         <div>
           <h1>Lista de Pedidos</h1>

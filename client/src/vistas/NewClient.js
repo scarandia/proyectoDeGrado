@@ -25,48 +25,16 @@ function NewClientPage() {
         notas: ''
     });
 
-    const [isOtro, setIsOtro] = useState(false);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === 'tipoNegocio') {
-            setIsOtro(value === 'Otro');
-            setClient((prev) => ({
-                ...prev,
-                tipoNegocio: value,
-                otroTipoNegocio: value === 'Otro' ? prev.otroTipoNegocio : ''
-            }));
-        } else if (name === 'telefono' || name === 'email') {
-            setClient((prev) => ({
-                ...prev,
-                contacto: {
-                    ...prev.contacto,
-                    [name]: value
-                }
-            }));
-        } else if (['calle', 'ciudad', 'codigo_postal', 'pais'].includes(name)) {
-            setClient((prev) => ({
-                ...prev,
-                direccion: {
-                    ...prev.direccion,
-                    [name]: value
-                }
-            }));
-        } else if (name === 'deuda') {
-            setClient((prev) => ({
-                ...prev,
-                [name]: parseFloat(value) || 0
-            }));
-        } else {
-            setClient((prev) => ({
-                ...prev,
-                [name]: value
-            }));
-        }
+        setClient((prevClient) => ({
+            ...prevClient,
+            [name]: value,
+        }));
     };
 
-    const createClient = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/api/clientes', client);
             console.log('Cliente creado:', response.data);
@@ -75,216 +43,239 @@ function NewClientPage() {
         }
     };
 
-    return ( 
-            <BackgroundCard>
-                <h2>Información Personal</h2>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="nombreCliente">Nombre(s)</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="nombreCliente"
-                                name="nombreCliente"
-                                placeholder="Nombre(s)"
-                                value={client.nombreCliente}
-                                onChange={handleChange}
-                                style={{ width: '100%' }}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="apellidoCliente">Apellidos</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="apellidoCliente"
-                                name="apellidoCliente"
-                                placeholder="Apellidos"
-                                value={client.apellidoCliente}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="CI">Cédula de Identidad</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="CI"
-                                name="CI"
-                                placeholder="Cédula de Identidad"
-                                value={client.CI}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="nombreNegocio">Nombre del Negocio</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="nombreNegocio"
-                                name="nombreNegocio"
-                                placeholder="Nombre del Negocio"
-                                value={client.nombreNegocio}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="tipoNegocio">Tipo de Negocio</label>
-                            <select
-                                className="form-control"
-                                id="tipoNegocio"
-                                name="tipoNegocio"
-                                value={client.tipoNegocio}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Selecciona tipo de negocio</option>
-                                <option value="Tienda de Barrio">Tienda de Barrio</option>
-                                <option value="Minorista">Minorista</option>
-                                <option value="Mayorista">Mayorista</option>
-                                <option value="Supermercado">Supermercado</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
-                    </div>
-                    {isOtro && (
+    return (
+        <div className="order-list-container" style={{ width: '1100px', margin: '0 auto' }}>
+            <BackgroundCard className="order-list-card">
+                <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Crear Nuevo Cliente</h2>
+                <form onSubmit={handleSubmit} className="centered-form">
+                    <h3>Información Personal</h3>
+                    <div className="row">
                         <div className="col-md-6">
                             <div className="form-group">
-                                <label htmlFor="otroTipoNegocio">Especifique el tipo de negocio</label>
+                                <label htmlFor="nombreCliente">Nombre(s)</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    id="otroTipoNegocio"
-                                    name="otroTipoNegocio"
-                                    placeholder="Especifique el tipo de negocio"
-                                    value={client.otroTipoNegocio}
+                                    id="nombreCliente"
+                                    name="nombreCliente"
+                                    placeholder="Nombre(s)"
+                                    value={client.nombreCliente}
                                     onChange={handleChange}
                                     required
                                 />
                             </div>
                         </div>
-                    )}
-                </div>
-
-                <h2>Contacto</h2>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="telefono">Teléfono</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="telefono"
-                                name="telefono"
-                                placeholder="Teléfono"
-                                value={client.contacto.telefono}
-                                onChange={handleChange}
-                                required
-                            />
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="apellidoCliente">Apellido(s)</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="apellidoCliente"
+                                    name="apellidoCliente"
+                                    placeholder="Apellido(s)"
+                                    value={client.apellidoCliente}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                className="form-control"
-                                id="email"
-                                name="email"
-                                placeholder="Email"
-                                value={client.contacto.email}
-                                onChange={handleChange}
-                            />
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="CI">Cédula de Identidad</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="CI"
+                                    name="CI"
+                                    placeholder="Cédula de Identidad"
+                                    value={client.CI}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="nombreNegocio">Nombre del Negocio</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="nombreNegocio"
+                                    name="nombreNegocio"
+                                    placeholder="Nombre del Negocio"
+                                    value={client.nombreNegocio}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <h2>Dirección</h2>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="calle">Calle</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="calle"
-                                name="calle"
-                                placeholder="Calle"
-                                value={client.direccion.calle}
-                                onChange={handleChange}
-                                required
-                            />
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="tipoNegocio">Tipo de Negocio</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="tipoNegocio"
+                                    name="tipoNegocio"
+                                    placeholder="Tipo de Negocio"
+                                    value={client.tipoNegocio}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="otroTipoNegocio">Otro Tipo de Negocio</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="otroTipoNegocio"
+                                    name="otroTipoNegocio"
+                                    placeholder="Otro Tipo de Negocio"
+                                    value={client.otroTipoNegocio}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="ciudad">Ciudad</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="ciudad"
-                                name="ciudad"
-                                placeholder="Ciudad"
-                                value={client.direccion.ciudad}
-                                onChange={handleChange}
-                            />
+                    <h3>Dirección</h3>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="calle">Calle</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="calle"
+                                    name="calle"
+                                    placeholder="Calle"
+                                    value={client.direccion.calle}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="ciudad">Ciudad</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="ciudad"
+                                    name="ciudad"
+                                    placeholder="Ciudad"
+                                    value={client.direccion.ciudad}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="codigo_postal">Código Postal</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="codigo_postal"
-                                name="codigo_postal"
-                                placeholder="Código Postal"
-                                value={client.direccion.codigo_postal}
-                                onChange={handleChange}
-                            />
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="codigo_postal">Código Postal</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="codigo_postal"
+                                    name="codigo_postal"
+                                    placeholder="Código Postal"
+                                    value={client.direccion.codigo_postal}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="pais">País</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="pais"
+                                    name="pais"
+                                    placeholder="País"
+                                    value={client.direccion.pais}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <label htmlFor="pais">País</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="pais"
-                                name="pais"
-                                placeholder="País"
-                                value={client.direccion.pais}
-                                onChange={handleChange}
-                            />
+                    <h3>Contacto</h3>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="telefono">Teléfono</label>
+                                <input
+                                    type="tel"
+                                    className="form-control"
+                                    id="telefono"
+                                    name="telefono"
+                                    placeholder="Teléfono"
+                                    value={client.contacto.telefono}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={client.contacto.email}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <button className="btn btn-primary mt-3" onClick={createClient} style={{ width: '100%' }}>
-                    Enviar
-                </button>
-            </BackgroundCard> 
+                    <h3>Información Adicional</h3>
+                    <div className="form-group">
+                        <label htmlFor="deuda">Deuda</label>
+                        <input
+                            type="number"
+                            className="form-control"
+                            id="deuda"
+                            name="deuda"
+                            placeholder="Deuda"
+                            value={client.deuda}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="notas">Notas</label>
+                        <textarea
+                            className="form-control"
+                            id="notas"
+                            name="notas"
+                            placeholder="Notas"
+                            value={client.notas}
+                            onChange={handleChange}
+                            rows="3"
+                        />
+                    </div>
+                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                        <button type="submit" className="btn btn-primary">
+                            Crear Cliente
+                        </button>
+                    </div>
+                </form>
+            </BackgroundCard>
+        </div>
     );
 }
 

@@ -65,7 +65,7 @@ const VendedorList = () => {
   ];
 
   return (
-    <div className="vendedor-list-container" style={{ width: '1500px', margin: '0 auto' }}>
+    <div className="vendedor-list-container" style={{ width: '1900px', margin: '0 auto' }}>
       <BackgroundCard className="vendedor-list-card">
         <div>
           <h1>Lista de Vendedores</h1>

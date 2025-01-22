@@ -1,0 +1,18 @@
+.reports-container {
+    padding: 20px;
+  }
+  
+  .reports-container h1 {
+    margin-bottom: 20px;
+  }
+  
+  .reports-container .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .reports-container .reports-card {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }

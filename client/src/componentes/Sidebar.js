@@ -102,8 +102,8 @@ function Sidebar({ isOpen, toggleSidebar }) {
             )}
           </li>
           <li>
-            <div className={`menu-item ${activeMenu === 'config' ? 'active' : ''} ${boldMenu === 'config' ? 'bold' : ''}`} onClick={() => toggleSubMenu('config')}>
-              <Link to="/config" className={`menu-link ${isActive('/config') ? 'active' : ''}`} onClick={() => handleMainClick('config')}>Configuración</Link>
+            <div className={`menu-item ${activeMenu === 'reports' ? 'active' : ''} ${boldMenu === 'reports' ? 'bold' : ''}`} onClick={() => toggleSubMenu('reports')}>
+              <Link to="/reports" className={`menu-link ${isActive('/reports') ? 'active' : ''}`} onClick={() => handleMainClick('reports')}>Reportes</Link>
             </div>
             {roleUser === "admin" && activeMenu === 'config' && (
               <ul className="sub-menu">

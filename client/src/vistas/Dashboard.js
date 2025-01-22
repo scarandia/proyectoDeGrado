@@ -95,43 +95,45 @@ const Dashboard = () => {
   };
 
   return (
-    <Container fluid className="mt-4 mb-4" style={{ marginLeft: '200px' }}>
-      <BootstrapCard className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
-        <Row className="mb-4">
-          <Col md={4}>
-            <Card title="Órdenes Totales" value={orders.length} />
-          </Col>
-          <Col md={4}>
-            <Card title="Órdenes Pendientes" value={orders.filter(order => order.status === 'pending').length} />
-          </Col>
-          <Col md={4}>
-            <Card title="Órdenes Completadas" value={orders.filter(order => order.status === 'completed').length} />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6}>
-            <BootstrapCard className="mb-4" style={{ height: '85%' }}>
-              <BootstrapCard.Body>
-                <BootstrapCard.Title>Órdenes en el último mes</BootstrapCard.Title>
-                <div style={{ height: '600px', width: '85%' }}>
-                  <Line data={lineData} options={options} />
-                </div>
-              </BootstrapCard.Body>
-            </BootstrapCard>
-          </Col>
-          <Col md={6}>
-            <BootstrapCard className="mb-4" style={{ height: '85%' }}>
-              <BootstrapCard.Body>
-                <BootstrapCard.Title>Ventas por producto</BootstrapCard.Title>
-                <div style={{ height: '600px', width: '85%' }}>
-                  <Bar data={barData} options={options} />
-                </div>
-              </BootstrapCard.Body>
-            </BootstrapCard>
-          </Col>
-        </Row>
-      </BootstrapCard>
-    </Container>
+    <div className="order-list-container" style={{ width: '1650px', margin: '0 10 auto' }}>
+      <Container fluid className="mt-4 mb-4" style={{ marginLeft: '120px' }}>
+        <BootstrapCard className="p-4" style={{ backgroundColor: '#f8f9fa' }}>
+          <Row className="mb-4">
+            <Col md={4}>
+              <Card title="Órdenes Totales" value={orders.length} />
+            </Col>
+            <Col md={4}>
+              <Card title="Órdenes Pendientes" value={orders.filter(order => order.status === 'pending').length} />
+            </Col>
+            <Col md={4}>
+              <Card title="Órdenes Completadas" value={orders.filter(order => order.status === 'completed').length} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <BootstrapCard className="mb-4" style={{ height: '85%' }}>
+                <BootstrapCard.Body>
+                  <BootstrapCard.Title>Órdenes en el último mes</BootstrapCard.Title>
+                  <div style={{ height: '600px', width: '85%' }}>
+                    <Line data={lineData} options={options} />
+                  </div>
+                </BootstrapCard.Body>
+              </BootstrapCard>
+            </Col>
+            <Col md={6}>
+              <BootstrapCard className="mb-4" style={{ height: '85%' }}>
+                <BootstrapCard.Body>
+                  <BootstrapCard.Title>Ventas por producto</BootstrapCard.Title>
+                  <div style={{ height: '600px', width: '85%' }}>
+                    <Bar data={barData} options={options} />
+                  </div>
+                </BootstrapCard.Body>
+              </BootstrapCard>
+            </Col>
+          </Row>
+        </BootstrapCard>
+      </Container>
+    </div>
   );
 };
 

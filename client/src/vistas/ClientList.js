@@ -64,7 +64,7 @@ const ClientList = () => {
   ];
 
   return (
-    <div className="client-list-container" style={{ width: '1500px', margin: '0 auto' }}>
+    <div className="client-list-container" style={{ width: '1900px', margin: '0 auto' }}>
       <BackgroundCard className="client-list-card">
         <div>
           <h1>Lista de Clientes</h1>

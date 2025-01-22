@@ -22,7 +22,8 @@ import VendorList from './vistas/VendorList';
 
 import CreateUser from './vistas/CreateUser';
 import Dashboard from './vistas/Dashboard';
-import Config from './vistas/Config';
+import Reports from './vistas/Reports';
+import Unauthorized from './vistas/Unauthorized';
 
 function App() {
   console.log(localStorage.getItem('user'));
@@ -68,7 +69,7 @@ function App() {
     { key: 'direccion.calle', label: 'Dirección' },
   ];
 
-  const showSidebar = location.pathname !== '/' && location.pathname !== '/404';
+  const showSidebar = location.pathname !== '/' && location.pathname !== '/404' && location.pathname !== '/unauthorized';
 
   return (
     <>
@@ -136,19 +137,24 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/createVendor" element={
-         // <ProtectedRoute requiredRole="admin">
-            <NewVendor />
-         // </ProtectedRoute>
+          // <ProtectedRoute requiredRole="admin">
+          <NewVendor />
+          // </ProtectedRoute>
         } />
         <Route path="/createUser" element={
-         // <ProtectedRoute requiredRole="admin">
-            <CreateUser />
-         // </ProtectedRoute>
+          // <ProtectedRoute requiredRole="admin">
+          <CreateUser />
+          // </ProtectedRoute>
         } />
-        <Route path="/config" element={
-         // <ProtectedRoute requiredRole="admin">
-            <Config />
-         // </ProtectedRoute>
+        <Route path="/reports" element={
+          // <ProtectedRoute requiredRole="admin">
+          <Reports />
+          // </ProtectedRoute>
+        } />
+        <Route path="/unauthorized" element={
+          // <ProtectedRoute requiredRole="admin">
+          <Unauthorized />
+          // </ProtectedRoute>
         } />
         <Route path="/404" element={<Default />} />
 
