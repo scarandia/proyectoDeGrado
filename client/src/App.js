@@ -26,8 +26,6 @@ import Reports from './vistas/Reports';
 import Unauthorized from './vistas/Unauthorized';
 
 function App() {
-  console.log(localStorage.getItem('user'));
-
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
@@ -122,7 +120,7 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/createProduct" element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
             <NewProduct />
           </ProtectedRoute>
         } />
@@ -137,24 +135,22 @@ function App() {
           </ProtectedRoute>
         } />
         <Route path="/createVendor" element={
-          // <ProtectedRoute requiredRole="admin">
-          <NewVendor />
-          // </ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
+            <NewVendor />
+          </ProtectedRoute>
         } />
         <Route path="/createUser" element={
-          // <ProtectedRoute requiredRole="admin">
-          <CreateUser />
-          // </ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
+            <CreateUser />
+          </ProtectedRoute>
         } />
         <Route path="/reports" element={
-          // <ProtectedRoute requiredRole="admin">
-          <Reports />
-          // </ProtectedRoute>
+          <ProtectedRoute requiredRole="admin">
+            <Reports />
+          </ProtectedRoute>
         } />
         <Route path="/unauthorized" element={
-          // <ProtectedRoute requiredRole="admin">
           <Unauthorized />
-          // </ProtectedRoute>
         } />
         <Route path="/404" element={<Default />} />
 

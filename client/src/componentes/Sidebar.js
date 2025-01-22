@@ -5,16 +5,19 @@ import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Sidebar({ isOpen, toggleSidebar }) {
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    const values = JSON.parse(user);
-    setRoleUser(values?.user?.role);
-  }, []);
-
-  const location = useLocation();
   const [roleUser, setRoleUser] = useState(null);
   const [activeMenu, setActiveMenu] = useState(null);
   const [boldMenu, setBoldMenu] = useState(null);
+
+  useEffect(() => {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      const values = JSON.parse(user);
+      setRoleUser(values?.role);
+    }
+  }, []);
+
+  const location = useLocation();
 
   const toggleSubMenu = (menu) => {
     setActiveMenu((prevState) => (prevState === menu ? null : menu));
@@ -25,7 +28,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
 
   const handleMainClick = (menu) => {
     setBoldMenu(menu);
-    setActiveMenu(null); 
+    setActiveMenu(null);
   };
 
   const handleSubClick = (parentMenu) => {
@@ -79,9 +82,11 @@ function Sidebar({ isOpen, toggleSidebar }) {
             </div>
             {activeMenu === 'products' && (
               <ul className="sub-menu">
-                <li className={isActive('/createProduct') ? 'active' : ''}>
-                  <Link to="/createProduct" onClick={() => handleSubClick('products')}>Crear Producto</Link>
-                </li>
+                {roleUser === "admin" && (
+                  <li className={isActive('/createProduct') ? 'active' : ''}>
+                    <Link to="/createProduct" onClick={() => handleSubClick('products')}>Crear Producto</Link>
+                  </li>
+                )}
               </ul>
             )}
           </li>
@@ -101,24 +106,24 @@ function Sidebar({ isOpen, toggleSidebar }) {
               </ul>
             )}
           </li>
-          <li>
-            <div className={`menu-item ${activeMenu === 'reports' ? 'active' : ''} ${boldMenu === 'reports' ? 'bold' : ''}`} onClick={() => toggleSubMenu('reports')}>
-              <Link to="/reports" className={`menu-link ${isActive('/reports') ? 'active' : ''}`} onClick={() => handleMainClick('reports')}>Reportes</Link>
-            </div>
-            {roleUser === "admin" && activeMenu === 'config' && (
-              <ul className="sub-menu">
-                <li className={isActive('/createUser') ? 'active' : ''}>
-                  <Link to="/createUser" onClick={() => { handleSubClick('config'); console.log('Navegando a Crear Usuario'); }}>
-                    Crear Usuario
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </li>
+          {roleUser === "admin" && (
+            <>
+              <li>
+                <div className={`menu-item ${activeMenu === 'createUser' ? 'active' : ''} ${boldMenu === 'createUser' ? 'bold' : ''}`} onClick={() => toggleSubMenu('createUser')}>
+                  <Link to="/createUser" className={`menu-link ${isActive('/createUser') ? 'active' : ''}`} onClick={() => handleMainClick('createUser')}>Crear Usuario</Link>
+                </div>
+              </li>
+              <li>
+                <div className={`menu-item ${activeMenu === 'reports' ? 'active' : ''} ${boldMenu === 'reports' ? 'bold' : ''}`} onClick={() => toggleSubMenu('reports')}>
+                  <Link to="/reports" className={`menu-link ${isActive('/reports') ? 'active' : ''}`} onClick={() => handleMainClick('reports')}>Reportes</Link>
+                </div>
+              </li>
+            </>
+          )}
         </ul>
       </div>
 
-      {/*Boton*/}
+      {/* Botón */}
       <button
         className={`toggle-button ${isOpen ? 'open' : 'closed'}`}
         onClick={toggleSidebar}

@@ -24,7 +24,7 @@ class Signin extends Component {
         { email, password }
       );
       if (response.status === 200) {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
+        sessionStorage.setItem("user", JSON.stringify(response.data.user));
         sessionStorage.setItem("token", response.data.token);
         this.props.navigate("/home");
       }
