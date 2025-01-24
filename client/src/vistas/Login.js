@@ -58,6 +58,7 @@ class Signin extends Component {
                 className="form-control"
                 onChange={this.handleChange}
                 required
+                autoComplete="email"
               />
             </div>
             <div className="mb-3">
@@ -72,6 +73,7 @@ class Signin extends Component {
                 className="form-control"
                 onChange={this.handleChange}
                 required
+                autoComplete="current-password"
               />
             </div>
             <button type="submit" className="btn btn-primary w-100 mt-3">

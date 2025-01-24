@@ -48,7 +48,7 @@ const Unauthorized = () => {
                     <h1 style={styles.heading}>403</h1>
                     <p style={styles.paragraph}>Acceso no autorizado. No tienes permiso para acceder a esta página.</p>
                     <Link
-                        to="/"
+                        to="/home"
                         style={styles.homeButton}
                         onMouseEnter={(e) => e.target.style.backgroundColor = styles.homeButtonHover.backgroundColor}
                         onMouseLeave={(e) => e.target.style.backgroundColor = styles.homeButton.backgroundColor}
