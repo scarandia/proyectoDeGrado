@@ -8,6 +8,7 @@ const OrderList = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
@@ -20,7 +21,6 @@ const OrderList = () => {
       const response = await axios.get('http://localhost:5000/api/pedidos');
       setOrders(response.data);
       setFilteredOrders(response.data);
-      //console.log("Response Pedido", response.data);
     } catch (error) {
       console.error('Error al obtener los pedidos:', error);
     }
@@ -29,14 +29,21 @@ const OrderList = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    filterOrders(value);
+    filterOrders(value, filterStatus);
   };
 
-  const filterOrders = (term) => {
+  const handleStatusChange = (e) => {
+    const status = e.target.value;
+    setFilterStatus(status);
+    filterOrders(searchTerm, status);
+  };
+
+  const filterOrders = (term, status) => {
     const filtered = orders.filter((order) =>
-      (order.idPedido && order.idPedido.toLowerCase().includes(term.toLowerCase())) ||
+      ((order.idPedido && order.idPedido.toLowerCase().includes(term.toLowerCase())) ||
       (order.cliente?.nombreCliente && order.cliente.nombreCliente.toLowerCase().includes(term.toLowerCase())) ||
-      (order.estado && order.estado.toLowerCase().includes(term.toLowerCase()))
+      (order.estado && order.estado.toLowerCase().includes(term.toLowerCase()))) &&
+      (status === '' || order.estado === status)
     );
     setFilteredOrders(filtered);
   };
@@ -77,6 +84,15 @@ const OrderList = () => {
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
+            </Form.Group>
+            <Form.Group controlId="status">
+              <Form.Label>Estado del Pedido</Form.Label>
+              <Form.Control as="select" value={filterStatus} onChange={handleStatusChange}>
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Enviado">Enviado</option>
+                <option value="Entregado">Entregado</option>
+              </Form.Control>
             </Form.Group>
           </Form>
           {filteredOrders.length > 0 ? (
