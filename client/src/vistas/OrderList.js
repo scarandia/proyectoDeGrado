@@ -33,6 +33,7 @@ const OrderList = () => {
   if (error) return <p>{error}</p>;
 
   const handleRowClick = (orderId) => {
+    console.log('Pedido seleccionado:', orderId);
     setSelectedOrderId(orderId);
     setShowModal(true);
   };
@@ -49,17 +50,19 @@ const OrderList = () => {
   const filteredOrders = orders.filter((order) => {
     return (
       (order.idPedido && order.idPedido.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (order.cliente && order.cliente.nombreCliente.toLowerCase().includes(searchTerm.toLowerCase()))
+      (order.cliente?.nombreCliente && order.cliente.nombreCliente.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (order.estado && order.estado.toLowerCase().includes(searchTerm.toLowerCase()))
     );
   });
 
   const orderFields = [
     { key: 'idPedido', label: 'Numero' },
-    { key: 'cliente.nombreCliente', label: 'Cliente' },
+    { key: 'cliente.nombreCliente', label: 'Nombre' },
+    { key: 'cliente.apellidoCliente', label: 'Apellido' },
     { key: 'estado', label: 'Estado' },
     { key: 'fecha_creado', label: 'Fecha Pedido' },
     { key: 'fecha_entrega', label: 'Fecha Entrega' },
-    { key: 'direccion_entrega', label: 'Dirección Entrega' },
+    { key: 'direccion_entrega.calle', label: 'Dirección Entrega' },
     { key: 'precio_total', label: 'Precio Total' },
     { key: 'notas', label: 'Notas' },
   ];
@@ -100,11 +103,19 @@ const OrderList = () => {
                 {filteredOrders.map((order) => (
                   <tr key={order._id} onClick={() => handleRowClick(order._id)} style={{ cursor: 'pointer' }}>
                     <td style={{ padding: '15px' }}>{order.idPedido}</td>
-                    <td style={{ padding: '15px' }}>{order.cliente.nombreCliente}</td>
+                    <td style={{ padding: '15px' }}>
+                      {order.cliente ? `${order.cliente.nombreCliente} ${order.cliente.apellidoCliente || ''}` : 'Sin cliente'}
+                    </td>
                     <td style={{ padding: '15px' }}>{order.estado}</td>
                     <td style={{ padding: '15px' }}>{new Date(order.fecha_creado).toLocaleDateString()}</td>
                     <td style={{ padding: '15px' }}>{new Date(order.fecha_entrega).toLocaleDateString()}</td>
-                    <td style={{ padding: '15px' }}>{`${order.direccion_entrega.calle}, ${order.direccion_entrega.ciudad || ''}, ${order.direccion_entrega.codigo_postal || ''}, ${order.direccion_entrega.pais || ''}`}</td>
+                    <td style={{ padding: '15px' }}>
+                      {order.direccion_entrega ? (
+                        `${order.direccion_entrega.calle || 'Sin calle'}`
+                      ) : (
+                        'Dirección no especificada'
+                      )}
+                    </td>
                     <td style={{ padding: '15px' }}>{order.precio_total ? order.precio_total.toFixed(2) : 'N/A'}</td>
                     <td style={{ padding: '15px' }}>{order.notas}</td>
                   </tr>

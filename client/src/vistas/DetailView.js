@@ -9,31 +9,63 @@ const DetailView = ({ entityType, apiEndpoint, fields, id }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchEntity = async () => {
-      try {
-        const response = await axios.get(`${apiEndpoint}/${id}`);
-        setEntity(response.data);
-        setLoading(false);
-      } catch (err) {
-        console.error(`Error fetching ${entityType}:`, err); // Log the error to the console
-        setError(`Error al cargar el ${entityType}: ${err.message}`);
-        setLoading(false);
-      }
-    };
+    if (id) {
+      console.log('Fetching entity details for ID:', id);
+      const fetchEntity = async () => {
+        try {
+          const response = await axios.get(`${apiEndpoint}/${id}`);
+          setEntity(response.data);
+          setLoading(false);
+        } catch (err) {
+          console.error(`Error fetching ${entityType}:`, err);
+          setError(`Error al cargar el ${entityType}: ${err.message}`);
+          setLoading(false);
+        }
+      };
 
-    fetchEntity();
+      fetchEntity();
+    }
   }, [apiEndpoint, id, entityType]);
 
-  if (loading) return <p>Cargando {entityType}...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <div className="text-center mt-4">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="detail-view">
       {entity ? (
         <div>
-          {fields.map((field) => (
-            <p key={field.key}><strong>{field.label}:</strong> {field.key.split('.').reduce((o, i) => o[i], entity)}</p>
-          ))}
+          {fields.map((field) => {
+            let value = field.key.split('.').reduce((o, i) => (o ? o[i] : undefined), entity);
+            if (field.key === 'fecha_creado' || field.key === 'fecha_entrega') {
+              value = new Date(value).toLocaleString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+            }
+            return (
+              <p key={field.key}>
+                <strong>{field.label}:</strong> {value !== undefined ? value : 'N/A'}
+              </p>
+            );
+          })}
         </div>
       ) : (
         <p>No se encontró el {entityType}</p>

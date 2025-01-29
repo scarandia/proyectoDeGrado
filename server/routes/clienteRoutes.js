@@ -1,26 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const {
-    createCliente,
-    getClientes,
-    getClienteById,
-    updateCliente,
-    deleteCliente
+  createCliente,
+  getClientes,
+  getClienteById,
+  updateCliente,
+  deleteCliente,
+  getClienteByCI, // Importa el nuevo controlador
+  checkCI
 } = require('../controllers/clienteController');
 
-// Ruta para crear un nuevo cliente
 router.post('/', createCliente);
-
-// Ruta para obtener todos los clientes
 router.get('/', getClientes);
-
-// Ruta para obtener un cliente por ID
 router.get('/:id', getClienteById);
-
-// Ruta para actualizar un cliente por ID
 router.put('/:id', updateCliente);
-
-// Ruta para eliminar un cliente por ID
 router.delete('/:id', deleteCliente);
+router.get('/ci/:ci', getClienteByCI); // Nueva ruta para buscar cliente por CI
+router.get('/checkCI/:CI', checkCI); // Ruta para verificar si el CI ya existe
 
 module.exports = router;

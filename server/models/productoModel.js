@@ -41,6 +41,8 @@ const ProductoSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     }
-}, { collection: 'productos' });
-
+}, {
+    collection: 'productos',
+    timestamps: true
+});
 module.exports = mongoose.model('Producto', ProductoSchema);

@@ -16,8 +16,10 @@ const userSchema = new mongoose.Schema({
     type: String, enum: ['admin', 'user'],
     default: 'user'
   }
-}, { collection: 'usuarios' });
-
+}, {
+  collection: 'usuarios',
+  timestamps: true
+});
 
 //Middleware que encripta el password antes de guardarla
 userSchema.pre('save', async function (next) {

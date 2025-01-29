@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ClienteSchema = new mongoose.Schema({
     idCliente: {
         type: String,
-        required: false,
+        required: true,
         unique: true
     },
     nombreCliente: {
@@ -20,7 +20,7 @@ const ClienteSchema = new mongoose.Schema({
         unique: true
     },
     nombreNegocio: {
-        type: String, 
+        type: String,
         required: true
     },
     tipoNegocio: {
@@ -74,6 +74,9 @@ const ClienteSchema = new mongoose.Schema({
         type: String,
         required: false
     }
-}, { collection: 'clientes' });
+}, {
+    collection: 'clientes',
+    timestamps: true
+});
 
 module.exports = mongoose.model('Cliente', ClienteSchema);

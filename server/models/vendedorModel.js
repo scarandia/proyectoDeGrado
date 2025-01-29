@@ -33,6 +33,8 @@ const VendedorSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   }
-}, { collection: 'vendedores' });
-
+}, {
+  collection: 'vendedores',
+  timestamps: true
+});
 module.exports = mongoose.model('Vendedor', VendedorSchema);

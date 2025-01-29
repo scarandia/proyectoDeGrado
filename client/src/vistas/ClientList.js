@@ -33,8 +33,11 @@ const ClientList = () => {
   if (error) return <p>{error}</p>;
 
   const handleRowClick = (clientId) => {
-    setSelectedClientId(clientId);
-    setShowModal(true);
+    if (clientId !== selectedClientId) {
+
+      setSelectedClientId(clientId);
+      setShowModal(true);
+    };
   };
 
   const handleCloseModal = () => {

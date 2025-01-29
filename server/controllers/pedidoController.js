@@ -1,9 +1,13 @@
 const Pedido = require('../models/pedidoModel');
+const ClienteModel = require('../models/clienteModel');
 
 // Crear pedido
 const createPedido = async (req, res) => {
     try {
-        const nuevoPedido = new Pedido(req.body);
+        // Excluir fecha_creado de los datos recibidos
+        const { fecha_creado, ...pedidoData } = req.body;
+
+        const nuevoPedido = new Pedido(pedidoData);
 
         // Valida el esquema y datos
         const validationError = nuevoPedido.validateSync();
@@ -23,8 +27,8 @@ const createPedido = async (req, res) => {
 const getPedidos = async (req, res) => {
     try {
         const pedidos = await Pedido.find()
-            .populate('productos.producto') // Asegúrate de que estos campos existan y sean válidos
-            .populate('cliente');
+            .populate({ path: 'productos.producto', select: 'nombreProducto precio' })
+            .populate('cliente', 'nombreCliente apellidoCliente');
         res.status(200).json(pedidos);
     } catch (error) {
         console.error('Error al obtener pedidos:', error.message);
@@ -38,23 +42,22 @@ const getPedidos = async (req, res) => {
 // Obtener un pedido por ID
 const getPedidoById = async (req, res) => {
     try {
-        const pedido = await Pedido.findById(req.params.id).populate('productos.producto').populate('distribuidorAsignado');
+        const pedido = await Pedido.findById(req.params.id);
         if (!pedido) {
-            return res.status(404).json({ error: 'Pedido no encontrado.' });
+            return res.status(404).json({ message: 'Pedido no encontrado' });
         }
-        res.status(200).json(pedido);
+        res.json(pedido);
     } catch (error) {
-        res.status(500).json({
-            error: 'Error al obtener el pedido.',
-            detalle: error.message
-        });
+        res.status(500).json({ message: 'Error al obtener el pedido', error });
     }
 };
 
 // Actualizar un pedido
 const updatePedido = async (req, res) => {
     try {
-        const pedidoActualizado = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('productos.producto').populate('distribuidorAsignado');
+        const pedidoActualizado = await Pedido.findByIdAndUpdate(req.params.id, req.body, { new: true })
+            .populate('productos.producto')
+            .populate('cliente', 'nombreCliente');
         if (!pedidoActualizado) {
             return res.status(404).json({ error: 'Pedido no encontrado.' });
         }
@@ -83,11 +86,10 @@ const deletePedido = async (req, res) => {
     }
 };
 
-// Exportamos las funciones del controlador
 module.exports = {
     createPedido,
     getPedidos,
     getPedidoById,
     updatePedido,
-    deletePedido
+    deletePedido,
 };
