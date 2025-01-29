@@ -5,19 +5,21 @@ import Select from 'react-select';
 
 const NewOrderPage = () => {
   const [order, setOrder] = useState({
-    cliente: '',
+    ciCliente: '',
     productos: [{ producto: '', cantidad: 1 }],
-    fecha_entrega: '',
-    direccion_entrega: {
+    fechaEntrega: '',
+    direccionEntrega: {
       calle: '',
       ciudad: '',
-      codigo_postal: '',
+      codigoPostal: '',
       pais: '',
-    }
+    },
+    notas: '',
   });
 
   const [ci, setCi] = useState('');
   const [productosDisponibles, setProductosDisponibles] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     // Fetch available products
@@ -26,7 +28,8 @@ const NewOrderPage = () => {
         const response = await axios.get('http://localhost:5000/api/productos');
         setProductosDisponibles(response.data.map(producto => ({
           value: producto._id,
-          label: producto.nombreProducto
+          label: producto.nombreProducto,
+          stock: producto.stock // Incluir stock en los datos del producto
         })));
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -59,12 +62,13 @@ const NewOrderPage = () => {
   const handleProductoChange = (index, selectedOption) => {
     const newProductos = [...order.productos];
     newProductos[index].producto = selectedOption.value;
+    newProductos[index].stock = selectedOption.stock; // Guardar stock del producto seleccionado
     setOrder({ ...order, productos: newProductos });
   };
 
   const handleCantidadChange = (index, value) => {
     const newProductos = [...order.productos];
-    newProductos[index].cantidad = value;
+    newProductos[index].cantidad = parseInt(value, 10); // Asegurarse de que la cantidad sea un número
     setOrder({ ...order, productos: newProductos });
   };
 
@@ -86,10 +90,11 @@ const NewOrderPage = () => {
         if (cliente) {
           setOrder((prevOrder) => ({
             ...prevOrder,
-            direccion_entrega: {
+            ciCliente: cliente.CI,
+            direccionEntrega: {
               calle: cliente.direccion.calle || '',
               ciudad: cliente.direccion.ciudad || '',
-              codigo_postal: cliente.direccion.codigo_postal || '',
+              codigoPostal: cliente.direccion.codigoPostal || '',
               pais: cliente.direccion.pais || '',
             }
           }));
@@ -102,22 +107,34 @@ const NewOrderPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verificar stock disponible
+    for (const item of order.productos) {
+      const producto = productosDisponibles.find(p => p.value === item.producto);
+      if (producto && item.cantidad > producto.stock) {
+        setError(`Stock insuficiente para el producto ${producto.label}.`);
+        return;
+      }
+    }
+
     try {
       const response = await axios.post('http://localhost:5000/api/pedidos', order);
       console.log('Pedido creado:', response.data);
       // Limpiar el formulario después de enviar
       setOrder({
-        cliente: '',
+        ciCliente: '',
         productos: [{ producto: '', cantidad: 1 }],
-        fecha_entrega: '',
-        direccion_entrega: {
+        fechaEntrega: '',
+        direccionEntrega: {
           calle: '',
           ciudad: '',
-          codigo_postal: '',
+          codigoPostal: '',
           pais: '',
-        }
+        },
+        notas: '',
       });
       setCi('');
+      setError('');
     } catch (error) {
       console.error('Error al crear el pedido:', error);
     }
@@ -129,6 +146,7 @@ const NewOrderPage = () => {
         <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Crear Nuevo Pedido</h2>
         <form onSubmit={handleSubmit} className="centered-form">
           <h3>Información del Pedido</h3>
+          {error && <div className="alert alert-danger">{error}</div>}
           <div className="form-group">
             <label htmlFor="ci">CI del Cliente</label>
             <input
@@ -139,19 +157,6 @@ const NewOrderPage = () => {
               placeholder="CI del Cliente"
               value={ci}
               onChange={handleCiChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="cliente">Cliente</label>
-            <input
-              type="text"
-              className="form-control"
-              id="cliente"
-              name="cliente"
-              placeholder="Cliente"
-              value={order.cliente}
-              onChange={handleChange}
               required
             />
           </div>
@@ -199,14 +204,14 @@ const NewOrderPage = () => {
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <label htmlFor="fecha_entrega">Fecha de Entrega</label>
+                <label htmlFor="fechaEntrega">Fecha de Entrega</label>
                 <input
                   type="date"
                   className="form-control"
-                  id="fecha_entrega"
-                  name="fecha_entrega"
+                  id="fechaEntrega"
+                  name="fechaEntrega"
                   placeholder="Fecha de Entrega"
-                  value={order.fecha_entrega}
+                  value={order.fechaEntrega}
                   onChange={handleChange}
                   required
                 />
@@ -217,39 +222,52 @@ const NewOrderPage = () => {
           {/* Dirección de Entrega */}
           <h3>Dirección de Entrega</h3>
           <div className="form-group">
-            <label htmlFor="direccion_entrega.calle">Direccion</label>
+            <label htmlFor="direccionEntrega.calle">Direccion</label>
             <input
               type="text"
               className="form-control"
-              id="direccion_entrega.calle"
-              name="direccion_entrega.calle"
+              id="direccionEntrega.calle"
+              name="direccionEntrega.calle"
               placeholder="Calle"
-              value={order.direccion_entrega.calle}
+              value={order.direccionEntrega.calle}
               onChange={handleChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="direccion_entrega.ciudad">Ciudad (opcional)</label>
+            <label htmlFor="direccionEntrega.ciudad">Ciudad (opcional)</label>
             <input
               type="text"
               className="form-control"
-              id="direccion_entrega.ciudad"
-              name="direccion_entrega.ciudad"
+              id="direccionEntrega.ciudad"
+              name="direccionEntrega.ciudad"
               placeholder="Ciudad"
-              value={order.direccion_entrega.ciudad}
+              value={order.direccionEntrega.ciudad}
               onChange={handleChange}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="direccion_entrega.pais">País (opcional)</label>
+            <label htmlFor="direccionEntrega.pais">País (opcional)</label>
             <input
               type="text"
               className="form-control"
-              id="direccion_entrega.pais"
-              name="direccion_entrega.pais"
+              id="direccionEntrega.pais"
+              name="direccionEntrega.pais"
               placeholder="País"
-              value={order.direccion_entrega.pais}
+              value={order.direccionEntrega.pais}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Notas */}
+          <div className="form-group">
+            <label htmlFor="notas">Notas</label>
+            <textarea
+              className="form-control"
+              id="notas"
+              name="notas"
+              placeholder="Notas"
+              value={order.notas}
               onChange={handleChange}
             />
           </div>

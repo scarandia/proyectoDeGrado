@@ -51,7 +51,7 @@ const DetailView = ({ entityType, apiEndpoint, fields, id }) => {
         <div>
           {fields.map((field) => {
             let value = field.key.split('.').reduce((o, i) => (o ? o[i] : undefined), entity);
-            if (field.key === 'fecha_creado' || field.key === 'fecha_entrega') {
+            if (field.key === 'createdAt' || field.key === 'fechaEntrega') {
               value = new Date(value).toLocaleString('es-ES', {
                 day: '2-digit',
                 month: '2-digit',
@@ -59,6 +59,9 @@ const DetailView = ({ entityType, apiEndpoint, fields, id }) => {
                 hour: '2-digit',
                 minute: '2-digit',
               });
+            }
+            if (field.key === 'precioTotal') {
+              value = parseFloat(value).toFixed(2);
             }
             return (
               <p key={field.key}>

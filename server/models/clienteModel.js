@@ -28,8 +28,10 @@ const ClienteSchema = new mongoose.Schema({
         enum: ['Tienda de Barrio', 'Minorista', 'Mayorista', 'Supermercado', 'Otro'],
         required: true,
     },
-    otroTipoNegocio: { type: String, required: false }, //EN caso de que el tipo sea "Otro"
-
+    otroTipoNegocio: { 
+        type: String, 
+        required: false 
+    }, // En caso de que el tipo sea "Otro"
     direccion: {
         calle: {
             type: String,
@@ -79,4 +81,4 @@ const ClienteSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Cliente', ClienteSchema);
+module.exports = mongoose.models.Cliente || mongoose.model('Cliente', ClienteSchema);

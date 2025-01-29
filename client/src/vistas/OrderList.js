@@ -1,39 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Button, Form } from 'react-bootstrap';
 import BackgroundCard from '../componentes/BackgroundCard';
 import DetailView from './DetailView';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/Lists.css';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [filteredOrders, setFilteredOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState(null);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/pedidos');
-        setOrders(response.data);
-        setLoading(false);
-      } catch (err) {
-        setError('Error al cargar los pedidos');
-        setLoading(false);
-      }
-    };
-
     fetchOrders();
   }, []);
 
-  if (loading) return <p>Cargando pedidos...</p>;
-  if (error) return <p>{error}</p>;
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/pedidos');
+      setOrders(response.data);
+      setFilteredOrders(response.data);
+      //console.log("Response Pedido", response.data);
+    } catch (error) {
+      console.error('Error al obtener los pedidos:', error);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    filterOrders(value);
+  };
+
+  const filterOrders = (term) => {
+    const filtered = orders.filter((order) =>
+      (order.idPedido && order.idPedido.toLowerCase().includes(term.toLowerCase())) ||
+      (order.cliente?.nombreCliente && order.cliente.nombreCliente.toLowerCase().includes(term.toLowerCase())) ||
+      (order.estado && order.estado.toLowerCase().includes(term.toLowerCase()))
+    );
+    setFilteredOrders(filtered);
+  };
 
   const handleRowClick = (orderId) => {
-    console.log('Pedido seleccionado:', orderId);
     setSelectedOrderId(orderId);
     setShowModal(true);
   };
@@ -43,27 +51,15 @@ const OrderList = () => {
     setSelectedOrderId(null);
   };
 
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const filteredOrders = orders.filter((order) => {
-    return (
-      (order.idPedido && order.idPedido.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (order.cliente?.nombreCliente && order.cliente.nombreCliente.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (order.estado && order.estado.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  });
-
   const orderFields = [
     { key: 'idPedido', label: 'Numero' },
     { key: 'cliente.nombreCliente', label: 'Nombre' },
     { key: 'cliente.apellidoCliente', label: 'Apellido' },
     { key: 'estado', label: 'Estado' },
-    { key: 'fecha_creado', label: 'Fecha Pedido' },
-    { key: 'fecha_entrega', label: 'Fecha Entrega' },
-    { key: 'direccion_entrega.calle', label: 'Dirección Entrega' },
-    { key: 'precio_total', label: 'Precio Total' },
+    { key: 'createdAt', label: 'Fecha Pedido' },
+    { key: 'fechaEntrega', label: 'Fecha Entrega' },
+    { key: 'direccionEntrega.calle', label: 'Dirección Entrega' },
+    { key: 'precioTotal', label: 'Precio Total' },
     { key: 'notas', label: 'Notas' },
   ];
 
@@ -83,9 +79,7 @@ const OrderList = () => {
               />
             </Form.Group>
           </Form>
-          {filteredOrders.length === 0 ? (
-            <p>No hay pedidos disponibles</p>
-          ) : (
+          {filteredOrders.length > 0 ? (
             <table className="table table-striped">
               <thead>
                 <tr>
@@ -107,21 +101,42 @@ const OrderList = () => {
                       {order.cliente ? `${order.cliente.nombreCliente} ${order.cliente.apellidoCliente || ''}` : 'Sin cliente'}
                     </td>
                     <td style={{ padding: '15px' }}>{order.estado}</td>
-                    <td style={{ padding: '15px' }}>{new Date(order.fecha_creado).toLocaleDateString()}</td>
-                    <td style={{ padding: '15px' }}>{new Date(order.fecha_entrega).toLocaleDateString()}</td>
                     <td style={{ padding: '15px' }}>
-                      {order.direccion_entrega ? (
-                        `${order.direccion_entrega.calle || 'Sin calle'}`
+                      {new Date(order.createdAt).toLocaleString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </td>
+                    <td style={{ padding: '15px' }}>
+                      {new Date(order.fechaEntrega).toLocaleString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </td>
+                    <td style={{ padding: '15px' }}>
+                      {order.direccionEntrega ? (
+                        `${order.direccionEntrega.calle || 'Sin calle'}`
                       ) : (
                         'Dirección no especificada'
                       )}
                     </td>
-                    <td style={{ padding: '15px' }}>{order.precio_total ? order.precio_total.toFixed(2) : 'N/A'}</td>
+                    <td style={{ padding: '15px' }}>
+                      Bs.
+                      {order.productos.reduce((total, item) => total + item.producto.precio * item.cantidad, 0).toFixed(2)}
+                    </td>
                     <td style={{ padding: '15px' }}>{order.notas}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          ) : (
+            <p>No se encontraron pedidos.</p>
           )}
         </div>
 

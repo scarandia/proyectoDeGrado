@@ -29,32 +29,42 @@ const seedPedidos = async () => {
     // Create sample orders
     const pedidos = [];
     for (let i = 1; i <= 10; i++) {
+      const cliente = clientes[i % clientes.length];
+      const productosPedido = [
+        { producto: productos[i % productos.length]._id, cantidad: Math.floor(Math.random() * 10) + 1 },
+        { producto: productos[(i + 1) % productos.length]._id, cantidad: Math.floor(Math.random() * 10) + 1 },
+      ];
+
+      // Calculate total price
+      let precioTotal = 0;
+      for (const item of productosPedido) {
+        const producto = productos.find(p => p._id.equals(item.producto));
+        precioTotal += producto.precio * item.cantidad;
+      }
+
       const pedido = new Pedido({
         idPedido: `PED00${i}`,
-        cliente: clientes[i % clientes.length]._id,
-        productos: [
-          { producto: productos[i % productos.length]._id, cantidad: Math.floor(Math.random() * 10) + 1 },
-          { producto: productos[(i + 1) % productos.length]._id, cantidad: Math.floor(Math.random() * 10) + 1 },
-        ],
-        fecha_creado: new Date(),
-        fecha_entrega: new Date(),
-        direccion_entrega: {
+        nombreCliente: cliente.nombreCliente,
+        apellidoCliente: cliente.apellidoCliente,
+        productos: productosPedido,
+        fechaEntrega: new Date(),
+        direccionEntrega: {
           calle: `Calle ${i}`,
           ciudad: `Ciudad ${i}`,
-          codigo_postal: 1000 + i,
+          codigoPostal: 1000 + i,
           pais: `Pais ${i}`,
         },
         estado: 'Pendiente',
         notas: `Notas del pedido ${i}`,
+        precioTotal,
       });
       await pedido.save();
       pedidos.push(pedido);
 
       // Update client's order history
-      const cliente = clientes[i % clientes.length];
       cliente.historialPedidos.push({
         idPedido: pedido._id,
-        fechaPedido: pedido.fecha_creado,
+        fechaPedido: pedido.createdAt,
         estadoPedido: pedido.estado,
       });
       await cliente.save();

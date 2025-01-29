@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const PedidoSchema = new mongoose.Schema({
-  idPedido: { type: String, required: true, unique: true },
+  idPedido: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   cliente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Cliente',
@@ -13,22 +17,49 @@ const PedidoSchema = new mongoose.Schema({
       ref: 'Producto',
       required: true,
     },
-    cantidad: { type: Number, required: true },
+    cantidad: {
+      type: Number,
+      required: true,
+    },
   }],
-  estado: { type: String, required: true },
-  fecha_creado: { type: Date, required: true },
-  fecha_entrega: { type: Date, required: true },
-  direccion_entrega: {
-    calle: { type: String, required: true },
-    ciudad: { type: String, required: false },
-    codigo_postal: { type: String, required: false },
-    pais: { type: String, required: false },
+  fechaEntrega: {
+    type: Date,
+    required: true,
   },
-  precio_total: { type: Number, required: true },
-  notas: { type: String, required: false },
+  direccionEntrega: {
+    calle: {
+      type: String,
+      required: true,
+    },
+    ciudad: {
+      type: String,
+      required: true,
+    },
+    codigoPostal: {
+      type: String,
+      required: true,
+    },
+    pais: {
+      type: String,
+      required: true,
+    },
+  },
+  estado: {
+    type: String,
+    enum: ['Pendiente', 'Enviado', 'Entregado'],
+    default: 'Pendiente',
+  },
+  notas: {
+    type: String,
+    required: false,
+  },
+  precioTotal: {
+    type: Number,
+    required: true,
+  },
 }, {
   collection: 'pedidos',
-  timestamps: true
+  timestamps: true,
 });
 
-module.exports = mongoose.model('Pedido', PedidoSchema);
+module.exports = mongoose.models.Pedido || mongoose.model('Pedido', PedidoSchema);
