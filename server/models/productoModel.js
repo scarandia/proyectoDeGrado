@@ -27,12 +27,6 @@ const ProductoSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  proveedor: {
-    nombre: {
-      type: String,
-      required: false,
-    },
-  },
   imagenURL: {
     type: String,
     required: false,

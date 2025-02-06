@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import BackgroundCard from '../componentes/BackgroundCard';
 import axios from 'axios';
+import BackgroundCard from '../componentes/BackgroundCard';
 
-const CreateUser = () => {
+const CreateUser = ({ onUserCreated }) => {
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -27,6 +27,9 @@ const CreateUser = () => {
           password: '',
           role: 'user',
         });
+        if (onUserCreated) {
+          onUserCreated();
+        }
       }
     } catch (error) {
       alert('Error al crear el usuario');
@@ -38,53 +41,39 @@ const CreateUser = () => {
       <BackgroundCard className="user-list-card">
         <form>
           <h3 className="mb-4 text-center">Formulario de Usuario</h3>
-
-          {/* Email */}
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label>Email</label>
             <input
               type="email"
-              className="form-control"
-              id="email"
               name="email"
-              placeholder="Ingrese el email"
+              className="form-control"
               value={user.email}
               onChange={handleChange}
-              required
             />
           </div>
-
-          {/* Contraseña */}
           <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
+            <label>Contraseña</label>
             <input
               type="password"
-              className="form-control"
-              id="password"
               name="password"
-              placeholder="Ingrese la contraseña"
+              className="form-control"
               value={user.password}
               onChange={handleChange}
-              required
             />
           </div>
-
-          {/* Rol */}
           <div className="form-group">
-            <label htmlFor="role">Rol</label>
+            <label>Rol</label>
             <select
-              className="form-control"
-              id="role"
               name="role"
+              className="form-control"
               value={user.role}
               onChange={handleChange}
             >
-              <option value="user">Usuario</option>
-              <option value="admin">Administrador</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
-
-          <button type="button" className="btn btn-primary mt-3 w-100" onClick={createUser}>
+          <button type="button" className="btn btn-primary mt-3" onClick={createUser}>
             Crear Usuario
           </button>
         </form>

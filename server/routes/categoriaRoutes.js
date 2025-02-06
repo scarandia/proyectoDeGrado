@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Categoria = require('../models/categoriaModel');
+const { getCategorias } = require('../controllers/categoriaController');
+
 
 // Ruta para crear una nueva categoría
 router.post('/', async (req, res) => {
@@ -16,13 +18,8 @@ router.post('/', async (req, res) => {
 });
 
 // Ruta para obtener todas las categorías
-router.get('/', async (req, res) => {
-    try {
-        const categorias = await Categoria.find();
-        res.json(categorias);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
+router.get('/', getCategorias);
+
+module.exports = router;
 
 module.exports = router;

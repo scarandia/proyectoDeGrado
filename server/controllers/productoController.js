@@ -12,12 +12,49 @@ const createProducto = async (req, res) => {
             return res.status(400).json({ error: 'Categoría no válida' });
         }
 
-        const nuevoProducto = new Producto({ ...productoData, categoria });
+        // Asignar número de producto en formato P###
+        let nuevoIdProducto;
+        let idProductoExists = true;
+        let intento = 0;
+        while (idProductoExists && intento < 1000) { // Limitar el número de intentos para evitar bucles infinitos
+            const ultimoProducto = await Producto.findOne().sort({ createdAt: -1 });
+            if (ultimoProducto && ultimoProducto.idProducto) {
+                const ultimoNumero = parseInt(ultimoProducto.idProducto.slice(1)); // Extrae el número, excluyendo "P"
+                nuevoIdProducto = 'P' + String(ultimoNumero + 1 + intento).padStart(3, '0'); // Da formato y añade el intento
+            } else {
+                nuevoIdProducto = 'P001'; // Si no existen productos
+            }
+
+            // Verificar si el nuevo idProducto ya existe
+            const existingProducto = await Producto.findOne({ idProducto: nuevoIdProducto });
+            if (!existingProducto) {
+                idProductoExists = false;
+            } else {
+                console.log(`El idProducto ${nuevoIdProducto} ya existe. Generando uno nuevo.`);
+                intento++;
+            }
+        }
+
+        if (idProductoExists) {
+            return res.status(500).json({ message: 'No se pudo generar un idProducto único después de 1000 intentos.' });
+        }
+
+        // Crear el nuevo producto con el idProducto generado
+        const nuevoProducto = new Producto({
+            ...productoData,
+            categoria,
+            idProducto: nuevoIdProducto
+        });
+
         await nuevoProducto.save();
         res.status(201).json(nuevoProducto);
     } catch (error) {
         res.status(500).json({ error: 'Error al crear el producto.', detalle: error.message });
     }
+};
+
+module.exports = {
+    createProducto
 };
 
 // Obtener todos los productos

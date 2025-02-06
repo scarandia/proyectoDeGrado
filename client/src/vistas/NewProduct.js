@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import BackgroundCard from '../componentes/BackgroundCard';
 
-const NewOrderPage = () => {
+const NewProduct = () => {
   const [producto, setProducto] = useState({
-    idProducto: '',
     nombreProducto: '',
     descripcion: '',
     categoria: '',
     precio: '',
     stock: '',
-    proveedor: '',
     imagenURL: '',
     activo: true,
   });
+
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await axios.get('/api/categorias');
+        setCategorias(response.data);
+      } catch (error) {
+        console.error('Error al obtener las categorías:', error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,47 +36,40 @@ const NewOrderPage = () => {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/productos', producto);
+      console.log('Producto creado:', response.data);
+    } catch (error) {
+      console.error('Error al crear el producto:', error);
+    }
+  };
+
   return (
     <div className="order-list-container" style={{ width: '1200px', margin: '0 auto' }}>
       <BackgroundCard className="product-list-card">
-        <form>
+        <form onSubmit={handleSubmit}>
           <h3 className="mb-4 text-center">Formulario de Producto</h3>
-
-          {/* ID y Nombre */}
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="idProducto">ID del Producto</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="idProducto"
-                  name="idProducto"
-                  placeholder="ID del producto"
-                  value={producto.idProducto}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="nombreProducto">Nombre del Producto</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="nombreProducto"
-                  name="nombreProducto"
-                  placeholder="Nombre del producto"
-                  value={producto.nombreProducto}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label htmlFor="categoria">Categoría</label>
+              <select
+                className="form-control"
+                id="categoria"
+                name="categoria"
+                value={producto.categoria}
+                onChange={handleChange}
+              >
+                <option value="">Seleccione una categoría</option>
+                {categorias.map((categoria) => (
+                  <option key={categoria._id} value={categoria._id}>
+                    {categoria.nombreCategoria}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
-
-          {/* Descripción y Categoría */}
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
@@ -74,26 +81,31 @@ const NewOrderPage = () => {
                   placeholder="Descripción del producto"
                   value={producto.descripcion}
                   onChange={handleChange}
-                ></textarea>
+                  required
+                />
               </div>
             </div>
             <div className="col-md-6">
               <div className="form-group">
                 <label htmlFor="categoria">Categoría</label>
-                <input
-                  type="text"
+                <select
                   className="form-control"
                   id="categoria"
                   name="categoria"
-                  placeholder="Categoría"
                   value={producto.categoria}
                   onChange={handleChange}
-                />
+                  required
+                >
+                  <option value="">Seleccione una categoría</option>
+                  {categorias.map((categoria) => (
+                    <option key={categoria._id} value={categoria._id}>
+                      {categoria.nombreCategoria}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
-
-          {/* Precio y Stock */}
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
@@ -118,7 +130,7 @@ const NewOrderPage = () => {
                   className="form-control"
                   id="stock"
                   name="stock"
-                  placeholder="Stock disponible"
+                  placeholder="Stock del producto"
                   value={producto.stock}
                   onChange={handleChange}
                   required
@@ -126,61 +138,34 @@ const NewOrderPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Proveedor */}
           <div className="form-group">
-            <label htmlFor="proveedor">Proveedor</label>
+            <label htmlFor="imagenURL">URL de la Imagen</label>
             <input
               type="text"
               className="form-control"
-              id="proveedor"
-              name="proveedor"
-              placeholder="ID del fabricante (Proveedor)"
-              value={producto.proveedor}
+              id="imagenURL"
+              name="imagenURL"
+              placeholder="URL de la imagen del producto"
+              value={producto.imagenURL}
               onChange={handleChange}
             />
           </div>
-
-          {/* Imagen y Activo */}
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="imagenURL">URL de la Imagen</label>
-                <input
-                  type="url"
-                  className="form-control"
-                  id="imagenURL"
-                  name="imagenURL"
-                  placeholder="URL de la imagen"
-                  value={producto.imagenURL}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="col-md-6 d-flex align-items-center">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="activo"
-                  name="activo"
-                  checked={producto.activo}
-                  onChange={handleChange}
-                />
-                <label className="form-check-label" htmlFor="activo">
-                  Activo
-                </label>
-              </div>
-            </div>
+          <div className="form-group form-check">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="activo"
+              name="activo"
+              checked={producto.activo}
+              onChange={handleChange}
+            />
+            <label className="form-check-label" htmlFor="activo">Activo</label>
           </div>
-
-          <button type="submit" className="btn btn-primary mt-3 w-100">
-            Guardar Producto
-          </button>
+          <button type="submit" className="btn btn-primary mt-3 w-100">Crear Producto</button>
         </form>
       </BackgroundCard>
     </div>
   );
 };
 
-export default NewOrderPage;
+export default NewProduct;

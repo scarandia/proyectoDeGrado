@@ -33,15 +33,15 @@ const PedidoSchema = new mongoose.Schema({
     },
     ciudad: {
       type: String,
-      required: true,
+      required: false,
     },
     codigoPostal: {
       type: String,
-      required: true,
+      required: false,
     },
     pais: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   estado: {
