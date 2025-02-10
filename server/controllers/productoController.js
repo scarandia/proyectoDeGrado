@@ -1,15 +1,31 @@
 const Producto = require('../models/productoModel');
 const Categoria = require('../models/categoriaModel');
 
+// Verificar si el nombre del producto ya existe
+const checkNombreProducto = async (req, res) => {
+    try {
+        const producto = await Producto.findOne({ nombreProducto: req.params.nombreProducto });
+        res.json({ exists: !!producto });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al verificar el nombre del producto' });
+    }
+};
+
 // Crear producto
 const createProducto = async (req, res) => {
     try {
-        const { categoria, ...productoData } = req.body;
+        const { categoria, nombreProducto, ...productoData } = req.body;
 
         // Verificar que la categoría exista
         const categoriaExistente = await Categoria.findById(categoria);
         if (!categoriaExistente) {
             return res.status(400).json({ error: 'Categoría no válida' });
+        }
+
+        // Verificar si ya existe un producto con el mismo nombre
+        const productoExistente = await Producto.findOne({ nombreProducto });
+        if (productoExistente) {
+            return res.status(400).json({ error: 'Ya existe un producto con este nombre' });
         }
 
         // Asignar número de producto en formato P###
@@ -43,18 +59,20 @@ const createProducto = async (req, res) => {
         const nuevoProducto = new Producto({
             ...productoData,
             categoria,
+            nombreProducto,
             idProducto: nuevoIdProducto
         });
 
         await nuevoProducto.save();
         res.status(201).json(nuevoProducto);
     } catch (error) {
-        res.status(500).json({ error: 'Error al crear el producto.', detalle: error.message });
+        if (error.code === 11000) {
+            // Error de duplicado
+            res.status(400).json({ error: 'Ya existe un producto con este nombre' });
+        } else {
+            res.status(500).json({ error: 'Error al crear el producto.', detalle: error.message });
+        }
     }
-};
-
-module.exports = {
-    createProducto
 };
 
 // Obtener todos los productos
@@ -119,11 +137,11 @@ const deleteProducto = async (req, res) => {
     }
 };
 
-// Exportamos las funciones del controlador
 module.exports = {
     createProducto,
     getProductos,
     getProductoById,
     updateProducto,
-    deleteProducto
+    deleteProducto,
+    checkNombreProducto
 };

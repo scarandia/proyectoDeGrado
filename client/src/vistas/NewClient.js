@@ -27,6 +27,7 @@ const NewClientPage = () => {
   });
 
   const [ciExists, setCiExists] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Cargar datos desde localStorage al montar el componente
   useEffect(() => {
@@ -74,12 +75,13 @@ const NewClientPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (ciExists) {
-      alert('El carnet de identidad ya existe. Por favor, use uno diferente.');
+      alert('El cliente ya existe. Por favor, use uno diferente.');
       return;
     }
     try {
       const response = await axios.post('http://localhost:5000/api/clientes', client);
       console.log('Cliente creado:', response.data);
+      alert('Cliente creado exitosamente');
       // Limpiar el formulario y localStorage después de enviar
       setClient({
         idCliente: '',
@@ -111,11 +113,11 @@ const NewClientPage = () => {
   };
 
   return (
-    <div className="order-list-container" style={{ width: '1100px', margin: '0 auto'}}>
+    <div className="order-list-container" style={{ width: '1100px', margin: '0 auto' }}>
       <BackgroundCard className="client-list-card">
         <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Crear Nuevo Cliente</h2>
         <form onSubmit={handleSubmit} className="centered-form">
-          <h3>Información Personal</h3>
+          <h3>Información Representante</h3>
           <div className="row">
             <div className="col-md-12">
               <div className="form-group">
@@ -300,7 +302,7 @@ const NewClientPage = () => {
           </div>
 
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary mt-3 w-100" disabled={ciExists}>
               Crear Cliente
             </button>
           </div>

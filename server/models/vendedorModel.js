@@ -29,6 +29,10 @@ const VendedorSchema = new mongoose.Schema({
       unique: true
     }
   },
+  direccion: {
+    type: String,
+    required: true
+  },
   activo: {
     type: Boolean,
     default: true

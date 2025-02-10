@@ -9,6 +9,7 @@ const ProductoSchema = new mongoose.Schema({
   nombreProducto: {
     type: String,
     required: true,
+    unique: true,
   },
   descripcion: {
     type: String,
@@ -26,6 +27,10 @@ const ProductoSchema = new mongoose.Schema({
   stock: {
     type: Number,
     required: true,
+  },
+  vencimiento: {
+    type: Date,
+    required: false,
   },
   imagenURL: {
     type: String,

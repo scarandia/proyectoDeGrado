@@ -1,6 +1,16 @@
 const User = require('../models/usuarioModel');
 const jwt = require('jsonwebtoken');
 
+// Verificar si el correo electrónico ya existe
+const checkEmailExists = async (req, res) => {
+    try {
+        const usuario = await User.findOne({ email: req.params.email });
+        res.json({ exists: !!usuario });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al verificar el correo electrónico' });
+    }
+};
+
 const register = async (req, res) => {
     try {
         const { email, password, role } = req.body;
@@ -29,7 +39,7 @@ const login = async (req, res) => {
         // Buscar el usuario por email
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'Usuario no encontrado', detalle: error.message });
+            return res.status(400).json({ message: 'Usuario no encontrado' });
         }
 
         // Comparar la contraseña
@@ -55,7 +65,7 @@ const createUser = async (req, res) => {
     try {
         const { email, password, role } = req.body;
 
-        // Crear nuevo usuario
+        // Crear  usuario
         const newUser = new User({ email, password, role });
         await newUser.save();
 
@@ -67,10 +77,10 @@ const createUser = async (req, res) => {
     }
 };
 
-// Función para eliminar un usuario
+// eliminar un usuario
 const deleteUser = async (req, res) => {
     try {
-        const { userId } = req.params;  // ID del usuario a eliminar
+        const { userId } = req.params; 
 
         // Verificar si el usuario existe
         const user = await User.findById(userId);
@@ -92,5 +102,6 @@ module.exports = {
     register, 
     login, 
     createUser,
-    deleteUser
+    deleteUser,
+    checkEmailExists
 };

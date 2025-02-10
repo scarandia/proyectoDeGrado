@@ -5,7 +5,8 @@ const {
     getProductos,
     getProductoById,
     updateProducto,
-    deleteProducto
+    deleteProducto,
+    checkNombreProducto
 } = require('../controllers/productoController');
 
 // Ruta para crear un nuevo producto
@@ -22,5 +23,8 @@ router.put('/:id', updateProducto);
 
 // Ruta para eliminar un producto por ID
 router.delete('/:id', deleteProducto);
+
+// Ruta para verificar si el nombre del producto ya existe
+router.get('/checkNombreProducto/:nombreProducto', checkNombreProducto);
 
 module.exports = router;

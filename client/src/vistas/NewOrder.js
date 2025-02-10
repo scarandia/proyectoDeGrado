@@ -19,7 +19,9 @@ const NewOrderPage = () => {
 
   const [ci, setCi] = useState('');
   const [productosDisponibles, setProductosDisponibles] = useState([]);
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [overrideStock, setOverrideStock] = useState(false);
+
 
   useEffect(() => {
     // Fetch available products
@@ -31,8 +33,8 @@ const NewOrderPage = () => {
           label: producto.nombreProducto,
           stock: producto.stock // Incluir stock en los datos del producto
         })));
-      } catch (error) {
-        console.error('Error al obtener los productos:', error);
+      } catch (errorMessage) {
+        console.error('Error al obtener los productos:', errorMessage);
       }
     };
 
@@ -105,21 +107,46 @@ const NewOrderPage = () => {
     }
   };
 
+  const handleOverrideStockChange = () => {
+    setOverrideStock(!overrideStock);
+    alert(`Invalidar Verificación de Stock ${!overrideStock ? 'activado' : 'desactivado'}`);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(''); // Quita el anterior mensaje de error
 
-    // Verificar stock disponible
-    for (const item of order.productos) {
-      const producto = productosDisponibles.find(p => p.value === item.producto);
-      if (producto && item.cantidad > producto.stock) {
-        setError(`Stock insuficiente para el producto ${producto.label}.`);
-        return;
+    // Verificar stock disponible si overrideStock es false
+    if (!overrideStock) {
+      for (const item of order.productos) {
+        const producto = productosDisponibles.find(p => p.value === item.producto);
+        if (producto && item.cantidad > producto.stock) {
+          setErrorMessage(`Stock insuficiente para el producto ${producto.label}.`);
+          return;
+        }
       }
+    }
+
+    // Validar que la fecha de entrega no sea anterior al día actual
+    if (order.fechaEntrega && new Date(order.fechaEntrega) < new Date().setHours(0, 0, 0, 0)) {
+      setErrorMessage('La fecha de entrega no puede ser anterior a la fecha actual. Por favor, ingrese una fecha válida.');
+      return;
     }
 
     try {
       const response = await axios.post('http://localhost:5000/api/pedidos', order);
       console.log('Pedido creado:', response.data);
+
+      // Reducir stock solo si overrideStock es false
+      if (!overrideStock) {
+        for (const item of order.productos) {
+          const producto = productosDisponibles.find(p => p.value === item.producto);
+          if (producto) {
+            producto.stock -= item.cantidad;
+          }
+        }
+      }
+
       // Limpiar el formulario después de enviar
       setOrder({
         ciCliente: '',
@@ -134,9 +161,12 @@ const NewOrderPage = () => {
         notas: '',
       });
       setCi('');
-      setError('');
+      setErrorMessage('');
     } catch (error) {
-      console.error('Error al crear el pedido:', error);
+      const errorMsg = error.response && error.response.data && error.response.data.error
+        ? error.response.data.error
+        : 'Error al crear el pedido';
+      setErrorMessage(errorMsg);
     }
   };
 
@@ -146,7 +176,7 @@ const NewOrderPage = () => {
         <h2 style={{ textAlign: 'center', marginBottom: '10px' }}>Crear Nuevo Pedido</h2>
         <form onSubmit={handleSubmit} className="centered-form">
           <h3>Información del Pedido</h3>
-          {error && <div className="alert alert-danger">{error}</div>}
+          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
           <div className="form-group">
             <label htmlFor="ci">CI del Cliente</label>
             <input
@@ -272,10 +302,25 @@ const NewOrderPage = () => {
             />
           </div>
 
+          <div className="form-group">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                id="overrideStock"
+                checked={overrideStock}
+                onChange={handleOverrideStockChange}
+                style={{ width: '20px', height: '20px', marginTop: '3px' }}
+              />
+              <label className="form-check-label" htmlFor="overrideStock">
+                Invalidar Verificación de Stock
+              </label>
+            </div>
+          </div>
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
             <button type="submit" className="btn btn-primary">
               Crear Pedido
-            </button> 
+            </button>
           </div>
         </form>
       </BackgroundCard>
