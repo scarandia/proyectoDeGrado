@@ -4,24 +4,27 @@ import axios from 'axios';
 import Select from 'react-select';
 
 const NewOrderPage = () => {
-  const [order, setOrder] = useState({
-    ciCliente: '',
-    productos: [{ producto: '', cantidad: 1 }],
-    fechaEntrega: '',
-    direccionEntrega: {
-      calle: '',
-      ciudad: '',
-      codigoPostal: '',
-      pais: '',
-    },
-    notas: '',
+  const [order, setOrder] = useState(() => {
+    // Cargar el estado del formulario desde localStorage
+    const savedOrder = localStorage.getItem('order');
+    return savedOrder ? JSON.parse(savedOrder) : {
+      ciCliente: '',
+      productos: [{ producto: '', cantidad: 1 }],
+      fechaEntrega: '',
+      direccionEntrega: {
+        calle: '',
+        ciudad: '',
+        codigoPostal: '',
+        pais: '',
+      },
+      notas: '',
+    };
   });
 
-  const [ci, setCi] = useState('');
+  const [ci, setCi] = useState(() => localStorage.getItem('ci') || '');
   const [productosDisponibles, setProductosDisponibles] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-  const [overrideStock, setOverrideStock] = useState(false);
-
+  const [overrideStock, setOverrideStock] = useState(() => localStorage.getItem('overrideStock') === 'true');
 
   useEffect(() => {
     // Fetch available products
@@ -33,13 +36,20 @@ const NewOrderPage = () => {
           label: producto.nombreProducto,
           stock: producto.stock // Incluir stock en los datos del producto
         })));
-      } catch (errorMessage) {
-        console.error('Error al obtener los productos:', errorMessage);
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
       }
     };
 
     fetchProductos();
   }, []);
+
+  useEffect(() => {
+    // Guardar el estado del formulario en localStorage cada vez que se actualice
+    localStorage.setItem('order', JSON.stringify(order));
+    localStorage.setItem('ci', ci);
+    localStorage.setItem('overrideStock', overrideStock);
+  }, [order, ci, overrideStock]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +119,6 @@ const NewOrderPage = () => {
 
   const handleOverrideStockChange = () => {
     setOverrideStock(!overrideStock);
-    alert(`Invalidar Verificación de Stock ${!overrideStock ? 'activado' : 'desactivado'}`);
   };
 
   const handleSubmit = async (e) => {
@@ -162,6 +171,9 @@ const NewOrderPage = () => {
       });
       setCi('');
       setErrorMessage('');
+      localStorage.removeItem('order');
+      localStorage.removeItem('ci');
+      localStorage.removeItem('overrideStock');
     } catch (error) {
       const errorMsg = error.response && error.response.data && error.response.data.error
         ? error.response.data.error
